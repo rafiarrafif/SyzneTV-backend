@@ -3,13 +3,16 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "bun build ./src/app.ts --compile --target bun --minify-whitespace --minify-syntax --minify-identifiers --outfile server",
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
+    "@prisma/client": "^6.7.0",
     "elysia": "latest"
   },
   "devDependencies": {
-    "bun-types": "latest"
+    "bun-types": "latest",
+    "prisma": "^6.7.0"
   },
   "module": "src/index.js"
 }
