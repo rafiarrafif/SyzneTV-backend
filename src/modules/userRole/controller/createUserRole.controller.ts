@@ -9,6 +9,7 @@ import { createUserRoleSchema } from "../userRole.schema";
 import { JWTDecodeToken } from "../../../helpers/jwt/decodeToken";
 import { prisma } from "../../../utils/databases/prisma/connection";
 import { createUserRoleService } from "../services/createUserRole.service";
+import { PrismaErrorTypes } from "../../../utils/databases/prisma/error/types";
 
 /**
  * @function createUserRole
@@ -74,7 +75,7 @@ export const createUserRole = async (
     .then((result) =>
       returnWriteResponse(ctx.set, 201, "User role created", result)
     )
-    .catch((error) =>
-      returnErrorResponse(ctx.set, 500, "Internal Server Error", error)
+    .catch((error: PrismaErrorTypes) =>
+      returnErrorResponse(ctx.set, error.status, error.message, error.details)
     );
 };
