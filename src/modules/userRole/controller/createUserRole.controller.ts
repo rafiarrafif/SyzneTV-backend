@@ -4,10 +4,8 @@ import {
   returnErrorResponse,
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
-import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
 import { createUserRoleSchema } from "../userRole.schema";
 import { JWTDecodeToken } from "../../../helpers/jwt/decodeToken";
-import { prisma } from "../../../utils/databases/prisma/connection";
 import { createUserRoleService } from "../services/createUserRole.service";
 import { PrismaErrorTypes } from "../../../utils/databases/prisma/error/types";
 
@@ -72,10 +70,15 @@ export const createUserRole = async (
   };
 
   createUserRoleService(dataPayload)
-    .then((result) =>
-      returnWriteResponse(ctx.set, 201, "User role created", result)
-    )
-    .catch((error: PrismaErrorTypes) =>
-      returnErrorResponse(ctx.set, error.status, error.message, error.details)
-    );
+    .then((result) => {
+      return returnWriteResponse(ctx.set, 201, "User role created", result);
+    })
+    .catch((error: PrismaErrorTypes) => {
+      return returnErrorResponse(
+        ctx.set,
+        error.status,
+        error.message,
+        error.details
+      );
+    });
 };

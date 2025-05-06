@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
+    "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
+    "bcrypt": "^5.1.1",
     "cookie": "^1.0.2",
     "elysia": "latest",
     "joi": "^17.13.3",
