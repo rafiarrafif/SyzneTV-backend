@@ -7,6 +7,7 @@ import {
   returnErrorResponse,
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
+import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
 
 /**
  * @function createUser
@@ -36,21 +37,17 @@ export const createUser = async (
     return returnErrorResponse(ctx.set, 400, "Invalid user input", error);
 
   // Create the user in the database using the service
-  createUserService(ctx.body)
-    .then((result) => {
-      return returnWriteResponse(
-        ctx.set,
-        201,
-        "User created successfully",
-        result
-      );
-    })
-    .catch((error: PrismaErrorTypes) => {
-      return returnErrorResponse(
-        ctx.set,
-        error.status,
-        error.message,
-        error.details
-      );
-    });
+  try {
+    const newUser = await createUserService(ctx.body);
+    return returnWriteResponse(
+      ctx.set,
+      201,
+      "User created successfully",
+      newUser
+    );
+  } catch (error) {
+    // Handle any errors that occur during user creation
+    const { status, message, details } = handlePrismaError(error);
+    return returnErrorResponse(ctx.set, status, message, details);
+  }
 };

@@ -1,7 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { hashPassword } from "../../../helpers/security/password/hash";
 import { userModel } from "../user.model";
-import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
 
 export const createUserService = async (userData: Prisma.UserCreateInput) => {
   const { password, ...rest } = userData; // Destructure the password and the rest of the user data
@@ -17,6 +16,6 @@ export const createUserService = async (userData: Prisma.UserCreateInput) => {
     });
     return newUser;
   } catch (error) {
-    return handlePrismaError(error);
+    return error;
   }
 };
