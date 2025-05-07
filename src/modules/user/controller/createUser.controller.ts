@@ -2,12 +2,11 @@ import { Prisma } from "@prisma/client";
 import { Context } from "elysia";
 import { createUserSchema } from "../user.schema";
 import { createUserService } from "../services/createUser.service";
-import { PrismaErrorTypes } from "../../../utils/databases/prisma/error/types";
+import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
 import {
   returnErrorResponse,
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
-import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
 
 /**
  * @function createUser

@@ -16,6 +16,6 @@ export const createUserService = async (userData: Prisma.UserCreateInput) => {
     });
     return newUser;
   } catch (error) {
-    return error;
+    throw error;
   }
 };
