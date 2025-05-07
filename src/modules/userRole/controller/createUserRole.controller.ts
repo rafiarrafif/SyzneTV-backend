@@ -7,7 +7,7 @@ import {
 import { createUserRoleSchema } from "../userRole.schema";
 import { JWTDecodeToken } from "../../../helpers/jwt/decodeToken";
 import { createUserRoleService } from "../services/createUserRole.service";
-import { PrismaErrorTypes } from "../../../utils/databases/prisma/error/types";
+import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
 
 /**
  * @function createUserRole
@@ -49,36 +49,21 @@ export const createUserRole = async (
   if (error)
     return returnErrorResponse(ctx.set, 400, "Invalid user input", error);
 
-  const formData: Prisma.UserRoleUncheckedCreateInput = { ...ctx.body };
-  const userCreator = JWTDecodeToken(ctx);
-
-  const dataPayload = {
-    ...formData,
-    isSuperadmin: Boolean(formData.isSuperadmin),
-    canEditMedia: Boolean(formData.canEditMedia),
-    canManageMedia: Boolean(formData.canManageMedia),
-    canEditEpisodes: Boolean(formData.canEditEpisodes),
-    canManageEpisodes: Boolean(formData.canManageEpisodes),
-    canEditComment: Boolean(formData.canEditComment),
-    canManageComment: Boolean(formData.canManageComment),
-    canEditUser: Boolean(formData.canEditUser),
-    canManageUser: Boolean(formData.canManageUser),
-    canEditSystem: Boolean(formData.canEditSystem),
-    canManageSystem: Boolean(formData.canManageSystem),
-    createdBy: userCreator.user.id,
-    deletedAt: null,
+  const formData: Prisma.UserRoleUncheckedCreateInput = {
+    ...ctx.body,
+    createdBy: JWTDecodeToken(ctx).user.id,
   };
 
-  createUserRoleService(dataPayload)
-    .then((result) => {
-      return returnWriteResponse(ctx.set, 201, "User role created", result);
-    })
-    .catch((error: PrismaErrorTypes) => {
-      return returnErrorResponse(
-        ctx.set,
-        error.status,
-        error.message,
-        error.details
-      );
-    });
+  try {
+    const newUserRole = await createUserRoleService(formData);
+    return returnWriteResponse(
+      ctx.set,
+      201,
+      "User role created successfully",
+      newUserRole
+    );
+  } catch (error) {
+    const { status, message, details } = handlePrismaError(error);
+    return returnErrorResponse(ctx.set, status, message, details);
+  }
 };
