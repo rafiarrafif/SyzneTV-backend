@@ -23,7 +23,7 @@ for (const folder of readdirSync(modulesPath, { withFileTypes: true })) {
       }
     } catch (error) {
       console.warn(
-        `Module ${folder.name} not found. Please check the module path or name.`
+        `Module ${folder.name} not found. Please check the module path or name: ${error}`
       );
     }
   }

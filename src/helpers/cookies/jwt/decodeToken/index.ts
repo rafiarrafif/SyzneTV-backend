@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import { Context } from "elysia";
 import { JWTAuthToken } from "./types";
-import { returnErrorResponse } from "../../callback/httpResponse";
 import { parse } from "cookie";
+import { returnErrorResponse } from "../../../callback/httpResponse";
 
 /**
  * Verifies the authentication cookie from the request header.

@@ -5,9 +5,9 @@ import {
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
 import { createUserRoleSchema } from "../userRole.schema";
-import { JWTDecodeToken } from "../../../helpers/jwt/decodeToken";
 import { createUserRoleService } from "../services/createUserRole.service";
 import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
+import { JWTDecodeToken } from "../../../helpers/cookies/jwt/decodeToken";
 
 /**
  * @function createUserRole
