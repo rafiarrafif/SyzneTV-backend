@@ -16,6 +16,7 @@ export const createUserSessionRole = async (
     return returnErrorResponse(ctx.set, 400, "User ID is required");
   }
 
+  // Get user device and browser information
   const userHeaderData = getUserHeaderInformation(ctx);
 
   try {
