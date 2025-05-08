@@ -6,10 +6,16 @@ import {
   returnErrorResponse,
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
+import { createUserSchema } from "../../user/user.schema";
 
 export const createUserSessionRole = async (
-  ctx: Context & { body: { userId: string } }
+  ctx: Context & { body: { userId?: string } }
 ) => {
+  // Validate request body
+  if (!ctx.body?.userId) {
+    return returnErrorResponse(ctx.set, 400, "User ID is required");
+  }
+
   const userHeaderData = getUserHeaderInformation(ctx);
 
   try {

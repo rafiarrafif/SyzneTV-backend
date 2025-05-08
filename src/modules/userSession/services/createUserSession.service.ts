@@ -14,6 +14,7 @@ export const createUserSessionService = async (
       deviceIp: data.userHeaderInformation.ip,
       validUntil: new Date(new Date().getTime() + sessionLifetime * 1000),
     });
+    return newUserSession;
   } catch (error) {
     throw error;
   }
