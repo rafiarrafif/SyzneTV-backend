@@ -14,7 +14,8 @@
     "cookie": "^1.0.2",
     "elysia": "latest",
     "joi": "^17.13.3",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "ua-parser-js": "^2.0.3"
   },
   "devDependencies": {
     "bun-types": "latest",
