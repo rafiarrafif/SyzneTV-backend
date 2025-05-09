@@ -11,6 +11,10 @@ export const loginWithPassword = async (
   if (error || !ctx.body)
     return returnErrorResponse(ctx.set, 400, "Invalid user input", error);
 
-  const result = await loginWithPasswordService(ctx.body);
-  return result;
+  try {
+    const result = await loginWithPasswordService(ctx.body);
+    return result;
+  } catch (error) {
+    return error;
+  }
 };
