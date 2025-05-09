@@ -1,3 +1,4 @@
+import { AppError } from "../../../helpers/error/handler";
 import { userModel } from "../user.model";
 
 export const findUserByEmailOrUsernameRepo = async (identifier: string) => {
@@ -29,7 +30,6 @@ export const findUserByEmailOrUsernameRepo = async (identifier: string) => {
       },
     }));
 
-  if (!userData) throw "User not found";
-
+  if (!userData) throw new AppError(404, "User not exist");
   return userData;
 };
