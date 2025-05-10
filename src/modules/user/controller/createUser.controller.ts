@@ -1,12 +1,12 @@
-import { Prisma } from "@prisma/client";
-import { Context } from "elysia";
-import { createUserSchema } from "../user.schema";
-import { createUserService } from "../services/createUser.service";
 import {
   returnErrorResponse,
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
+import { Prisma } from "@prisma/client";
+import { Context } from "elysia";
+import { createUserService } from "../services/createUser.service";
 import { mainErrorHandler } from "../../../helpers/error/handler";
+import { createUserSchema } from "../schemas/createUser.schema";
 
 /**
  * @function createUser
