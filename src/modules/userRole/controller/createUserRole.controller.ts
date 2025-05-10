@@ -6,7 +6,7 @@ import {
 } from "../../../helpers/callback/httpResponse";
 import { createUserRoleSchema } from "../userRole.schema";
 import { createUserRoleService } from "../services/createUserRole.service";
-import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
+import { handlePrismaError } from "../../../helpers/error/instances/prisma";
 import { JWTDecodeToken } from "../../../helpers/cookies/jwt/decodeToken";
 
 /**

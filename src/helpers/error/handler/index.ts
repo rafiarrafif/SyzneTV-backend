@@ -1,13 +1,54 @@
-export class AppError extends Error {
-  public readonly statusCode: number;
-  public readonly details?: any;
+import { Prisma } from "@prisma/client";
+import { returnErrorResponse } from "../../callback/httpResponse";
+import { AppError } from "../instances/app";
+import { PrismaErrorCodeList } from "../../../utils/databases/prisma/error/codeList";
 
-  constructor(statusCode = 400, message: string, details?: any) {
-    super(message);
-    this.name = "AppError";
-    this.statusCode = statusCode;
-    this.details = details;
-
-    Object.setPrototypeOf(this, AppError.prototype);
+export const mainErrorHandler = (set: any, error: unknown) => {
+  if (error instanceof AppError) {
+    return returnErrorResponse(
+      set,
+      error.statusCode,
+      error.message,
+      error.details
+    );
   }
-}
+
+  if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    const errorInfo = PrismaErrorCodeList[error.code];
+
+    if (errorInfo)
+      return returnErrorResponse(
+        set,
+        errorInfo.status,
+        errorInfo.message,
+        error.meta ?? {}
+      );
+  }
+
+  if (error instanceof Prisma.PrismaClientUnknownRequestError) {
+    return returnErrorResponse(set, 500, "Unknown database error");
+  }
+
+  if (error instanceof Prisma.PrismaClientRustPanicError) {
+    return returnErrorResponse(
+      set,
+      500,
+      "Database engine crashed unexpectedly"
+    );
+  }
+
+  if (error instanceof Prisma.PrismaClientInitializationError) {
+    return returnErrorResponse(set, 500, "Database initialization failed");
+  }
+
+  if (error instanceof Prisma.PrismaClientValidationError) {
+    return returnErrorResponse(
+      set,
+      400,
+      "Invalid input to query",
+      error.message
+    );
+  }
+
+  return returnErrorResponse(set, 500, "Internal server error");
+};

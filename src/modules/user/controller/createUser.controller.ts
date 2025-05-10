@@ -2,11 +2,11 @@ import { Prisma } from "@prisma/client";
 import { Context } from "elysia";
 import { createUserSchema } from "../user.schema";
 import { createUserService } from "../services/createUser.service";
-import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
 import {
   returnErrorResponse,
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
+import { mainErrorHandler } from "../../../helpers/error/handler";
 
 /**
  * @function createUser
@@ -45,8 +45,6 @@ export const createUser = async (
       newUser
     );
   } catch (error) {
-    // Handle any errors that occur during user creation
-    const { status, message, details } = handlePrismaError(error);
-    return returnErrorResponse(ctx.set, status, message, details);
+    return mainErrorHandler(ctx.set, error);
   }
 };

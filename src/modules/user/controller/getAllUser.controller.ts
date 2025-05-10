@@ -1,10 +1,10 @@
-import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
 import {
   returnErrorResponse,
   returnReadResponse,
 } from "../../../helpers/callback/httpResponse";
 import { Context } from "elysia";
 import { getAllUsersService } from "../services/getAllUser.service";
+import { mainErrorHandler } from "../../../helpers/error/handler";
 
 export const getAllUser = async (ctx: Context) => {
   try {
@@ -16,7 +16,6 @@ export const getAllUser = async (ctx: Context) => {
       allUser
     );
   } catch (error) {
-    const { status, message, details } = handlePrismaError(error);
-    return returnErrorResponse(ctx.set, status, message, details);
+    return mainErrorHandler(ctx.set, error);
   }
 };

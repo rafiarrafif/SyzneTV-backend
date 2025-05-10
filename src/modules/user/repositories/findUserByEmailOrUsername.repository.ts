@@ -1,4 +1,4 @@
-import { AppError } from "../../../helpers/error/handler";
+import { AppError } from "../../../helpers/error/instances/app";
 import { userModel } from "../user.model";
 
 export const findUserByEmailOrUsernameRepo = async (identifier: string) => {

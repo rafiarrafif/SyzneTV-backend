@@ -1,12 +1,8 @@
-import { userModel } from "../user.model";
+import { getAllUserRepo } from "../repositories/getAllUser.repository";
 
 export const getAllUsersService = async () => {
   try {
-    const allUser = await userModel.findMany({
-      where: {
-        deletedAt: null,
-      },
-    });
+    const allUser = await getAllUserRepo();
     return allUser;
   } catch (error) {
     throw error;

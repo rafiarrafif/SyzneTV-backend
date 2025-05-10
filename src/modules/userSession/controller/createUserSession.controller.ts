@@ -1,7 +1,7 @@
 import { Context } from "elysia";
 import { createUserSessionService } from "../services/createUserSession.service";
 import { getUserHeaderInformation } from "../../../helpers/cookies/userHeader/getUserHeaderInformation";
-import { handlePrismaError } from "../../../utils/databases/prisma/error/handler";
+import { handlePrismaError } from "../../../helpers/error/instances/prisma";
 import {
   returnErrorResponse,
   returnWriteResponse,
