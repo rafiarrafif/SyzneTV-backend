@@ -1,12 +1,11 @@
 import { Context } from "elysia";
 import { createUserSessionService } from "../services/createUserSession.service";
 import { getUserHeaderInformation } from "../../../helpers/cookies/userHeader/getUserHeaderInformation";
-import { handlePrismaError } from "../../../helpers/error/instances/prisma";
+import { mainErrorHandler } from "../../../helpers/error/handler";
 import {
   returnErrorResponse,
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
-import { createUserSchema } from "../../user/user.schema";
 
 export const createUserSessionRole = async (
   ctx: Context & { body: { userId?: string } }
@@ -31,7 +30,6 @@ export const createUserSessionRole = async (
       newUserSession
     );
   } catch (error) {
-    const { status, message, details } = handlePrismaError(error);
-    return returnErrorResponse(ctx.set, status, message, details);
+    return mainErrorHandler(ctx.set, error);
   }
 };

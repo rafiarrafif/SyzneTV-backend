@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { userSessionModel } from "./userSession.model";
+import { userSessionModel } from "../userSession.model";
 
 export const createUserSessionRepo = async (
   data: Prisma.UserSessionUncheckedCreateInput

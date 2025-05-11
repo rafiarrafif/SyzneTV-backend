@@ -1,6 +1,6 @@
 import { createUserSessionServiceParams } from "../userSession.types";
-import { createUserSessionRepo } from "../userSession.repository";
 import { redis } from "../../../utils/databases/redis/connection";
+import { createUserSessionRepo } from "../repositories/createUserSession.repository";
 
 export const createUserSessionService = async (
   data: createUserSessionServiceParams
