@@ -5,7 +5,7 @@ import {
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
 import { createUserRoleService } from "../services/createUserRole.service";
-import { JWTDecodeToken } from "../../../helpers/cookies/jwt/decodeToken";
+import { JWTDecodeToken } from "../../../helpers/cookies/jwt/decode";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { createUserRoleSchema } from "../schemas/createUserRole.schema";
 
