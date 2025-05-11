@@ -4,10 +4,10 @@ import {
   returnErrorResponse,
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
-import { createUserRoleSchema } from "../userRole.schema";
 import { createUserRoleService } from "../services/createUserRole.service";
-import { handlePrismaError } from "../../../helpers/error/instances/prisma";
 import { JWTDecodeToken } from "../../../helpers/cookies/jwt/decodeToken";
+import { mainErrorHandler } from "../../../helpers/error/handler";
+import { createUserRoleSchema } from "../schemas/createUserRole.schema";
 
 /**
  * @function createUserRole
@@ -63,7 +63,6 @@ export const createUserRole = async (
       newUserRole
     );
   } catch (error) {
-    const { status, message, details } = handlePrismaError(error);
-    return returnErrorResponse(ctx.set, status, message, details);
+    return mainErrorHandler(ctx.set, error);
   }
 };

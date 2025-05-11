@@ -1,5 +1,5 @@
 import { Prisma } from "@prisma/client";
-import { createUserRoleRepo } from "../userRole.repository";
+import { createUserRoleRepo } from "../repositories/createUserRole.repository";
 
 export const createUserRoleService = async (
   userRoleData: Prisma.UserRoleUncheckedCreateInput
