@@ -3,11 +3,12 @@ import { loginWithPasswordService } from "../services/loginWithPassword.service"
 import { loginWithPasswordSchema } from "../auth.schema";
 import {
   returnErrorResponse,
-  returnReadResponse,
+  returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
 import { LoginWithPasswordRequest } from "../auth.types";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { getUserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation";
+import { setCookie } from "../../../helpers/http/userHeader/cookies/setCookies";
 
 export const loginWithPassword = async (
   ctx: Context & { body: LoginWithPasswordRequest }
@@ -19,17 +20,10 @@ export const loginWithPassword = async (
   const userHeaderInfo = getUserHeaderInformation(ctx);
 
   try {
-    const processAuth = await loginWithPasswordService(
-      ctx.body,
-      userHeaderInfo
-    );
+    const jwtToken = await loginWithPasswordService(ctx.body, userHeaderInfo);
 
-    return returnReadResponse(
-      ctx.set,
-      200,
-      "Autentication Success",
-      processAuth
-    );
+    const cookie = setCookie(ctx.set, jwtToken);
+    return returnWriteResponse(ctx.set, 200, "Autentication Success", cookie);
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
   }
