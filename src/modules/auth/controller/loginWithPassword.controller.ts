@@ -7,7 +7,7 @@ import {
 } from "../../../helpers/callback/httpResponse";
 import { LoginWithPasswordRequest } from "../auth.types";
 import { mainErrorHandler } from "../../../helpers/error/handler";
-import { getUserHeaderInformation } from "../../../helpers/cookies/userHeader/getUserHeaderInformation";
+import { getUserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation";
 
 export const loginWithPassword = async (
   ctx: Context & { body: LoginWithPasswordRequest }

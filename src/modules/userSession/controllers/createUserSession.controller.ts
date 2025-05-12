@@ -1,6 +1,6 @@
 import { Context } from "elysia";
 import { createUserSessionService } from "../services/createUserSession.service";
-import { getUserHeaderInformation } from "../../../helpers/cookies/userHeader/getUserHeaderInformation";
+import { getUserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import {
   returnErrorResponse,
