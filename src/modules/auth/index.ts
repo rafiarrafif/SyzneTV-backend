@@ -5,13 +5,6 @@ import { authVerification } from "./controller/authVerification.controller";
 
 export const authModule = new Elysia({ prefix: "/auth" })
   .post("/legacy", loginWithPassword)
-  .post("/verification", authVerification)
-  .get(
-    "/test",
-    () => {
-      return "PASSED";
-    },
-    {
-      beforeHandle: authMiddleware,
-    }
-  );
+  .post("/verification", authVerification, {
+    beforeHandle: authMiddleware,
+  });
