@@ -5,7 +5,6 @@ import {
   returnWriteResponse,
 } from "../../../helpers/callback/httpResponse";
 import { createUserRoleService } from "../services/createUserRole.service";
-import { JWTDecodeToken } from "../../../helpers/http/jwt/decode";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { createUserRoleSchema } from "../schemas/createUserRole.schema";
 
@@ -51,7 +50,7 @@ export const createUserRole = async (
 
   const formData: Prisma.UserRoleUncheckedCreateInput = {
     ...ctx.body,
-    createdBy: JWTDecodeToken(ctx).user.id,
+    createdBy: "daw",
   };
 
   try {
