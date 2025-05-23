@@ -3,19 +3,24 @@
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "bun build ./src/app.ts --compile --target bun --minify-whitespace --minify-syntax --minify-identifiers --outfile server",
-    "dev": "bun run --watch src/index.ts"
+    "build": "bun build ./src/index.ts --compile --target bun --minify-whitespace --minify-syntax --minify-identifiers --outfile dist/server",
+    "dev": "bun run --watch src/index.ts",
+    "route:sync": "bun run ./scripts/sync-routes.ts",
+    "env:publish": "bun run ./scripts/create-example-env.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0",
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
+    "aws-sdk": "^2.1692.0",
     "bcrypt": "^5.1.1",
     "cookie": "^1.0.2",
     "elysia": "latest",
     "ioredis": "^5.6.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
+    "mock-aws-s3": "^4.0.2",
+    "nock": "^14.0.4",
     "ua-parser-js": "^2.0.3"
   },
   "devDependencies": {

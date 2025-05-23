@@ -8,11 +8,8 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
 # production
+/dist
 /build
 
 # misc
@@ -47,6 +44,9 @@ package-lock.json
 .env.development
 .env.test
 .env.production
+
+# local docker compose files
+docker-compose.override.yml
 
 # compiled output
 server
