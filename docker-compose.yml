@@ -12,10 +12,6 @@ services:
 
   db:
     image: postgres:16-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 868686
-      POSTGRES_DB: nouzen
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
