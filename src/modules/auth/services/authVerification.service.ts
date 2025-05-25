@@ -1,8 +1,7 @@
 import { AppError } from "../../../helpers/error/instances/app";
 import { jwtDecode } from "../../../helpers/http/jwt/decode";
-import { prisma } from "../../../utils/databases/prisma/connection";
-import { redis } from "../../../utils/databases/redis/connection";
-import { storeUserSessionToCacheRepo } from "../../userSession/repositories/storeUserSessionToCache.repository";
+import { checkUserSessionInCacheService } from "../../userSession/services/checkUserSessionInCache.service";
+import { getUserSessionService } from "../../userSession/services/getUserSession.service";
 import { storeUserSessionToCacheService } from "../../userSession/services/storeUserSessionToCache.service";
 import { JWTSessionPayload } from "../auth.types";
 
@@ -12,14 +11,14 @@ export const authVerificationService = async (cookie: string) => {
     const jwtSession = jwtDecode(cookie) as JWTSessionPayload;
 
     // Check if the session exists in Redis
-    const sessionCheckOnRedis = await redis.exists(jwtSession.id);
+    const sessionCheckOnRedis = await checkUserSessionInCacheService(
+      jwtSession.userId,
+      jwtSession.id
+    );
+
     if (!sessionCheckOnRedis) {
       // If not found in Redis, check the database
-      const sessionCheckOnDB = await prisma.userSession.findUnique({
-        where: {
-          id: jwtSession.id,
-        },
-      });
+      const sessionCheckOnDB = await getUserSessionService(jwtSession.id);
 
       // If the session found in the database, store it in Redis. if not, throw an error
       if (
@@ -35,8 +34,8 @@ export const authVerificationService = async (cookie: string) => {
             new Date().getTime()) /
             1000
         );
-        await storeUserSessionToCacheService(sessionCheckOnDB!, timeExpires);
-        return sessionCheckOnDB;
+        await storeUserSessionToCacheService(sessionCheckOnDB, timeExpires);
+        return "daridb";
       }
     } else {
       return jwtSession;
