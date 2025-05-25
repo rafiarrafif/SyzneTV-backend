@@ -1,6 +1,6 @@
 import { createUserSessionServiceParams } from "../userSession.types";
-import { redis } from "../../../utils/databases/redis/connection";
-import { createUserSessionRepo } from "../repositories/createUserSession.repository";
+import { createUserSessionRepo } from "../repositories/insertUserSessionToDB.repository";
+import { storeUserSessionToCacheRepo } from "../repositories/storeUserSessionToCache.repository";
 
 export const createUserSessionService = async (
   data: createUserSessionServiceParams
@@ -16,12 +16,8 @@ export const createUserSessionService = async (
       validUntil: new Date(new Date().getTime() + sessionLifetime * 1000),
     });
 
-    await redis.set(
-      `${process.env.app_name}:users:${data.userId}:sessions:${newUserSession.id}`,
-      String(newUserSession.validUntil),
-      "EX",
-      Number(process.env.SESSION_EXPIRE!)
-    );
+    const timeExpires = Number(process.env.SESSION_EXPIRE!);
+    await storeUserSessionToCacheRepo(newUserSession, timeExpires);
 
     return newUserSession;
   } catch (error) {
