@@ -1,6 +1,11 @@
-import { AppError } from "../../helpers/error/instances/app";
+import { ErrorForwarder } from "../../helpers/error/instances/forwarder";
+import { debug2Service } from "./debug2.service";
 
-export const debugService = () => {
-  //   return "OK2";
-  throw new AppError(404, "not found");
+export const debugService = async () => {
+  try {
+    const dataFromService = await debug2Service();
+    return dataFromService;
+  } catch (error) {
+    ErrorForwarder(402, "Error from 1", error);
+  }
 };

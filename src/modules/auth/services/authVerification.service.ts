@@ -35,7 +35,7 @@ export const authVerificationService = async (cookie: string) => {
             1000
         );
         await storeUserSessionToCacheService(sessionCheckOnDB, timeExpires);
-        return "daridb";
+        return sessionCheckOnDB;
       }
     } else {
       return jwtSession;

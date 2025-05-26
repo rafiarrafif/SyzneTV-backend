@@ -8,6 +8,6 @@ export const checkUserSessionInCacheRepo = async (redisKeyName: string) => {
 
     return userSessionInRedis;
   } catch (error) {
-    throw new AppError(500, "Server cache error");
+    throw new AppError(500, "Server cache error", error);
   }
 };
