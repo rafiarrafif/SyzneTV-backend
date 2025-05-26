@@ -1,9 +1,9 @@
 import { AppError } from "./app";
 
 export function ErrorForwarder(
-  statusCode: number,
-  message: string,
-  cause: unknown
+  cause: unknown,
+  statusCode: number = 500,
+  message: string = "Unexpected error"
 ): never {
   if (cause instanceof AppError) {
     throw cause;

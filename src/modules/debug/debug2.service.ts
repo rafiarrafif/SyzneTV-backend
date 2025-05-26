@@ -6,6 +6,6 @@ export const debug2Service = async () => {
     const dataFromService = await debug3Service();
     return dataFromService;
   } catch (error) {
-    ErrorForwarder(402, "Error from 2", error);
+    ErrorForwarder(error, 502);
   }
 };

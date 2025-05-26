@@ -1,7 +1,8 @@
 import { AppError } from "../../../helpers/error/instances/app";
+import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 import { jwtDecode } from "../../../helpers/http/jwt/decode";
 import { checkUserSessionInCacheService } from "../../userSession/services/checkUserSessionInCache.service";
-import { getUserSessionService } from "../../userSession/services/getUserSession.service";
+import { getUserSessionFromDBService } from "../../userSession/services/getUserSessionFromDB.service";
 import { storeUserSessionToCacheService } from "../../userSession/services/storeUserSessionToCache.service";
 import { JWTSessionPayload } from "../auth.types";
 
@@ -18,14 +19,10 @@ export const authVerificationService = async (cookie: string) => {
 
     if (!sessionCheckOnRedis) {
       // If not found in Redis, check the database
-      const sessionCheckOnDB = await getUserSessionService(jwtSession.id);
+      const sessionCheckOnDB = await getUserSessionFromDBService(jwtSession.id);
 
       // If the session found in the database, store it in Redis. if not, throw an error
-      if (
-        !sessionCheckOnDB ||
-        !sessionCheckOnDB.isAuthenticated ||
-        new Date(sessionCheckOnDB.validUntil) < new Date()
-      ) {
+      if (!sessionCheckOnDB) {
         throw new AppError(401, "Session invalid or expired");
       } else {
         // Store the session in Redis with the remaining time until expiration
@@ -38,9 +35,10 @@ export const authVerificationService = async (cookie: string) => {
         return sessionCheckOnDB;
       }
     } else {
+      // If the session is found in Redis, return it
       return jwtSession;
     }
   } catch (error) {
-    throw new AppError(401, "Token is invalid", error);
+    ErrorForwarder(error, 401, "Token is invalid");
   }
 };
