@@ -1,6 +1,7 @@
 import { createUserSessionServiceParams } from "../userSession.types";
 import { createUserSessionRepo } from "../repositories/insertUserSessionToDB.repository";
 import { storeUserSessionToCacheRepo } from "../repositories/storeUserSessionToCache.repository";
+import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 
 export const createUserSessionService = async (
   data: createUserSessionServiceParams
@@ -21,6 +22,6 @@ export const createUserSessionService = async (
 
     return newUserSession;
   } catch (error) {
-    throw error;
+    ErrorForwarder(error);
   }
 };

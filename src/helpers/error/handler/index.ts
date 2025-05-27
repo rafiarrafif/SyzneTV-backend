@@ -38,7 +38,7 @@ export const mainErrorHandler = (set: any, error: unknown) => {
   }
 
   if (error instanceof Prisma.PrismaClientInitializationError) {
-    return returnErrorResponse(set, 500, "Database initialization failed");
+    return returnErrorResponse(set, 503, `Can't reach database server.`, error);
   }
 
   if (error instanceof Prisma.PrismaClientValidationError) {

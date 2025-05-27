@@ -27,7 +27,7 @@ export const loginWithPassword = async (
     const jwtToken = await loginWithPasswordService(ctx.body, userHeaderInfo);
 
     // Set the authentication cookie with the JWT token
-    const cookie = setCookie(ctx.set, COOKIE_KEYS.AUTH, jwtToken);
+    setCookie(ctx.set, COOKIE_KEYS.AUTH, jwtToken);
     return returnWriteResponse(
       ctx.set,
       200,

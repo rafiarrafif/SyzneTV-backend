@@ -1,11 +1,12 @@
 import { Prisma } from "@prisma/client";
 import { userSessionModel } from "../userSession.model";
+import { AppError } from "../../../helpers/error/instances/app";
 
 export const createUserSessionRepo = async (
   data: Prisma.UserSessionUncheckedCreateInput
 ) => {
   try {
-    const newUserRole = await userSessionModel.create({
+    const newUserSession = await userSessionModel.create({
       data: data,
       include: {
         user: {
@@ -24,7 +25,7 @@ export const createUserSessionRepo = async (
         updatedAt: true,
       },
     });
-    return newUserRole;
+    return newUserSession;
   } catch (error) {
     throw error;
   }

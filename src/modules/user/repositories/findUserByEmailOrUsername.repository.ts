@@ -34,6 +34,6 @@ export const findUserByEmailOrUsernameRepo = async (identifier: string) => {
     if (!userData) return false;
     return userData;
   } catch (error) {
-    throw new AppError(500, "Database error", error);
+    throw error;
   }
 };
