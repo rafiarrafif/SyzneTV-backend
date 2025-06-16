@@ -1,14 +1,14 @@
 
 import Elysia from "elysia";
-import {authModule} from './modules/auth';
+import {userSessionModule} from './modules/userSession';
+import {userRoleModule} from './modules/userRole';
 import {debugModule} from './modules/debug';
 import {userModule} from './modules/user';
-import {userRoleModule} from './modules/userRole';
-import {userSessionModule} from './modules/userSession';
+import {authModule} from './modules/auth';
 const routes = new Elysia()
-.use(authModule)
+.use(userSessionModule)
+.use(userRoleModule)
 .use(debugModule)
 .use(userModule)
-.use(userRoleModule)
-.use(userSessionModule);
+.use(authModule);
 export { routes };

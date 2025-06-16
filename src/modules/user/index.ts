@@ -1,7 +1,9 @@
 import Elysia from "elysia";
-import { getAllUser } from "./controller/getAllUser.controller";
-import { createUser } from "./controller/createUser.controller";
+import { getAllUserController } from "./controller/getAllUser.controller";
+import { createUserController } from "./controller/createUser.controller";
+import { editUserController } from "./controller/editUser.controller";
 
 export const userModule = new Elysia({ prefix: "/users" })
-  .get("/", getAllUser)
-  .post("/", createUser);
+  .get("/", getAllUserController)
+  .post("/", createUserController)
+  .put("/:username", editUserController);

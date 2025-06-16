@@ -27,7 +27,7 @@ import { createUserSchema } from "../schemas/createUser.schema";
  *   "password": "password123"
  * }
  */
-export const createUser = async (
+export const createUserController = async (
   ctx: Context & { body: Prisma.UserCreateInput }
 ) => {
   // Validate the user input using a validation schema
