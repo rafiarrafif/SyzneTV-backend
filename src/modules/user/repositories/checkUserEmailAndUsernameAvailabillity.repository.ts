@@ -1,18 +1,19 @@
-import { Prisma } from "@prisma/client";
 import { userModel } from "../user.model";
 
-export const checkUserEmailAndUsernameAvailabillity = async (
-  payload: Partial<Prisma.UserGetPayload<Record<string, never>>>
+export const checkUserEmailAndUsernameAvailabillityRepo = async (
+  id: string,
+  username: string,
+  email: string
 ) => {
   try {
     const checkUsernameAndEmailAvailabillity = await userModel.findFirst({
       where: {
         OR: [
-          { username: payload.username ?? undefined },
-          { email: payload.email ?? undefined },
+          { username: username ?? undefined },
+          { email: email ?? undefined },
         ],
         NOT: {
-          id: payload.id,
+          id: id,
         },
       },
     });

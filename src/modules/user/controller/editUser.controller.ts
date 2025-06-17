@@ -10,20 +10,16 @@ import { getCookie } from "../../../helpers/http/userHeader/cookies/getCookies";
 
 export const editUserController = async (
   ctx: Context & {
-    params: { username: string };
     body: Prisma.UserUncheckedCreateInput;
   }
 ) => {
   try {
     const userCookie = getCookie(ctx);
-    if (!userCookie.auth_token)
+    const auth_token = userCookie.auth_token;
+    if (!auth_token)
       return returnErrorResponse(ctx.set, 401, "User Unauthenticated");
 
-    const editUser = await editUserService(
-      ctx.params.username,
-      userCookie.auth_token,
-      ctx.body
-    );
+    const editUser = await editUserService(auth_token, ctx.body);
     return editUser;
   } catch (error) {
     return mainErrorHandler(ctx.set, error);

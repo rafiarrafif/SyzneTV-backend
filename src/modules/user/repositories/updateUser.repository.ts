@@ -1,20 +1,17 @@
 import { Prisma } from "@prisma/client";
 import { userModel } from "../user.model";
+import { JWTSessionPayload } from "../../auth/auth.types";
 
 export const updateUserRepo = async (
-  identifier: string,
-  payload: Prisma.UserUncheckedCreateInput
+  username: string,
+  payload: Prisma.UserUpdateInput
 ) => {
   try {
     const userData = await userModel.update({
       where: {
-        username: identifier,
+        username,
       },
-      data: {
-        username: payload.username,
-        name: payload.name,
-        birthDate: payload.name,
-      },
+      data: payload,
     });
     return userData;
   } catch (error) {

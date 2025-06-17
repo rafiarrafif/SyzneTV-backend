@@ -6,4 +6,4 @@ import { editUserController } from "./controller/editUser.controller";
 export const userModule = new Elysia({ prefix: "/users" })
   .get("/", getAllUserController)
   .post("/", createUserController)
-  .put("/:username", editUserController);
+  .put("/", editUserController);
