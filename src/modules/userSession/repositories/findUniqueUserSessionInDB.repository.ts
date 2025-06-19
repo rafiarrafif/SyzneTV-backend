@@ -19,7 +19,6 @@ export const findUniqueUserSessionInDBRepo = async (identifier: string) => {
         },
       },
       omit: {
-        deletedAt: true,
         updatedAt: true,
       },
     });

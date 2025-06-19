@@ -8,7 +8,7 @@ export const storeUserSessionToCacheRepo = async (
 ) => {
   try {
     await redis.set(
-      `${process.env.app_name}:users:${userSession.userId}:sessions:${userSession.id}`,
+      `${process.env.APP_NAME}:users:${userSession.userId}:sessions:${userSession.id}`,
       String(userSession.validUntil),
       "EX",
       timeExpires

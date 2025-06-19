@@ -7,6 +7,7 @@ import { Context } from "elysia";
 import { createUserService } from "../services/createUser.service";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { createUserSchema } from "../schemas/createUser.schema";
+import { getCookie } from "../../../helpers/http/userHeader/cookies/getCookies";
 
 /**
  * @function createUser
@@ -30,6 +31,19 @@ import { createUserSchema } from "../schemas/createUser.schema";
 export const createUserController = async (
   ctx: Context & { body: Prisma.UserCreateInput }
 ) => {
+  // Check if the user is already logged in by checking the auth token in cookies. If the user is logged in, return an error response
+  try {
+    const cookie = getCookie(ctx);
+    if (cookie && cookie.auth_token)
+      return returnErrorResponse(
+        ctx.set,
+        401,
+        "You are already logged in. Please log out first if you want to create a new account."
+      );
+  } catch (_) {
+    // Pass
+  }
+
   // Validate the user input using a validation schema
   const { error } = createUserSchema.validate(ctx.body);
   if (error)

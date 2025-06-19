@@ -25,6 +25,7 @@ export const editUserService = async (
         "The username or email has already taken by another user."
       );
 
+    // Prepare the fields to update, only include fields that are provided in the payload
     const fieldsToUpdate: Partial<Prisma.UserUpdateInput> = {
       ...(payload.username && payload.username !== jwtSession.user.username
         ? { username: payload.username }
@@ -53,6 +54,7 @@ export const editUserService = async (
         : {}),
     };
 
+    // Update the user in the database, use username from the JWT session to find the user
     const updateUser = await updateUserRepo(
       jwtSession.user.username,
       fieldsToUpdate

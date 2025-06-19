@@ -7,7 +7,7 @@ export const checkUserSessionInCacheService = async (
 ) => {
   try {
     // Construct the Redis key name using the userId and sessionId
-    const redisKeyName = `${process.env.app_name}:users:${userId}:sessions:${sessionId}`;
+    const redisKeyName = `${process.env.APP_NAME}:users:${userId}:sessions:${sessionId}`;
 
     // Check if the user session exists in Redis
     const userSessionInRedis = await checkUserSessionInCacheRepo(redisKeyName);

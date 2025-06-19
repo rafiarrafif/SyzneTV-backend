@@ -10,6 +10,7 @@ export const getUserSessionFromDBService = async (identifier: string) => {
     if (
       !userSession ||
       !userSession.isAuthenticated ||
+      userSession.deletedAt ||
       new Date(userSession.validUntil) < new Date()
     )
       return false;

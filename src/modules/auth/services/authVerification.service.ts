@@ -1,3 +1,4 @@
+import { Prisma } from "@prisma/client";
 import { AppError } from "../../../helpers/error/instances/app";
 import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 import { jwtDecode } from "../../../helpers/http/jwt/decode";

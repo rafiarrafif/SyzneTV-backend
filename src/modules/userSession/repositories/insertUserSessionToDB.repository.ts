@@ -20,7 +20,6 @@ export const createUserSessionRepo = async (
       },
       omit: {
         lastOnline: true,
-        deletedAt: true,
         createdAt: true,
         updatedAt: true,
       },
