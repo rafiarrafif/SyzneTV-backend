@@ -5,6 +5,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "bun build ./src/index.ts --compile --target bun --minify-whitespace --minify-syntax --minify-identifiers --outfile dist/server",
     "dev": "bun run --watch src/index.ts",
+    "map": "madge --image structure.svg src/index.ts",
     "route:sync": "bun run ./scripts/sync-routes.ts",
     "env:publish": "bun run ./scripts/create-example-env.ts"
   },
