@@ -4,9 +4,13 @@ import { AppError } from "../../../helpers/error/instances/app";
 import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 import { updateUserRepo } from "../repositories/updateUser.repository";
 import { checkUserEmailAndUsernameAvailabillityService } from "./checkUserEmailAndUsernameAvailabillity.service";
+import { logoutService } from "../../auth/services/logout.service";
+import { loginFromSystemService } from "../../auth/services/loginFromSystem.service";
+import { UserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation/types";
 
 export const editUserService = async (
   cookie: string,
+  userHeaderInfo: UserHeaderInformation,
   payload: Prisma.UserUpdateInput
 ) => {
   try {
@@ -55,11 +59,15 @@ export const editUserService = async (
     };
 
     // Update the user in the database, use username from the JWT session to find the user
-    const updateUser = await updateUserRepo(
-      jwtSession.user.username,
-      fieldsToUpdate
+    await updateUserRepo(jwtSession.user.username, fieldsToUpdate);
+
+    await logoutService(cookie);
+    const newUserSession = await loginFromSystemService(
+      jwtSession.userId,
+      userHeaderInfo
     );
-    return updateUser;
+
+    return newUserSession;
   } catch (error) {
     ErrorForwarder(error, 500, "Internal server error");
   }
