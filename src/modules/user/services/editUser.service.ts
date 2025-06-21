@@ -7,6 +7,7 @@ import { checkUserEmailAndUsernameAvailabillityService } from "./checkUserEmailA
 import { logoutService } from "../../auth/services/logout.service";
 import { loginFromSystemService } from "../../auth/services/loginFromSystem.service";
 import { UserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation/types";
+import { saveAvatar } from "../../../helpers/files/saveFile/modules/saveAvatar";
 
 export const editUserService = async (
   cookie: string,
@@ -29,6 +30,11 @@ export const editUserService = async (
         "The username or email has already taken by another user."
       );
 
+    // Store the avatar to the file system if provided in the payload
+    let storeAvatar: string | undefined = undefined;
+    if (payload.profilePicture)
+      storeAvatar = await saveAvatar(payload.profilePicture as File);
+
     // Prepare the fields to update, only include fields that are provided in the payload
     const fieldsToUpdate: Partial<Prisma.UserUpdateInput> = {
       ...(payload.username && payload.username !== jwtSession.user.username
@@ -47,9 +53,7 @@ export const editUserService = async (
       ...(payload.bioProfile !== undefined
         ? { bioProfile: payload.bioProfile }
         : {}),
-      ...(payload.profilePicture !== undefined
-        ? { profilePicture: payload.profilePicture }
-        : {}),
+      ...(storeAvatar !== undefined ? { profilePicture: storeAvatar } : {}),
       ...(payload.commentPicture !== undefined
         ? { commentPicture: payload.commentPicture }
         : {}),
@@ -61,6 +65,7 @@ export const editUserService = async (
     // Update the user in the database, use username from the JWT session to find the user
     await updateUserRepo(jwtSession.user.username, fieldsToUpdate);
 
+    // Clear the session and re-login the user to get a new JWT token
     await logoutService(cookie);
     const newUserSession = await loginFromSystemService(
       jwtSession.userId,

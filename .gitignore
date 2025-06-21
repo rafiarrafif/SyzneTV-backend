@@ -55,3 +55,6 @@ server.exe
 # debug and cached routes
 /src/routes.ts
 /src/modules/debug
+
+# uploaded files
+/uploads
