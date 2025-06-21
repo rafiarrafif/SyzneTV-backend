@@ -203,8 +203,8 @@ model User {
   phoneNumber       Int?
   roles             UserRole[]      @relation("UserRoles")
   bioProfile        String?         @db.Text 
-  profilePicture    String?         @db.Text
-  commentPicture    String?         @db.Text
+  avatar            String?         @db.Text
+  commentBackground String?         @db.Text
   preference        UserPreference? @relation(fields: [preferenceId], references: [id])
   preferenceId      String?         @unique
   verifiedAt        DateTime? 

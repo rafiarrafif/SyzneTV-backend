@@ -10,6 +10,6 @@ export const createUserSchema = Joi.object({
   phoneCC: Joi.string().min(2).max(2),
   phoneNumber: Joi.string().min(7).max(15),
   bioProfile: Joi.string().max(300),
-  profilePicture: Joi.string().uri(),
-  commentPicture: Joi.string().uri(),
+  avatar: Joi.string().uri(),
+  commentBackground: Joi.string().uri(),
 });

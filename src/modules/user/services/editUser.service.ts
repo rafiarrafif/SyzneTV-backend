@@ -32,8 +32,7 @@ export const editUserService = async (
 
     // Store the avatar to the file system if provided in the payload
     let storeAvatar: string | undefined = undefined;
-    if (payload.profilePicture)
-      storeAvatar = await saveAvatar(payload.profilePicture as File);
+    if (payload.avatar) storeAvatar = await saveAvatar(payload.avatar as File);
 
     // Prepare the fields to update, only include fields that are provided in the payload
     const fieldsToUpdate: Partial<Prisma.UserUpdateInput> = {
@@ -53,9 +52,9 @@ export const editUserService = async (
       ...(payload.bioProfile !== undefined
         ? { bioProfile: payload.bioProfile }
         : {}),
-      ...(storeAvatar !== undefined ? { profilePicture: storeAvatar } : {}),
-      ...(payload.commentPicture !== undefined
-        ? { commentPicture: payload.commentPicture }
+      ...(storeAvatar !== undefined ? { avatar: storeAvatar } : {}),
+      ...(payload.commentBackground !== undefined
+        ? { commentPicture: payload.commentBackground }
         : {}),
       ...(payload.deletedAt !== undefined
         ? { deletedAt: payload.deletedAt }
