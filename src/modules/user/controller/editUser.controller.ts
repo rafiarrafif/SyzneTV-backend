@@ -64,9 +64,7 @@ export const editUserController = async (
   try {
     // Get the user JWT token from cookies, if the token is not found, return an error response
     const userCookie = getCookie(ctx);
-    const auth_token = userCookie.auth_token;
-    if (!auth_token)
-      return returnErrorResponse(ctx.set, 401, "User Unauthenticated");
+    const auth_token = userCookie.auth_token!;
 
     // Get user browser header information from the context
     const userHeaderInfo = getUserHeaderInformation(ctx);
