@@ -1,3 +1,5 @@
+import { Context } from "elysia";
+
 /**
  * Returns a standardized response for write operations (POST, PUT, DELETE).
  * Only includes data in the response during development.
@@ -9,21 +11,19 @@
  *
  * @returns An object with `status`, `message`, and optionally `data` (in development only).
  */
-export function returnWriteResponse(
-  set: any,
+export function returnWriteResponse<T>(
+  set: Context["set"],
   status: number,
   message?: string,
-  data?: any
+  data?: T
 ) {
   set.status = status;
 
-  const response: Record<string, any> = {
+  return {
     status,
     message,
+    ...(process.env.APP_ENV === "development" && { data }),
   };
-  if (process.env.APP_ENV === "development") response.data = data;
-
-  return response;
 }
 
 /**
@@ -37,11 +37,11 @@ export function returnWriteResponse(
  *
  * @returns An object with `status`, `message`, and `data`.
  */
-export function returnReadResponse(
-  set: any,
+export function returnReadResponse<T>(
+  set: Context["set"],
   status: number,
   message: string,
-  data: any
+  data: T
 ) {
   set.status = status;
   return {
@@ -61,20 +61,20 @@ export function returnReadResponse(
  *
  * @returns An object with `status`, `message`, and optionally `error_details` (in development only).
  */
-export function returnErrorResponse(
-  set: any,
+export function returnErrorResponse<T>(
+  set: Context["set"],
   status: number,
   message: string,
-  errorDetails?: any
+  errorDetails?: T
 ) {
   set.status = status;
 
-  const response: Record<string, any> = {
+  return {
     status: "error",
     message,
+    ...(process.env.APP_ENV === "development" &&
+      errorDetails && {
+        error_details: errorDetails,
+      }),
   };
-  if (process.env.APP_ENV === "development" && errorDetails)
-    response.error_details = errorDetails;
-
-  return response;
 }
