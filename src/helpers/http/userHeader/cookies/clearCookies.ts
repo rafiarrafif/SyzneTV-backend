@@ -1,7 +1,8 @@
 import { serialize } from "cookie";
+import { Context } from "elysia";
 
 export const clearCookies = (
-  set: any,
+  set: Context["set"],
   cookieKeys: string[],
   options?: Partial<{
     httpOnly: boolean;
