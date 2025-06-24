@@ -1,7 +1,8 @@
 import { serialize } from "cookie";
+import { Context } from "elysia";
 
 export const setCookie = async (
-  set: any,
+  set: Context["set"],
   name: string,
   payload: string,
   options?: Partial<{
