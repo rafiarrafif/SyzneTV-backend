@@ -11,6 +11,6 @@ export const jwtDecode = (payload: string) => {
     const decodedPayload = jwt.verify(payload, JWTKey);
     return decodedPayload as JWTSessionPayload;
   } catch (error) {
-    throw new AppError(401, "Invalid or expired token");
+    throw new AppError(401, "Invalid or expired token", error);
   }
 };
