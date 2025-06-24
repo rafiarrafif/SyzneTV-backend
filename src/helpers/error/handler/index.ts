@@ -1,9 +1,10 @@
+import { Context } from "elysia";
 import { Prisma } from "@prisma/client";
 import { returnErrorResponse } from "../../callback/httpResponse";
 import { AppError } from "../instances/app";
 import { PrismaErrorCodeList } from "../../../utils/databases/prisma/error/codeList";
 
-export const mainErrorHandler = (set: any, error: unknown) => {
+export const mainErrorHandler = (set: Context["set"], error: unknown) => {
   if (error instanceof AppError) {
     return returnErrorResponse(
       set,
