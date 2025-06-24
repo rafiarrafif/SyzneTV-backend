@@ -8,6 +8,6 @@ export const getCookie = (ctx: Context) => {
     const cookies = parse(cookiePayload!);
     return cookies;
   } catch (error) {
-    throw new AppError(401, "Cookie not found");
+    throw new AppError(401, "Cookie not found", error);
   }
 };
