@@ -1,3 +1,4 @@
+import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 import { getAllUserRepo } from "../repositories/getAllUser.repository";
 
 export const getAllUsersService = async () => {
@@ -5,6 +6,6 @@ export const getAllUsersService = async () => {
     const allUser = await getAllUserRepo();
     return allUser;
   } catch (error) {
-    throw error;
+    ErrorForwarder(error);
   }
 };

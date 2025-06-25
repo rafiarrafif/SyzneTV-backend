@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { createUserRoleRepo } from "../repositories/createUserRole.repository";
+import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 
 export const createUserRoleService = async (
   userRoleData: Prisma.UserRoleUncheckedCreateInput
@@ -23,6 +24,6 @@ export const createUserRoleService = async (
     const newUserRole = await createUserRoleRepo(dataPayload);
     return newUserRole;
   } catch (error) {
-    throw error;
+    ErrorForwarder(error);
   }
 };

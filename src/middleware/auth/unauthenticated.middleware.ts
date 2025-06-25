@@ -9,6 +9,6 @@ export const unautenticatedMiddleware = (ctx: Context) => {
     if (cookie && cookie.auth_token)
       return returnErrorResponse(ctx.set, 401, "You are already logged in. ");
   } catch (_) {
-    // Pass
+    void _; // Pass
   }
 };

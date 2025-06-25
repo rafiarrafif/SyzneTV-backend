@@ -1,8 +1,5 @@
 import { Context } from "elysia";
-import {
-  returnErrorResponse,
-  returnWriteResponse,
-} from "../../../helpers/callback/httpResponse";
+import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { Prisma } from "@prisma/client";
 import { editUserService } from "../services/editUser.service";

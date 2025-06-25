@@ -1,7 +1,4 @@
-import {
-  returnErrorResponse,
-  returnReadResponse,
-} from "../../../helpers/callback/httpResponse";
+import { returnReadResponse } from "../../../helpers/callback/httpResponse";
 import { Context } from "elysia";
 import { getAllUsersService } from "../services/getAllUser.service";
 import { mainErrorHandler } from "../../../helpers/error/handler";
