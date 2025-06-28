@@ -8,6 +8,7 @@ import { logoutService } from "../../auth/services/logout.service";
 import { loginFromSystemService } from "../../auth/services/loginFromSystem.service";
 import { UserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation/types";
 import { saveAvatar } from "../../../helpers/files/saveFile/modules/saveAvatar";
+import { saveCommentBackground } from "../../../helpers/files/saveFile/modules/saveCommentBackgorund";
 
 export const editUserService = async (
   cookie: string,
@@ -19,11 +20,10 @@ export const editUserService = async (
     const jwtSession = jwtDecode(cookie);
 
     // Check if the username or email is being taken by another user, if so, throw an error
-    const isUsernameOrEmailIsBeingTaken =
-      await checkUserEmailAndUsernameAvailabillityService(
-        payload,
-        jwtSession.userId
-      );
+    const isUsernameOrEmailIsBeingTaken = await checkUserEmailAndUsernameAvailabillityService(
+      payload,
+      jwtSession.userId
+    );
     if (isUsernameOrEmailIsBeingTaken)
       throw new AppError(
         409,
@@ -33,6 +33,12 @@ export const editUserService = async (
     // Store the avatar to the file system if provided in the payload
     let storeAvatar: string | undefined = undefined;
     if (payload.avatar) storeAvatar = await saveAvatar(payload.avatar as File);
+
+    let storeCommentBackground: string | undefined = undefined;
+    if (payload.commentBackground)
+      storeCommentBackground = await saveCommentBackground(
+        payload.commentBackground as File
+      );
 
     // Prepare the fields to update, only include fields that are provided in the payload
     const fieldsToUpdate: Partial<Prisma.UserUpdateInput> = {
@@ -53,8 +59,8 @@ export const editUserService = async (
         ? { bioProfile: payload.bioProfile }
         : {}),
       ...(storeAvatar !== undefined ? { avatar: storeAvatar } : {}),
-      ...(payload.commentBackground !== undefined
-        ? { commentPicture: payload.commentBackground }
+      ...(storeCommentBackground !== undefined
+        ? { commentBackground: storeCommentBackground }
         : {}),
       ...(payload.deletedAt !== undefined
         ? { deletedAt: payload.deletedAt }
