@@ -16,7 +16,5 @@ export const editUserSchema = Joi.object({
     .min(7)
     .max(15),
   bioProfile: Joi.string().max(300),
-  avatar: Joi.string().uri(),
-  commentBackground: Joi.string().uri(),
   deletedAt: Joi.date(),
 });
