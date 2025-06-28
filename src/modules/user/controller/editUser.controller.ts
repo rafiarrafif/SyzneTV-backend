@@ -1,5 +1,8 @@
 import { Context } from "elysia";
-import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
+import {
+  returnErrorResponse,
+  returnWriteResponse,
+} from "../../../helpers/callback/httpResponse";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { Prisma } from "@prisma/client";
 import { editUserService } from "../services/editUser.service";
@@ -8,6 +11,7 @@ import { getUserHeaderInformation } from "../../../helpers/http/userHeader/getUs
 import { setCookie } from "../../../helpers/http/userHeader/cookies/setCookies";
 import { COOKIE_KEYS } from "../../../constants/cookie.keys";
 import { jwtEncode } from "../../../helpers/http/jwt/encode";
+import { editUserSchema } from "../schemas/editUser.schema";
 
 /**
  * @function editUserController
@@ -36,8 +40,8 @@ import { jwtEncode } from "../../../helpers/http/jwt/encode";
  *   "phoneCC": 62,
  *   "phoneNumber": 81234567890,
  *   "bioProfile": "Updated bio",
- *   "profilePicture": "https://example.com/new-profile.jpg",
- *   "commentPicture": "https://example.com/new-comment.jpg",
+ *   "profilePicture": JPG/PNG/JPEG File,
+ *   "commentPicture": JPG/PNG/JPEG File,
  *   "deletedAt": null
  * }
  *
@@ -58,6 +62,11 @@ export const editUserController = async (
     body: Prisma.UserUncheckedCreateInput;
   }
 ) => {
+  // Validate the request body against the edit user schema
+  const { error } = editUserSchema.validate(ctx.body);
+  if (error)
+    return returnErrorResponse(ctx.set, 422, "Invalid form input", error);
+
   try {
     // Get the user JWT token from cookies, if the token is not found, return an error response
     const userCookie = getCookie(ctx);
