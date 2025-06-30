@@ -1,16 +1,20 @@
+import { FindUserByEmailOrUsernameOptions } from "../services/findUserByEmailOrUsername.service";
 import { userModel } from "../user.model";
 
-export const findUserByEmailOrUsernameRepo = async (identifier: string) => {
+export const findUserByEmailOrUsernameRepo = async (
+  identifier: string,
+  options: FindUserByEmailOrUsernameOptions
+) => {
   const userData =
     (await userModel.findUnique({
       where: { email: identifier },
       include: {
         roles: {
           omit: {
-            createdBy: true,
-            createdAt: true,
-            updatedAt: true,
-            deletedAt: true,
+            createdBy: !options.verbose,
+            createdAt: !options.verbose,
+            updatedAt: !options.verbose,
+            deletedAt: !options.verbose,
           },
         },
       },
@@ -20,10 +24,10 @@ export const findUserByEmailOrUsernameRepo = async (identifier: string) => {
       include: {
         roles: {
           omit: {
-            createdBy: true,
-            createdAt: true,
-            updatedAt: true,
-            deletedAt: true,
+            createdBy: !options.verbose,
+            createdAt: !options.verbose,
+            updatedAt: !options.verbose,
+            deletedAt: !options.verbose,
           },
         },
       },

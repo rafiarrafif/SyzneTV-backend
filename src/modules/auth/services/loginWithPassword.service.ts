@@ -13,7 +13,10 @@ export const loginWithPasswordService = async (
 ) => {
   try {
     // search for user data using an identifier (username or email)
-    const userData = await findUserByEmailOrUsernameService(request.identifier);
+    const userData = await findUserByEmailOrUsernameService(
+      request.identifier,
+      { verbose: true }
+    );
 
     // if user data is not found, throw an error
     if (!userData) throw new AppError(404, "User not found");

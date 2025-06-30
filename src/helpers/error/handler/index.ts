@@ -51,5 +51,5 @@ export const mainErrorHandler = (set: Context["set"], error: unknown) => {
     );
   }
 
-  return returnErrorResponse(set, 500, "Internal server error");
+  return returnErrorResponse(set, 500, "Internal server error", error);
 };

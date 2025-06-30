@@ -1,8 +1,26 @@
-import { JWTAuthToken } from "../../../helpers/http/jwt/decode/types";
+import { AppError } from "../../../helpers/error/instances/app";
+import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
+import { comparePassword } from "../../../helpers/security/password/compare";
+import { findUserByEmailOrUsernameService } from "./findUserByEmailOrUsername.service";
+import { User } from "@prisma/client";
 
 export const checkUserPasswordService = async (
-  jwtPayload: JWTAuthToken,
+  username: string,
   password: string
 ) => {
-  return `id user "${jwtPayload.userId}" cek password "${password}"`;
+  try {
+    const userData = (await findUserByEmailOrUsernameService(username, {
+      verbose: true,
+    })) as User;
+    const RawPassword = userData.password;
+
+    const matchingPassword = await comparePassword(password, RawPassword);
+    if (!matchingPassword) {
+      throw new AppError(401, "Invalid Credential");
+    }
+
+    return true;
+  } catch (error) {
+    ErrorForwarder(error);
+  }
 };
