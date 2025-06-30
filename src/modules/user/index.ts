@@ -4,12 +4,18 @@ import { createUserController } from "./controller/createUser.controller";
 import { editUserController } from "./controller/editUser.controller";
 import { unautenticatedMiddleware } from "../../middleware/auth/unauthenticated.middleware";
 import { authenticatedMiddleware } from "../../middleware/auth/authenticated.middleware";
+import { checkUserPasswordController } from "./controller/checkUserPassword.controller";
 
 export const userModule = new Elysia({ prefix: "/users" })
   .get("/", getAllUserController)
   .group("", (app) =>
-    app.onBeforeHandle(unautenticatedMiddleware).post("/", createUserController)
+    app
+      .onBeforeHandle(unautenticatedMiddleware) // middleware to ensure the user is not authenticated
+      .post("/", createUserController)
   )
   .group("", (app) =>
-    app.onBeforeHandle(authenticatedMiddleware).put("/", editUserController)
+    app
+      .onBeforeHandle(authenticatedMiddleware) // middleware to ensure the user is authenticated
+      .put("/", editUserController)
+      .post("/check-password", checkUserPasswordController)
   );

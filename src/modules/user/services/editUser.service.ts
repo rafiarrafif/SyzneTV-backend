@@ -34,6 +34,7 @@ export const editUserService = async (
     let storeAvatar: string | undefined = undefined;
     if (payload.avatar) storeAvatar = await saveAvatar(payload.avatar as File);
 
+    // Store the comment background to the file system if provided in the payload
     let storeCommentBackground: string | undefined = undefined;
     if (payload.commentBackground)
       storeCommentBackground = await saveCommentBackground(
