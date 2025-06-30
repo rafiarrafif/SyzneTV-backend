@@ -2,11 +2,12 @@ import { AppError } from "../../error/instances/app";
 import bcrypt from "bcrypt";
 
 export const comparePassword = async (
-  passwordInput: string,
-  passwordRaw: string
+  providedPassword: string,
+  storedPassword: string
 ) => {
   try {
-    return bcrypt.compare(passwordInput, passwordRaw);
+    // Compare the provided password with the stored password
+    return bcrypt.compare(providedPassword, storedPassword);
   } catch (error) {
     throw new AppError(401, "Invalid credentials", error);
   }

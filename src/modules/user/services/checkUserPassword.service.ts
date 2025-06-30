@@ -9,12 +9,14 @@ export const checkUserPasswordService = async (
   password: string
 ) => {
   try {
+    // find user by username and get the password
     const userData = (await findUserByEmailOrUsernameService(username, {
       verbose: true,
     })) as User;
-    const RawPassword = userData.password;
+    const StoredPassword = userData.password;
 
-    const matchingPassword = await comparePassword(password, RawPassword);
+    // compare the provided password with the stored password
+    const matchingPassword = await comparePassword(password, StoredPassword);
     if (!matchingPassword) {
       throw new AppError(401, "Invalid Credential");
     }

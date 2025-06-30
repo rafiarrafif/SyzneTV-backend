@@ -3,7 +3,7 @@ import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 import { findUserByEmailOrUsernameRepo } from "../repositories/findUserByEmailOrUsername.repository";
 
 export interface FindUserByEmailOrUsernameOptions {
-  verbose?: boolean;
+  verbose?: boolean; // If true, returns the user with all details including sensitive information
 }
 
 export const findUserByEmailOrUsernameService = async (

@@ -9,12 +9,17 @@ export const checkUserPasswordController = async (
   ctx: Context & { body: { password: string } }
 ) => {
   try {
+    // Get the credentials information from cookies
     const cookie = getCookie(ctx);
     const jwtPayload = jwtDecode(cookie.auth_token!);
+
+    // Execute the check user password service
     const checkUserPassword = await checkUserPasswordService(
       jwtPayload.user.username,
       ctx.body.password
     );
+
+    // If the password is valid, return a success response
     return returnWriteResponse(
       ctx.set,
       204,
