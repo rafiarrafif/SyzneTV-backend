@@ -58,3 +58,5 @@ server.exe
 
 # uploaded files
 /uploads
+
+/scripts/git-multipush.ts

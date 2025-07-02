@@ -8,6 +8,7 @@
     "map": "madge --image structure.svg src/index.ts",
     "lint": "bunx eslint",
     "commit": "bun x git-cz",
+    "push": "bun scripts/git-multipush.ts",
     "route:sync": "bun run ./scripts/sync-routes.ts",
     "env:publish": "bun run ./scripts/create-example-env.ts"
   },
