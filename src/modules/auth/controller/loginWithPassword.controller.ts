@@ -11,6 +11,39 @@ import { setCookie } from "../../../helpers/http/userHeader/cookies/setCookies";
 import { COOKIE_KEYS } from "../../../constants/cookie.keys";
 import { loginWithPasswordSchema } from "../schemas/loginWithPassword";
 
+/**
+ * @function loginWithPassword
+ * @description Authenticates user using username/email and password.
+ *              On successful login, sets JWT token in cookies and returns token in response (development only).
+ *              In production environment, only sets cookie without returning token in response body.
+ *
+ * @param {Context & { body: LoginWithPasswordRequest }} ctx - The context object containing request information.
+ * @param {Object} ctx.body - The login credentials.
+ *
+ * @returns {Promise<Object>} A response object indicating authentication success or failure.
+ * @throws {Object} An error response if validation fails or authentication error occurs.
+ *
+ * @example
+ * Request route: POST /auth/legacy
+ * Request body:
+ * {
+ *   "identifier": "user@example.com" or "username123",
+ *   "password": "securePassword123"
+ * }
+ *
+ * Success Response:
+ * Status: 200 OK
+ * Development:
+ * {
+ *   "message": "Authentication Success",
+ *   "token": "<JWT_TOKEN>" // Only in development environment
+ * }
+ *
+ * Failure Responses:
+ * - 400 Bad Request: Invalid user input or missing fields
+ * - 401 Unauthorized: Invalid credentials
+ * - 500 Internal Server Error: Server error during authentication
+ */
 export const loginWithPassword = async (
   ctx: Context & { body: LoginWithPasswordRequest }
 ) => {
