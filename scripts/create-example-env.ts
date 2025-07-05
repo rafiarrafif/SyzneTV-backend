@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 
+// These keys will not be cleared in the .env.example file
 const PRESERVED_KEYS = [
   "APP_NAME",
   "APP_ENV",
@@ -11,6 +12,10 @@ const PRESERVED_KEYS = [
   "REDIS_PORT",
 ];
 
+/**
+ * Script to create or update the .env.example file based on the .env file.
+ * It preserves certain keys and clears their values in the .env.example file.
+ */
 try {
   const envPath = path.join(process.cwd(), ".env");
   const envExamplePath = path.join(process.cwd(), ".env.example");
