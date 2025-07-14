@@ -7,6 +7,8 @@ import {
 import { createUserRoleService } from "../services/createUserRole.service";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { createUserRoleSchema } from "../schemas/createUserRole.schema";
+import { getCookie } from "../../../helpers/http/userHeader/cookies/getCookies";
+import { jwtDecode } from "../../../helpers/http/jwt/decode";
 
 /**
  * @function createUserRole
@@ -41,16 +43,28 @@ import { createUserRoleSchema } from "../schemas/createUserRole.schema";
  *   "canManageSystem": false
  * }
  */
-export const createUserRole = async (
+export const createUserRoleController = async (
   ctx: Context & { body: Prisma.UserRoleUncheckedCreateInput }
 ) => {
+  // Validation input form with schema
   const { error } = createUserRoleSchema.validate(ctx.body);
   if (error)
     return returnErrorResponse(ctx.set, 400, "Invalid user input", error);
 
+  // Delete this, use middleware instead!!!
+  const cookie = getCookie(ctx);
+  if (!cookie.auth_token)
+    return returnErrorResponse(
+      ctx.set,
+      403,
+      "Forbidden, You don't have access to this resouce"
+    );
+
+  const jwtSession = jwtDecode(cookie.auth_token);
+
   const formData: Prisma.UserRoleUncheckedCreateInput = {
     ...ctx.body,
-    createdBy: "daw",
+    createdBy: jwtSession.userId,
   };
 
   try {
