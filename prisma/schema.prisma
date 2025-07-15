@@ -201,7 +201,7 @@ model User {
   gender            UserGender?
   phoneCC           Int?
   phoneNumber       Int?
-  roles             UserRole[]      @relation("UserRoles")
+  roles             UserRoleAssignment[]
   bioProfile        String?         @db.Text 
   avatar            String?         @db.Text
   commentBackground String?         @db.Text
@@ -284,8 +284,21 @@ model UserRole {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now()) @updatedAt
 
-  users             User[]          @relation("UserRoles")
+  users             UserRoleAssignment[]
   @@map("user_roles")
+}
+
+model UserRoleAssignment {
+  user          User      @relation(fields: [userId], references: [id])
+  userId        String
+
+  role          UserRole  @relation(fields: [roleId], references: [id])
+  roleId        String
+
+  assignmentAt  DateTime  @default(now())
+
+  @@id([userId, roleId])
+  @@map("user_role_assignments")
 }
 
 model UserNotification {
