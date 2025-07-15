@@ -7,9 +7,11 @@ import { authenticatedMiddleware } from "../../middleware/auth/authenticated.mid
 import { checkUserPasswordController } from "./controller/checkUserPassword.controller";
 import { isOwnerOrAdminMiddleware } from "../../middleware/userRoles/isOwnerOrAdmin.middleware";
 import { softDeleteUserController } from "./controller/softDeleteUser.controller";
+import { findUserByEmailController } from "./controller/findUserByEmail.controller";
 
 export const userModule = new Elysia({ prefix: "/users" })
   .get("/", getAllUserController)
+  .get("/e/:email", findUserByEmailController)
   .group("", (app) =>
     app
       .onBeforeHandle(unautenticatedMiddleware) // middleware to ensure the user is not authenticated
