@@ -1,37 +1,27 @@
-import { FindUserByEmailOrUsernameOptions } from "../services/findUserByEmailOrUsername.service";
 import { userModel } from "../user.model";
+import { FindUserByEmailOrUsernameOptions } from "../user.types";
 
-export const findUserByEmailOrUsernameRepo = async (
+export const findUserByEmailOrUsernameRepository = async (
   identifier: string,
   options: FindUserByEmailOrUsernameOptions
 ) => {
-  const userData =
-    (await userModel.findUnique({
-      where: { email: identifier },
-      include: {
-        roles: {
-          omit: {
-            createdBy: !options.verbose,
-            createdAt: !options.verbose,
-            updatedAt: !options.verbose,
-            deletedAt: !options.verbose,
+  const userData = await userModel.findUnique({
+    where: { email: identifier },
+    include: {
+      assignedRoles: {
+        select: {
+          role: {
+            omit: {
+              createdBy: true,
+              updatedAt: true,
+              createdAt: true,
+              deletedAt: true,
+            },
           },
         },
       },
-    })) ||
-    (await userModel.findUnique({
-      where: { username: identifier },
-      include: {
-        roles: {
-          omit: {
-            createdBy: !options.verbose,
-            createdAt: !options.verbose,
-            updatedAt: !options.verbose,
-            deletedAt: !options.verbose,
-          },
-        },
-      },
-    }));
+    },
+  });
 
   if (!userData) return false;
   return userData;

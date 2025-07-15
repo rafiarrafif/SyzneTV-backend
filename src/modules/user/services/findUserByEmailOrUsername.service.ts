@@ -1,17 +1,17 @@
 import { AppError } from "../../../helpers/error/instances/app";
 import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
-import { findUserByEmailOrUsernameRepo } from "../repositories/findUserByEmailOrUsername.repository";
-
-export interface FindUserByEmailOrUsernameOptions {
-  verbose?: boolean; // If true, returns the user with all details including sensitive information
-}
+import { findUserByEmailOrUsernameRepository } from "../repositories/findUserByEmailOrUsername.repository";
+import { FindUserByEmailOrUsernameOptions } from "../user.types";
 
 export const findUserByEmailOrUsernameService = async (
   identifier: string,
-  options: FindUserByEmailOrUsernameOptions = {}
+  options: FindUserByEmailOrUsernameOptions
 ) => {
   try {
-    const userData = await findUserByEmailOrUsernameRepo(identifier, options);
+    const userData = await findUserByEmailOrUsernameRepository(
+      identifier,
+      options
+    );
     if (!userData) throw new AppError(404, "User not found");
 
     return userData;

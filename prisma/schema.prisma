@@ -201,7 +201,7 @@ model User {
   gender            UserGender?
   phoneCC           Int?
   phoneNumber       Int?
-  roles             UserRoleAssignment[]
+  assignedRoles     UserRoleAssignment[]
   bioProfile        String?         @db.Text 
   avatar            String?         @db.Text
   commentBackground String?         @db.Text
@@ -284,7 +284,7 @@ model UserRole {
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now()) @updatedAt
 
-  users             UserRoleAssignment[]
+  assignedUser      UserRoleAssignment[]
   @@map("user_roles")
 }
 
