@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { findUserByEmailOrUsernameService } from "../../user/services/findUserByEmailOrUsername.service";
+import { findUserByEmailOrUsernameService } from "../../user/services/getUserData.service";
 import { LoginWithPasswordRequest } from "../auth.types";
 import { AppError } from "../../../helpers/error/instances/app";
 import { UserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation/types";

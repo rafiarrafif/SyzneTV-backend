@@ -1,10 +1,16 @@
-export interface FindUserByEmailOrUsernameOptions {
-  queryTarget: "email" | "username" | "both";
-  verbosity?: FindUserByEmailOrUsernameVerbosity; // If true, returns the user with all details including sensitive information
+export interface getUserDataService {
+  identifier: string;
+  queryTarget: "id" | "email" | "username" | "email_username";
+  options?: getUserDataOptions;
 }
-enum FindUserByEmailOrUsernameVerbosity {
-  "exists",
-  "basic",
-  "extended",
-  "full",
+export interface getUserDataOptions {
+  verbosity?: "exists" | "basic" | "full";
+  include?: ("preference" | "role")[];
+}
+
+export interface createUserViaRegisterInput {
+  name: string;
+  username: string;
+  email: string;
+  password: string;
 }

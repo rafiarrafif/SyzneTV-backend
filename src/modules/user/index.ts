@@ -1,30 +1,7 @@
 import Elysia from "elysia";
-import { getAllUserController } from "./controller/getAllUser.controller";
-import { createUserController } from "./controller/createUser.controller";
-import { editUserController } from "./controller/editUser.controller";
-import { unautenticatedMiddleware } from "../../middleware/auth/unauthenticated.middleware";
-import { authenticatedMiddleware } from "../../middleware/auth/authenticated.middleware";
-import { checkUserPasswordController } from "./controller/checkUserPassword.controller";
-import { isOwnerOrAdminMiddleware } from "../../middleware/userRoles/isOwnerOrAdmin.middleware";
-import { softDeleteUserController } from "./controller/softDeleteUser.controller";
-import { findUserByEmailController } from "./controller/findUserByEmail.controller";
+import { createUserViaRegisterController } from "./controller/createUserViaRegister.controller";
 
-export const userModule = new Elysia({ prefix: "/users" })
-  .get("/", getAllUserController)
-  .get("/e/:email", findUserByEmailController)
-  .group("", (app) =>
-    app
-      .onBeforeHandle(unautenticatedMiddleware) // middleware to ensure the user is not authenticated
-      .post("/", createUserController)
-  )
-  .group("", (app) =>
-    app
-      .onBeforeHandle(authenticatedMiddleware) // middleware to ensure the user is authenticated
-      .put("/", editUserController)
-      .post("/check-password", checkUserPasswordController)
-  )
-  .group("", (app) =>
-    app
-      .onBeforeHandle(isOwnerOrAdminMiddleware)
-      .delete(":username", softDeleteUserController)
-  );
+export const userModule = new Elysia({ prefix: "/users" }).post(
+  "/",
+  createUserViaRegisterController
+);
