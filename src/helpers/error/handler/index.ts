@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { returnErrorResponse } from "../../callback/httpResponse";
 import { AppError } from "../instances/app";
 import { PrismaErrorCodeList } from "../../../utils/databases/prisma/error/codeList";
+import z from "zod";
 
 export const mainErrorHandler = (set: Context["set"], error: unknown) => {
   if (error instanceof AppError) {
@@ -49,6 +50,10 @@ export const mainErrorHandler = (set: Context["set"], error: unknown) => {
       "Invalid input to query",
       error.message
     );
+  }
+
+  if (error instanceof z.ZodError) {
+    return returnErrorResponse(set, 422, error.issues[0].message, error.issues);
   }
 
   return returnErrorResponse(set, 500, "Internal server error", error);
