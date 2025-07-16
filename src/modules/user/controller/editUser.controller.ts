@@ -5,7 +5,7 @@ import {
 } from "../../../helpers/callback/httpResponse";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { Prisma } from "@prisma/client";
-import { editUserService } from "../services/editUser.service";
+import { updateUserService } from "../services/updateUser.service";
 import { getCookie } from "../../../helpers/http/userHeader/cookies/getCookies";
 import { getUserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation";
 import { setCookie } from "../../../helpers/http/userHeader/cookies/setCookies";
@@ -76,7 +76,7 @@ export const editUserController = async (
     const userHeaderInfo = getUserHeaderInformation(ctx);
 
     // Excecute the edit user data service
-    const newUserData = await editUserService(
+    const newUserData = await updateUserService(
       auth_token,
       userHeaderInfo,
       ctx.body

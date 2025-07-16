@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { jwtDecode } from "../../../helpers/http/jwt/decode";
 import { AppError } from "../../../helpers/error/instances/app";
 import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
-import { updateUserRepo } from "../repositories/updateUser.repository";
+import { updateUserRepository } from "../repositories/updateUser.repository";
 import { checkUserEmailAndUsernameAvailabillityService } from "./checkUserEmailAndUsernameAvailabillity.service";
 import { logoutService } from "../../auth/services/logout.service";
 import { loginFromSystemService } from "../../auth/services/loginFromSystem.service";
@@ -10,7 +10,7 @@ import { UserHeaderInformation } from "../../../helpers/http/userHeader/getUserH
 import { saveAvatar } from "../../../helpers/files/saveFile/modules/saveAvatar";
 import { saveCommentBackground } from "../../../helpers/files/saveFile/modules/saveCommentBackgorund";
 
-export const editUserService = async (
+export const updateUserService = async (
   cookie: string,
   userHeaderInfo: UserHeaderInformation,
   payload: Prisma.UserUpdateInput
@@ -69,7 +69,7 @@ export const editUserService = async (
     };
 
     // Update the user in the database, use username from the JWT session to find the user
-    await updateUserRepo(jwtSession.user.username, fieldsToUpdate);
+    await updateUserRepository(jwtSession.user.username, fieldsToUpdate);
 
     // Clear the session and re-login the user to get a new JWT token
     await logoutService(cookie);

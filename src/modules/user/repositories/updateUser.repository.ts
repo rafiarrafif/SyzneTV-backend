@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { userModel } from "../user.model";
 
-export const updateUserRepo = async (
+export const updateUserRepository = async (
   username: string,
   payload: Prisma.UserUpdateInput
 ) => {
