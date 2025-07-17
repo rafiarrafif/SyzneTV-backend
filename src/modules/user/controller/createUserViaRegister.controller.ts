@@ -1,8 +1,8 @@
 import { Context } from "elysia";
 import { createUserViaRegisterSchema } from "../schemas/createUserViaRegister.schema";
 import { mainErrorHandler } from "../../../helpers/error/handler";
-import { createUserViaRegisterService } from "../services/createUserViaRegister.service";
 import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
+import { createUserViaRegisterService } from "../services/http/createUserViaRegister.service";
 
 export const createUserViaRegisterController = async (ctx: Context) => {
   try {
