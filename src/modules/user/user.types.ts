@@ -5,7 +5,7 @@ export interface getUserDataService {
 }
 export interface getUserDataOptions {
   verbosity?: "exists" | "basic" | "full";
-  include?: ("preference" | "role")[];
+  include?: ("preference" | "roles")[];
 }
 
 export interface createUserViaRegisterInput {

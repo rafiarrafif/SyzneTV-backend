@@ -1,7 +1,7 @@
-import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
-import { hashPassword } from "../../../helpers/security/password/hash";
-import { createUserViaRegisterRepository } from "../repositories/create/createUserViaRegister.repository";
-import { createUserViaRegisterInput } from "../user.types";
+import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
+import { hashPassword } from "../../../../helpers/security/password/hash";
+import { createUserViaRegisterRepository } from "../../repositories/create/createUserViaRegister.repository";
+import { createUserViaRegisterInput } from "../../user.types";
 
 export const createUserViaRegisterService = async (
   payload: createUserViaRegisterInput
