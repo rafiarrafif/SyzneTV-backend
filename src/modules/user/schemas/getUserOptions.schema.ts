@@ -1,9 +1,6 @@
 import z from "zod";
 
-const includeEnum = z.enum(
-  ["preference", "roles"],
-  "option: include value didn't match with enum types"
-);
+const includeOptions = ["preference", "roles"] as const;
 
 export const getUserOptionsSchema = z.object({
   verbosity: z
@@ -12,9 +9,12 @@ export const getUserOptionsSchema = z.object({
       "option: verbosity value didn't match with enum types"
     )
     .optional(),
-  include: z.preprocess((val) => {
-    if (Array.isArray(val)) return val;
-    if (typeof val === "string") return [val];
-    return [];
-  }, z.array(includeEnum).optional()),
+  include: z
+    .string()
+    .optional()
+    .transform((val) => val?.split(",") ?? [])
+    .refine(
+      (arr) => arr.every((val) => includeOptions.includes(val.trim() as any)),
+      "option: include value didn't match with enum types"
+    ),
 });
