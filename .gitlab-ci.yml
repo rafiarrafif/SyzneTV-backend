@@ -26,9 +26,9 @@ create_release:
     - job: build_app
       artifacts: true
   script:
-    - echo "CI_PROJECT_URL: $CI_PROJECT_URL"
-    - echo "CI_JOB_ID: $CI_JOB_ID"
-    - echo "Artifact URL: $CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/raw/server-compiled"
+    - echo "CI_PROJECT_URL = $CI_PROJECT_URL"
+    - echo "CI_JOB_ID = $CI_JOB_ID"
+    - echo "Artifact URL = $CI_PROJECT_URL/-/jobs/$CI_JOB_ID/artifacts/raw/server-compiled"
     - echo "Creating release and uploading server-compiled..."
   release:
     name: "Release $CI_COMMIT_TAG"
