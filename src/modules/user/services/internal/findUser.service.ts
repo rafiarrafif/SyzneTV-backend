@@ -7,26 +7,32 @@ import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 
 export const findUserService = async (payload: getUserDataService) => {
   try {
+    // Define query target with the related repository
     const repositoryMap = {
       id: findUserByIdRepository,
       email: findUserByEmailRepository,
       username: findUserByUsernameRepository,
     } as const;
 
+    // Check if the repository is available for the target query, if not return an error
     const repoFn = repositoryMap[payload.queryTarget];
-    if (!repoFn) throw new AppError(502, "Repository handler not found");
+    if (!repoFn) throw new AppError(503, "Repository handler not found");
 
+    // Retrieving user data using the associated repository, if user not found return 404 response
     const userData = await repoFn(payload.identifier);
+    if (!userData) throw new AppError(404, "User not found");
 
+    // Define verbosity levels
     const existsVerbosity = ["exists"].includes(payload.options.verbosity);
     const fullVerbosity = ["full"].includes(payload.options.verbosity);
     const basicVerbosity = ["basic", "full"].includes(
       payload.options.verbosity
     );
 
-    if (!userData) throw new AppError(404, "User not found");
+    // If verbosity in 'exists' level and user is valid then just return 'true' value
     if (existsVerbosity) return true;
 
+    // Construct response payload by adjusting the verbosity level
     const response = {
       ...(fullVerbosity && { id: userData?.id }),
       ...(basicVerbosity && { name: userData?.name }),
@@ -46,7 +52,6 @@ export const findUserService = async (payload: getUserDataService) => {
       ...(fullVerbosity && { createdAt: userData?.createdAt }),
       ...(fullVerbosity && { updatedAt: userData?.updatedAt }),
     };
-
     return response;
   } catch (error) {
     ErrorForwarder(error);
