@@ -10,6 +10,7 @@ build_app:
   image: oven/bun:${BUN_VERSION}
   script:
     - bun i
+    - bun run route:sync
     - bun build --compile --minify-whitespace --minify-syntax --target bun --outfile "server-compiled" ./src/index.ts
   artifacts:
     paths:
