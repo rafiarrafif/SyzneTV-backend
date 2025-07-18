@@ -3,12 +3,10 @@ import z from "zod";
 const includeOptions = ["preference", "roles"] as const;
 
 export const getUserOptionsSchema = z.object({
-  verbosity: z
-    .enum(
-      ["exists", "basic", "full"],
-      "option: verbosity value didn't match with enum types"
-    )
-    .optional(),
+  verbosity: z.enum(
+    ["exists", "basic", "full"],
+    "option: verbosity value must match with enum types"
+  ),
   include: z
     .string()
     .optional()

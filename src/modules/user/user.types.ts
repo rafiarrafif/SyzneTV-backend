@@ -1,10 +1,10 @@
 export interface getUserDataService {
   identifier: string;
   queryTarget: "id" | "email" | "username" | "email_username";
-  options?: getUserDataOptions;
+  options: getUserDataOptions;
 }
 export interface getUserDataOptions {
-  verbosity?: "exists" | "basic" | "full";
+  verbosity: "exists" | "basic" | "full";
   include?: ("preference" | "roles")[];
 }
 

@@ -2,14 +2,14 @@ import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { getUserDataOptions } from "../../user.types";
 import { findUserService } from "../internal/findUser.service";
 
-export const getUserByEmailService = async (
-  email: string,
+export const getUserByUsernameService = async (
+  username: string,
   options: getUserDataOptions
 ) => {
   try {
     return await findUserService({
-      identifier: email,
-      queryTarget: "email",
+      identifier: username,
+      queryTarget: "username",
       options,
     });
   } catch (error) {
