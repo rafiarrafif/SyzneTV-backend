@@ -1,23 +1,23 @@
-import { User } from "@prisma/client";
 import { findUserByEmailRepository } from "../../repositories/read/findUserByEmail.repository";
 import { getUserDataService } from "../../user.types";
 import { AppError } from "../../../../helpers/error/instances/app";
 import { findUserByIdRepository } from "../../repositories/read/findUserById.repository";
 import { findUserByUsernameRepository } from "../../repositories/read/findUserByUsername.repository";
+import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 
 export const findUserService = async (payload: getUserDataService) => {
-  let userData: User | null = null;
-  if (payload.queryTarget === "email") {
-    userData = await findUserByEmailRepository(payload.identifier);
-  }
-  if (payload.queryTarget === "id") {
-    userData = await findUserByIdRepository(payload.identifier);
-  }
-  if (payload.queryTarget === "username") {
-    userData = await findUserByUsernameRepository(payload.identifier);
-  }
+  try {
+    const repositoryMap = {
+      id: findUserByIdRepository,
+      email: findUserByEmailRepository,
+      username: findUserByUsernameRepository,
+    } as const;
 
-  if (userData === null) throw new AppError(404, "User not found");
+    const repoFn = repositoryMap[payload.queryTarget];
+    if (!repoFn) throw new AppError(502, "Repository handler not found");
 
-  return userData;
+    return await repoFn(payload.identifier);
+  } catch (error) {
+    ErrorForwarder(error);
+  }
 };

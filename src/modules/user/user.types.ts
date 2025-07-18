@@ -1,6 +1,6 @@
 export interface getUserDataService {
   identifier: string;
-  queryTarget: "id" | "email" | "username" | "email_username";
+  queryTarget: "id" | "email" | "username";
   options: getUserDataOptions;
 }
 export interface getUserDataOptions {
