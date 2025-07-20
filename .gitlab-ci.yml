@@ -12,9 +12,11 @@ build_app:
     - bun i
     - bun run route:sync
     - bun build --compile --minify-whitespace --minify-syntax --target bun --outfile "server-compiled" ./src/index.ts
+    - echo $CI_JOB_ID > build_job_id.txt
   artifacts:
     paths:
       - server-compiled
+      - build_job_id.txt
     expire_in: 1 hour
   rules:
     - if: $CI_COMMIT_TAG
@@ -26,7 +28,9 @@ create_release:
     - job: build_app
       artifacts: true
   script:
-    - echo "Creating release and uploading server-compiled... (link:\ ${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/raw/server-compiled)"
+    - echo "Creating release and uploading server-compiled..."
+    - export BUILD_JOB_ID=$(cat build_job_id.txt)
+    - echo "Using BUILD_JOB_ID=$BUILD_JOB_ID"
   release:
     name: "Release $CI_COMMIT_TAG"
     tag_name: "$CI_COMMIT_TAG"
@@ -34,6 +38,6 @@ create_release:
     assets:
       links:
         - name: "server-compiled"
-          url: "${CI_PROJECT_URL}/-/jobs/${CI_JOB_ID}/artifacts/raw/server-compiled"
+          url: "${CI_PROJECT_URL}/-/jobs/${BUILD_JOB_ID}/artifacts/raw/server-compiled"
   rules:
     - if: $CI_COMMIT_TAG
