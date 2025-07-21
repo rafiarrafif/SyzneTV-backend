@@ -25,6 +25,7 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "mime-types": "^3.0.1",
+    "minio": "^8.0.5",
     "mock-aws-s3": "^4.0.2",
     "nock": "^14.0.4",
     "ua-parser-js": "^2.0.3",

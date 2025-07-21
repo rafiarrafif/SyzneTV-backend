@@ -11,7 +11,12 @@ export const createUserRoleWithAdminController = async (ctx: Context) => {
       ...body,
       createdBy: "787",
     });
-    return returnWriteResponse(ctx.set, 201, "User role created successfully");
+    return returnWriteResponse(
+      ctx.set,
+      201,
+      "User role created successfully",
+      createUserRole
+    );
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
   }
