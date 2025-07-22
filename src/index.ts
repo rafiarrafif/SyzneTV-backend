@@ -1,5 +1,8 @@
-import { Elysia } from "elysia";
-import { routes } from "./routes";
+import { validateEnv } from "./utils/startups/validateEnv";
+validateEnv();
+
+const { Elysia } = await import("elysia");
+const { routes } = await import("./routes");
 
 const app = new Elysia().use(routes).listen(process.env.PORT || 3000);
 
