@@ -1,6 +1,7 @@
 import z from "zod";
 
-const includeOptions = ["preference", "roles"] as const;
+// Define related tables that are retrieved together with user data
+const includeOptions = ["preference", "assignedRoles"] as const;
 
 export const getUserOptionsSchema = z.object({
   verbosity: z.enum(
