@@ -17,6 +17,7 @@
     "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/mime-types": "^3.0.1",
+    "arctic": "^3.7.0",
     "aws-sdk": "^2.1692.0",
     "bcrypt": "^5.1.1",
     "cookie": "^1.0.2",
