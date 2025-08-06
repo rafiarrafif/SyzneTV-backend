@@ -205,6 +205,10 @@ model User {
   bioProfile        String?         @db.Text 
   avatar            String?         @db.Text
   commentBackground String?         @db.Text
+  provider          String?         @db.VarChar(255)
+  providerId        String?         @unique @db.VarChar(255)
+  providerToken     String?         @db.Text
+  providerPayload   Json?           @db.Json
   preference        UserPreference? @relation(fields: [preferenceId], references: [id])
   preferenceId      String?         @unique
   verifiedAt        DateTime? 
