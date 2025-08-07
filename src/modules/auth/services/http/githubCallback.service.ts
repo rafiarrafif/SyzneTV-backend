@@ -1,5 +1,5 @@
-import { AppError } from "../../../helpers/error/instances/app";
-import { githubProvider } from "../providers/github.provider";
+import { AppError } from "../../../../helpers/error/instances/app";
+import { githubProvider } from "../../providers/github.provider";
 
 export const githubCallbackService = async (code: string) => {
   try {

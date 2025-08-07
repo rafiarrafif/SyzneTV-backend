@@ -1,6 +1,6 @@
 import { Context } from "elysia";
 import { mainErrorHandler } from "../../../helpers/error/handler";
-import { googleRequestService } from "../services/googleRequest.service";
+import { googleRequestService } from "../services/http/googleRequest.service";
 import { returnReadResponse } from "../../../helpers/callback/httpResponse";
 
 export const googleRequestController = async (ctx: Context) => {

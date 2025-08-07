@@ -1,7 +1,7 @@
 import { Context } from "elysia";
 import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
 import { mainErrorHandler } from "../../../helpers/error/handler";
-import { googleCallbackService } from "../services/googleCallback.service";
+import { googleCallbackService } from "../services/http/googleCallback.service";
 
 export const googleCallbackController = async (
   ctx: Context & { query: { code: string; state: string } }

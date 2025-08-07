@@ -1,7 +1,7 @@
 import * as arctic from "arctic";
-import { AppError } from "../../../helpers/error/instances/app";
-import { googleProvider } from "../providers/google.provider";
-import { redis } from "../../../utils/databases/redis/connection";
+import { AppError } from "../../../../helpers/error/instances/app";
+import { googleProvider } from "../../providers/google.provider";
+import { redis } from "../../../../utils/databases/redis/connection";
 
 export const googleRequestService = async () => {
   try {

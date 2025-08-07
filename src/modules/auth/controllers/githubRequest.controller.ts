@@ -1,6 +1,6 @@
 import { Context } from "elysia";
 import { returnReadResponse } from "../../../helpers/callback/httpResponse";
-import { githubRequestService } from "../services/githubRequest.service";
+import { githubRequestService } from "../services/http/githubRequest.service";
 
 export const githubRequestController = async (ctx: Context) => {
   const loginUrl = await githubRequestService();

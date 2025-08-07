@@ -1,7 +1,7 @@
-import { AppError } from "../../../helpers/error/instances/app";
-import { googleProvider } from "../providers/google.provider";
-import { redis } from "../../../utils/databases/redis/connection";
-import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
+import { AppError } from "../../../../helpers/error/instances/app";
+import { googleProvider } from "../../providers/google.provider";
+import { redis } from "../../../../utils/databases/redis/connection";
+import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 
 export const googleCallbackService = async (query: {
   state: string;

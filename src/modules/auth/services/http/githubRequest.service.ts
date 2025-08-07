@@ -1,6 +1,6 @@
 import * as arctic from "arctic";
-import { githubProvider } from "../providers/github.provider";
-import { AppError } from "../../../helpers/error/instances/app";
+import { githubProvider } from "../../providers/github.provider";
+import { AppError } from "../../../../helpers/error/instances/app";
 
 export const githubRequestService = async () => {
   try {

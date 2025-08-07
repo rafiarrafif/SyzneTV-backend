@@ -1,6 +1,6 @@
 import { Context } from "elysia";
 import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
-import { githubCallbackService } from "../services/githubCallback.service";
+import { githubCallbackService } from "../services/http/githubCallback.service";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 
 export const githubCallbackController = async (
