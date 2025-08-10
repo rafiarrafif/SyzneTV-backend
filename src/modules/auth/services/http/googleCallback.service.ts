@@ -8,18 +8,24 @@ export const googleCallbackService = async (query: {
   code: string;
 }) => {
   try {
+    // get code and state for validation from params and search for state in redis cache
     const state = query.state;
     const codeVerifier = await redis.get(
       `${process.env.APP_NAME}:pkce:${state}`
     );
+
+    // return error if the state for validation is not found in redis, and delete if found
     if (!codeVerifier) throw new AppError(408, "Request timeout");
     await redis.del(`${process.env.APP_NAME}:pkce:${state}`);
 
+    // create access token with the result of validating the authorization code that compares access code with validator state
     const google = googleProvider();
     const tokens = await google.validateAuthorizationCode(
       query.code,
       codeVerifier
     );
+
+    // get user data from Google using the access token that has been created.
     const accessToken = tokens.accessToken();
     const response = await fetch(
       "https://openidconnect.googleapis.com/v1/userinfo",
@@ -29,6 +35,7 @@ export const googleCallbackService = async (query: {
         },
       }
     );
+
     return await response.json();
   } catch (error) {
     ErrorForwarder(error, 500, "Authentication service error");
