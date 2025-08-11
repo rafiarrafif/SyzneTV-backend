@@ -4,12 +4,14 @@ import { AppError } from "../../../../helpers/error/instances/app";
 import { findUserByIdRepository } from "../../repositories/read/findUserById.repository";
 import { findUserByUsernameRepository } from "../../repositories/read/findUserByUsername.repository";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
+import { findUserByProviderIdRepository } from "../../repositories/read/findUserByProviderId.repository";
 
 export const findUserService = async (payload: getUserDataService) => {
   try {
     // Define query target with the related repository
     const repositoryMap = {
       id: findUserByIdRepository,
+      providerId: findUserByProviderIdRepository,
       email: findUserByEmailRepository,
       username: findUserByUsernameRepository,
     } as const;

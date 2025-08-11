@@ -1,6 +1,9 @@
-export interface LoginIfExistAndCreateIfNot {
-  email: string;
-  username?: string;
+export interface GoogleCallbackUserData {
+  sub: string;
   name: string;
-  provider: "Google" | "GitHub";
+  given_name: string;
+  family_name: string;
+  picture: string;
+  email: string;
+  email_verified: boolean;
 }

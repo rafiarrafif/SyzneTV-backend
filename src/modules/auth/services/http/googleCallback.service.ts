@@ -2,11 +2,17 @@ import { AppError } from "../../../../helpers/error/instances/app";
 import { googleProvider } from "../../providers/google.provider";
 import { redis } from "../../../../utils/databases/redis/connection";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
+import { UserHeaderInformation } from "../../../../helpers/http/userHeader/getUserHeaderInformation/types";
+import { OAuthUserProvisionService } from "../internal/OAuthUserProvision.service";
+import { GoogleCallbackUserData } from "../../auth.types";
 
-export const googleCallbackService = async (query: {
-  state: string;
-  code: string;
-}) => {
+export const googleCallbackService = async (
+  query: {
+    state: string;
+    code: string;
+  },
+  userHeaderInfo: UserHeaderInformation
+) => {
   try {
     // get code and state for validation from params and search for state in redis cache
     const state = query.state;
@@ -36,7 +42,19 @@ export const googleCallbackService = async (query: {
       }
     );
 
-    return await response.json();
+    const userData = (await response.json()) as GoogleCallbackUserData;
+
+    return await OAuthUserProvisionService(
+      {
+        providerName: "google",
+        openId: userData.sub,
+        email: userData.email,
+        name: userData.name,
+        avatar: userData.picture,
+      },
+      userData,
+      userHeaderInfo
+    );
   } catch (error) {
     ErrorForwarder(error, 500, "Authentication service error");
   }
