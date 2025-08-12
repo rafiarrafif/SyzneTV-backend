@@ -20,16 +20,17 @@ export const findUserService = async (payload: getUserDataService) => {
     const repoFn = repositoryMap[payload.queryTarget];
     if (!repoFn) throw new AppError(503, "Repository handler not found");
 
-    // Retrieving user data using the associated repository, if user not found return 404 response
-    const userData = await repoFn(payload.identifier, payload.options.include);
-    if (!userData) throw new AppError(404, "User not found");
-
     // Define verbosity levels
     const existsVerbosity = ["exists"].includes(payload.options.verbosity);
     const fullVerbosity = ["full"].includes(payload.options.verbosity);
     const basicVerbosity = ["basic", "full"].includes(
       payload.options.verbosity
     );
+
+    // Retrieving user data using the associated repository, if user not found return 404 response
+    const userData = await repoFn(payload.identifier, payload.options.include);
+    if (!userData && existsVerbosity) return false;
+    if (!userData) throw new AppError(404, "User not found");
 
     // If verbosity in 'exists' level and user is valid then just return 'true' value
     if (existsVerbosity) return true;
