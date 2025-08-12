@@ -27,10 +27,9 @@ export const findUserService = async (payload: getUserDataService) => {
       payload.options.verbosity
     );
 
-    // Retrieving user data using the associated repository, if user not found return 404 response
+    // Retrieving user data using the associated repository, if user not found return 'false' response
     const userData = await repoFn(payload.identifier, payload.options.include);
-    if (!userData && existsVerbosity) return false;
-    if (!userData) throw new AppError(404, "User not found");
+    if (!userData) return false;
 
     // If verbosity in 'exists' level and user is valid then just return 'true' value
     if (existsVerbosity) return true;
