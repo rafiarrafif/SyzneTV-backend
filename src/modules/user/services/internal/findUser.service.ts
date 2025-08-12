@@ -21,7 +21,7 @@ export const findUserService = async (payload: getUserDataService) => {
     if (!repoFn) throw new AppError(503, "Repository handler not found");
 
     // Define verbosity levels
-    const existsVerbosity = ["exists"].includes(payload.options.verbosity);
+    const existsVerbosity = ["exist"].includes(payload.options.verbosity);
     const fullVerbosity = ["full"].includes(payload.options.verbosity);
     const basicVerbosity = ["basic", "full"].includes(
       payload.options.verbosity

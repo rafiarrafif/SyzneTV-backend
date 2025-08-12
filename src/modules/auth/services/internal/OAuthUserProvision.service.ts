@@ -24,7 +24,7 @@ export const OAuthUserProvisionService = async (
   const findUserResult = await findUserService({
     identifier: providerId,
     queryTarget: "providerId",
-    options: { verbosity: "exists" },
+    options: { verbosity: "exist" },
   });
 
   if (findUserResult) {

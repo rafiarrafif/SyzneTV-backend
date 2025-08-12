@@ -4,7 +4,7 @@ export interface getUserDataService {
   options: getUserDataOptions;
 }
 export interface getUserDataOptions {
-  verbosity: "exists" | "basic" | "full";
+  verbosity: "exist" | "basic" | "full";
   include?: getUserDataIncludeOptions[];
 }
 export type getUserDataIncludeOptions = "preference" | "roles";
