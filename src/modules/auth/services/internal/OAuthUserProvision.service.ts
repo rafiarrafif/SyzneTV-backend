@@ -17,12 +17,6 @@ export const OAuthUserProvisionService = async (
   providerRawCallback: unknown,
   userHeaderInfo: UserHeaderInformation
 ) => {
-  /**
-   * Create auth session if user already exist,
-   * create user account and give them auth session if not
-   *
-   * This is just example!!
-   */
   try {
     const providerId = `${payload.providerName}_${payload.openId}`;
     const findUserResult = (await findUserService({
@@ -34,7 +28,12 @@ export const OAuthUserProvisionService = async (
     if (findUserResult) {
       return await createUserSessionService(findUserResult.id, userHeaderInfo);
     } else {
-      return "Not Found";
+      /**
+       * === TODO ===
+       * If the user is not found,
+       * create a new one with the data obtained from the OAuth provider,
+       * then create a user session and authenticate it immediately.
+       */
     }
   } catch (error) {
     ErrorForwarder(error);
