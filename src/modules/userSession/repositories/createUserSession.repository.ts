@@ -8,6 +8,19 @@ export const createUserSessionRepository = async (
   try {
     return await userSessionModel.create({
       data,
+      include: {
+        user: {
+          omit: {
+            password: true,
+            providerToken: true,
+            providerPayload: true,
+            deletedAt: true,
+          },
+          include: {
+            preference: true,
+          },
+        },
+      },
     });
   } catch (error) {
     ErrorForwarder(error);
