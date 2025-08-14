@@ -3,9 +3,9 @@ import { AppError } from "../../../../helpers/error/instances/app";
 import { googleProvider } from "../../providers/google.provider";
 import { redis } from "../../../../utils/databases/redis/connection";
 
-export const googleRequestService = async () => {
+export const googleRequestService = async (callbackURI?: string) => {
   try {
-    const google = googleProvider();
+    const google = googleProvider(callbackURI);
     const state = arctic.generateState();
     const codeVerifier = arctic.generateCodeVerifier();
     const scopes = ["openid", "profile", "email"];

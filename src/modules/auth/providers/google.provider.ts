@@ -1,10 +1,11 @@
 import { Google } from "arctic";
 
-export const googleProvider = () => {
-  const redirectURI = `${process.env.APP_PROTOCOL}://${process.env.APP_DOMAIN}${process.env.GOOGLE_CLIENT_CALLBACK}`;
+export const googleProvider = (
+  callbackURI = `${process.env.APP_PROTOCOL}://${process.env.APP_DOMAIN}${process.env.GOOGLE_DEFAULT_CALLBACK}`
+) => {
   return new Google(
     process.env.GOOGLE_CLIENT_ID!,
     process.env.GOOGLE_CLIENT_SECRET!,
-    redirectURI
+    callbackURI
   );
 };
