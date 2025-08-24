@@ -1,0 +1,712 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table medias {
+  id String [pk]
+  title String [not null]
+  titleAlternative Json [not null]
+  slug String [not null]
+  pictureMedium String [not null]
+  pictureLarge String [not null]
+  genres genres [not null]
+  country countries [not null]
+  countryId String [not null]
+  isAiring Boolean [not null, default: false]
+  isTba Boolean [not null, default: false]
+  startAiring DateTime [not null]
+  endAiring DateTime [not null]
+  synopsis String [not null]
+  nfsw Boolean [not null, default: false]
+  ageRating AgeRating [not null]
+  mediaType MediaType [not null]
+  source Source [not null]
+  studios studios [not null]
+  pendingUpload Boolean [not null, default: true]
+  uploader users [not null]
+  uploadedBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  logs media_logs [not null]
+  episodes episodes [not null]
+  collections collections [not null]
+  reviews movie_reviews [not null]
+}
+
+Table media_logs {
+  id String [pk]
+  status MediaOperation [not null]
+  approval Boolean [not null, default: false]
+  proposer users [not null]
+  proposedBy String [not null]
+  approver users [not null]
+  approvedBy String [not null]
+  media medias [not null]
+  mediaId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table genres {
+  id String [pk]
+  name String [not null]
+  slug String [not null]
+  malId Int [not null]
+  malUrl String [not null]
+  creator users [not null]
+  createdBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  medias medias [not null]
+  user_favourite_genres user_preferences [not null]
+}
+
+Table studios {
+  id String [pk]
+  name String [not null]
+  slug String [not null]
+  logoUrl String [not null]
+  colorHex String [not null]
+  creator users [not null]
+  createdBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  medias medias [not null]
+}
+
+Table countries {
+  id String [pk]
+  name String [not null]
+  code String [not null]
+  flag String [not null]
+  creator users [not null]
+  createdBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  medias medias [not null]
+  user_show_countries user_preferences [not null]
+}
+
+Table episodes {
+  id String [pk]
+  media medias [not null]
+  mediaId String [not null]
+  episode Int [not null]
+  name String [not null]
+  pictureThumbnail String [not null]
+  viewed BigInt [not null, default: 0]
+  likes BigInt [not null, default: 0]
+  dislikes BigInt [not null, default: 0]
+  pendingUpload Boolean [not null, default: true]
+  uploader users [not null]
+  uploadedBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  user_likes episode_likes [not null]
+  videos videos [not null]
+  user_histories watch_histories [not null]
+  comments comments [not null]
+}
+
+Table episode_likes {
+  id String [pk]
+  user users [not null]
+  userId String [not null]
+  session user_sessions [not null]
+  sessionId String [not null]
+  episode episodes [not null]
+  episodeId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table videos {
+  id String [pk]
+  episode episodes [not null]
+  episodeId String [not null]
+  service video_services [not null]
+  serviceId String [not null]
+  code String [not null]
+  pendingUpload Boolean [not null, default: true]
+  uploader users [not null]
+  uploadedBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table video_services {
+  id String [pk]
+  name String [unique, not null]
+  domain String [not null]
+  logo String
+  hexColor String [not null]
+  endpointVideo String [not null]
+  endpointThumbnail String
+  creator users [not null]
+  createdBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  videos videos [not null]
+  user_preferences user_preferences [not null]
+}
+
+Table users {
+  id String [pk]
+  name String [not null]
+  username String [unique, not null]
+  email String [unique, not null]
+  password String [not null]
+  birthDate DateTime
+  gender UserGender
+  phoneCC Int
+  phoneNumber Int
+  assignedRoles user_role_assignments [not null]
+  bioProfile String
+  avatar String
+  commentBackground String
+  provider String
+  providerId String [unique]
+  providerToken String
+  providerPayload Json
+  preference user_preferences
+  preferenceId String [unique]
+  verifiedAt DateTime
+  disabledAt DateTime
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  medias medias [not null]
+  media_proposeds media_logs [not null]
+  media_approveds media_logs [not null]
+  genres genres [not null]
+  studios studios [not null]
+  countries countries [not null]
+  episodes episodes [not null]
+  episode_likes episode_likes [not null]
+  videos videos [not null]
+  video_services video_services [not null]
+  create_roles user_roles [not null]
+  notifications user_notifications [not null]
+  sessions user_sessions [not null]
+  logs user_logs [not null]
+  collections collections [not null]
+  allowed_collections collections [not null]
+  watch_histories watch_histories [not null]
+  media_reviews movie_reviews [not null]
+  comments comments [not null]
+  liked_comments comment_likes [not null]
+  reported_comments comment_reports [not null]
+  approved_comments comment_reports [not null]
+  create_languages languages [not null]
+  user_create_email email_system_accounts [not null]
+  user_emails email_system_histories [not null]
+  sys_notifications system_notifications [not null]
+  sys_logs system_logs [not null]
+}
+
+Table user_preferences {
+  id String [pk]
+  userId users
+  lang languages
+  langPreference String
+  adultFiltering AdultFiltering [not null, default: 'hide']
+  adultAlert AdultAlert [not null, default: 'show']
+  videoQuality VideoQuality [not null, default: 'Q1080']
+  serviceDefault video_services
+  serviceDefaultId String
+  showContries countries [not null]
+  favoriteGenres genres [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table user_roles {
+  id String [pk]
+  name String [unique, not null]
+  primaryColor String
+  secondaryColor String
+  pictureImage String
+  badgeImage String
+  isSuperadmin Boolean [not null, default: false]
+  canEditMedia Boolean [not null, default: false]
+  canManageMedia Boolean [not null, default: false]
+  canEditEpisodes Boolean [not null, default: false]
+  canManageEpisodes Boolean [not null, default: false]
+  canEditComment Boolean [not null, default: false]
+  canManageComment Boolean [not null, default: false]
+  canEditUser Boolean [not null, default: false]
+  canManageUser Boolean [not null, default: false]
+  canEditSystem Boolean [not null, default: false]
+  canManageSystem Boolean [not null, default: false]
+  creator users [not null]
+  createdBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  assignedUser user_role_assignments [not null]
+}
+
+Table user_role_assignments {
+  user users [not null]
+  userId String [not null]
+  role user_roles [not null]
+  roleId String [not null]
+  assignmentAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (userId, roleId) [pk]
+  }
+}
+
+Table user_notifications {
+  id String [pk]
+  title String [not null]
+  content String [not null]
+  picture String [not null]
+  state UserNotificationState [not null]
+  ctaLink String [not null]
+  user users [not null]
+  userId String [not null]
+  isReaded Boolean [not null, default: false]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table user_sessions {
+  id String [pk]
+  isAuthenticated Boolean [not null, default: false]
+  user users [not null]
+  userId String [not null]
+  deviceType String [not null]
+  deviceOs String [not null]
+  deviceIp String [not null]
+  browser String [not null]
+  isOnline Boolean [not null, default: false]
+  lastOnline DateTime [default: `now()`, not null]
+  validUntil DateTime [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  logs user_logs [not null]
+  episode_likes episode_likes [not null]
+  watch_histories watch_histories [not null]
+}
+
+Table user_logs {
+  id String [pk]
+  title String [not null]
+  notes String [not null]
+  user users [not null]
+  userId String [not null]
+  session user_sessions [not null]
+  sessionId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table collections {
+  id String [pk]
+  name String [not null]
+  medias medias [not null]
+  owner users [not null]
+  ownerId String [not null]
+  accessStatus AccessStatus [not null, default: 'private']
+  password String
+  usersAllowed users [not null]
+  accessScope AccessScope [not null, default: 'viewer']
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table watch_histories {
+  id String [pk]
+  episode episodes [not null]
+  episodeId String [not null]
+  user users [not null]
+  userId String [not null]
+  session user_sessions [not null]
+  sessionId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table movie_reviews {
+  id String [pk]
+  media medias [not null]
+  mediaId String [not null]
+  rating Int [not null]
+  title String [not null]
+  text String [not null]
+  reaction MediaReviewReaction [not null]
+  creator users [not null]
+  createdBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table comments {
+  id String [pk]
+  episode episodes [not null]
+  episodeId String [not null]
+  text String [not null]
+  isParent Boolean [not null, default: false]
+  parent comments
+  parentId String
+  user users [not null]
+  userId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  replies comments [not null]
+  likes comment_likes [not null]
+}
+
+Table comment_likes {
+  id String [pk]
+  comment comments [not null]
+  commentId String [not null]
+  user users [not null]
+  userLiked String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table comment_reports {
+  id String [pk]
+  reporter users [not null]
+  userReporter String [not null]
+  commentReported String [not null]
+  isSupervisorReport Boolean [not null, default: false]
+  reason ReportReason [not null]
+  status ReportStatus [not null]
+  description String [not null]
+  approver users
+  approvedBy String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table languages {
+  id String [pk]
+  name String [not null]
+  code String [unique, not null]
+  countryFlag String [not null]
+  fileLocation String [not null]
+  creator users [not null]
+  craetedBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  user_used user_preferences [not null]
+}
+
+Table email_system_accounts {
+  id String [pk]
+  name String [unique, not null]
+  host String [not null]
+  port Int [not null]
+  secure Boolean [not null]
+  email String [unique, not null]
+  username String [unique, not null]
+  password String [not null]
+  purpose EmailPorpose [not null]
+  creator users [not null]
+  createdBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table email_system_histories {
+  id String [pk]
+  purpose EmailPorpose [not null]
+  fromEmail String [not null]
+  toEmail String [not null]
+  user users [not null]
+  userRelated String [not null]
+  title String [not null]
+  htmlContent String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table system_preferences {
+  id String [pk]
+  key String [not null]
+  value String [not null]
+  description String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table system_notifications {
+  id String [pk]
+  type TypeSystemNotification [not null]
+  componentName String
+  popupImage String
+  titleToast String
+  contentToast String
+  creator users [not null]
+  createdBy String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table system_logs {
+  id String [pk]
+  title String [not null]
+  notes String [not null]
+  user users
+  relatedUser String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table MediaGenres {
+  genresId String [ref: > genres.id]
+  mediasId String [ref: > medias.id]
+}
+
+Table MediaStudios {
+  studiosId String [ref: > studios.id]
+  mediasId String [ref: > medias.id]
+}
+
+Table MediaCollections {
+  collectionsId String [ref: > collections.id]
+  mediasId String [ref: > medias.id]
+}
+
+Table UserFavoriteGenres {
+  user_favourite_genresId String [ref: > user_preferences.id]
+  favoritegenresId String [ref: > genres.id]
+}
+
+Table UserShowContries {
+  user_show_countriesId String [ref: > user_preferences.id]
+  showcontriesId String [ref: > countries.id]
+}
+
+Table UserSelectedSharingCollention {
+  allowed_collectionsId String [ref: > collections.id]
+  usersallowedId String [ref: > users.id]
+}
+
+Enum AgeRating {
+  G
+  PG
+  PG_13
+  R
+  R_plus
+  Rx
+}
+
+Enum MediaType {
+  TV
+  ONA
+  OVA
+  Movie
+  Special
+  Music
+}
+
+Enum Source {
+  original
+  manga
+  light_novel
+  game
+}
+
+Enum MediaOperation {
+  create
+  update
+  delete
+}
+
+Enum UserGender {
+  male
+  female
+}
+
+Enum AdultFiltering {
+  hide
+  show
+  explicit
+}
+
+Enum AdultAlert {
+  hide
+  show
+}
+
+Enum VideoQuality {
+  Q2160
+  Q1440
+  Q1080
+  Q720
+  Q480
+  Q360
+  Q240
+  Q144
+}
+
+Enum UserNotificationState {
+  info
+  warning
+  danger
+}
+
+Enum ReportStatus {
+  pending
+  resolved
+  rejected
+}
+
+Enum ReportReason {
+  sexualize
+  violent
+  explicit
+  hateful
+  political
+  racist
+  spam
+  other
+}
+
+Enum AccessStatus {
+  private
+  selected
+  protected
+  public
+}
+
+Enum AccessScope {
+  viewer
+  editor
+}
+
+Enum MediaReviewReaction {
+  angry
+  sad
+  awesome
+  happy
+  sleepy
+  annoyed
+  disgusting
+  disappointed
+}
+
+Enum EmailPorpose {
+  forgot_password
+  account_activation
+  account_notification
+  subscribtion
+}
+
+Enum TypeSystemNotification {
+  component
+  popup
+  toast
+}
+
+Ref: medias.countryId > countries.id
+
+Ref: medias.uploadedBy > users.id
+
+Ref: media_logs.proposedBy > users.id
+
+Ref: media_logs.approvedBy > users.id
+
+Ref: media_logs.mediaId > medias.id
+
+Ref: genres.createdBy > users.id
+
+Ref: studios.createdBy > users.id
+
+Ref: countries.createdBy > users.id
+
+Ref: episodes.mediaId > medias.id
+
+Ref: episodes.uploadedBy > users.id
+
+Ref: episode_likes.userId > users.id
+
+Ref: episode_likes.sessionId > user_sessions.id
+
+Ref: episode_likes.episodeId > episodes.id
+
+Ref: videos.episodeId > episodes.id
+
+Ref: videos.serviceId > video_services.id
+
+Ref: videos.uploadedBy > users.id
+
+Ref: video_services.createdBy > users.id
+
+Ref: users.preferenceId - user_preferences.id
+
+Ref: user_preferences.langPreference > languages.code
+
+Ref: user_preferences.serviceDefaultId > video_services.id
+
+Ref: user_roles.createdBy > users.id
+
+Ref: user_role_assignments.userId > users.id
+
+Ref: user_role_assignments.roleId > user_roles.id
+
+Ref: user_notifications.userId > users.id
+
+Ref: user_sessions.userId > users.id
+
+Ref: user_logs.userId > users.id
+
+Ref: user_logs.sessionId > user_sessions.id
+
+Ref: collections.ownerId > users.id
+
+Ref: watch_histories.id > episodes.id
+
+Ref: watch_histories.userId > users.id
+
+Ref: watch_histories.sessionId > user_sessions.id
+
+Ref: movie_reviews.mediaId > medias.id
+
+Ref: movie_reviews.createdBy > users.id
+
+Ref: comments.episodeId > episodes.id
+
+Ref: comments.parentId - comments.id
+
+Ref: comments.userId > users.id
+
+Ref: comment_likes.commentId > comments.id
+
+Ref: comment_likes.userLiked > users.id
+
+Ref: comment_reports.userReporter > users.id
+
+Ref: comment_reports.approvedBy > users.id
+
+Ref: languages.craetedBy > users.id
+
+Ref: email_system_accounts.createdBy > users.id
+
+Ref: email_system_histories.userRelated > users.id
+
+Ref: system_notifications.createdBy > users.id
+
+Ref: system_logs.relatedUser > users.id
