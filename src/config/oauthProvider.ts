@@ -3,7 +3,7 @@ export const getOauthProviders = () => {
     {
       name: "google",
       icon: "logos:google-icon",
-      req_endpoint: "auth/github",
+      req_endpoint: "auth/google",
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
       client_callback: "auth/google/callback",
