@@ -10,7 +10,7 @@ export const getOauthProviders = () => {
     },
     {
       name: "github",
-      icon: "logos:github-icon",
+      icon: "streamline-logos:github-logo-2-solid",
       req_endpoint: "auth/github",
       client_id: process.env.GITHUB_CLIENT_ID,
       client_secret: process.env.GITHUB_CLIENT_SECRET,
