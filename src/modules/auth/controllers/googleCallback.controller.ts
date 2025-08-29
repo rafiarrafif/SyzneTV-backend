@@ -7,6 +7,7 @@ import { getUserHeaderInformation } from "../../../helpers/http/userHeader/getUs
 export const googleCallbackController = async (
   ctx: Context & { query: { code: string; state: string } }
 ) => {
+  return ctx;
   try {
     const userHeaderInfo = getUserHeaderInformation(ctx);
 
