@@ -6,7 +6,7 @@ const { Elysia } = await import("elysia");
 const { routes } = await import("./routes");
 
 const app = new Elysia()
-  .use(appAccessTokenMiddleware())
+  // .use(appAccessTokenMiddleware())
   .use(routes)
   .listen(process.env.APP_PORT || 3000);
 

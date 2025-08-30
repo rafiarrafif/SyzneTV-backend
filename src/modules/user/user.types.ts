@@ -15,3 +15,15 @@ export interface createUserViaRegisterInput {
   email: string;
   password: string;
 }
+export interface createUserViaOauth {
+  provider: string;
+  providerId: string;
+  providerToken?: string;
+  providerPayload?: unknown;
+  email: string;
+  username: string;
+  name: string;
+  avatar?: string;
+  bio?: string;
+  password: string;
+}

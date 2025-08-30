@@ -46,13 +46,18 @@ export const googleCallbackService = async (
 
     return await OAuthUserProvisionService(
       {
-        providerName: "google",
-        openId: userData.sub,
+        provider: "google",
+        providerId: userData.sub,
+        providerToken: accessToken,
+        providerPayload: userData,
         email: userData.email,
+        username: `goo_${userData.sub}`,
         name: userData.name,
         avatar: userData.picture,
+        password: Math.random()
+          .toString(36)
+          .slice(2, 16),
       },
-      userData,
       userHeaderInfo
     );
   } catch (error) {

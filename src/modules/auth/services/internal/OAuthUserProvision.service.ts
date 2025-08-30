@@ -3,22 +3,15 @@ import { UserHeaderInformation } from "../../../../helpers/http/userHeader/getUs
 import { findUserService } from "../../../user/services/internal/findUser.service";
 import { createUserSessionService } from "../../../userSession/services/createUserSession.service";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
+import { createUserViaOauth } from "../../../user/user.types";
+import { createUserService } from "../../../user/services/internal/createUser.service";
 
 export const OAuthUserProvisionService = async (
-  payload: {
-    providerName: string;
-    openId: string;
-    email: string;
-    username?: string;
-    name: string;
-    avatar?: string;
-    bio?: string;
-  },
-  providerRawCallback: unknown,
+  payload: createUserViaOauth,
   userHeaderInfo: UserHeaderInformation
 ) => {
   try {
-    const providerId = `${payload.providerName}_${payload.openId}`;
+    const providerId = payload.providerId;
     const findUserResult = (await findUserService({
       identifier: providerId,
       queryTarget: "providerId",
@@ -28,12 +21,8 @@ export const OAuthUserProvisionService = async (
     if (findUserResult) {
       return await createUserSessionService(findUserResult.id, userHeaderInfo);
     } else {
-      /**
-       * === TODO ===
-       * If the user is not found,
-       * create a new one with the data obtained from the OAuth provider,
-       * then create a user session and authenticate it immediately.
-       */
+      const createdUser = await createUserService(payload);
+      return await createUserSessionService(createdUser.id, userHeaderInfo);
     }
   } catch (error) {
     ErrorForwarder(error);
