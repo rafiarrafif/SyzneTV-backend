@@ -10,6 +10,7 @@ export const googleCallbackService = async (
   query: {
     state: string;
     code: string;
+    callbackURI?: string;
   },
   userHeaderInfo: UserHeaderInformation
 ) => {
@@ -25,7 +26,7 @@ export const googleCallbackService = async (
     await redis.del(`${process.env.APP_NAME}:pkce:${state}`);
 
     // create access token with the result of validating the authorization code that compares access code with validator state
-    const google = googleProvider();
+    const google = googleProvider(query.callbackURI);
     const tokens = await google.validateAuthorizationCode(
       query.code,
       codeVerifier
