@@ -17,41 +17,66 @@ const PRESERVED_KEYS = [
  * It preserves certain keys and clears their values in the .env.example file.
  */
 try {
+  // Define paths for .env and .env.example files
   const envPath = path.join(process.cwd(), ".env");
   const envExamplePath = path.join(process.cwd(), ".env.example");
 
+  // Check if the .env file exists. if not, log an error and exit
   if (!fs.existsSync(envPath)) {
     console.error(`.env file not found at ${envPath}`);
     process.exit(1);
   }
 
+  // Read the contents of the .env file
   const envContent = fs.readFileSync(envPath, "utf-8");
 
+  // Split the content into lines and process each line
   const lines = envContent.split("\n");
   const processedLines = lines.map((line) => {
     const trimmedLine = line.trim();
 
+    // Preserve comments and empty lines as-is
     if (trimmedLine.startsWith("#") || trimmedLine === "") {
       return line;
     }
 
-    const delimeterIndex = line.indexOf("=");
-    if (delimeterIndex === -1) {
+    // Find the first "=" delimiter to separate key and value
+    const delimiterIndex = line.indexOf("=");
+
+    // If there's no "=", treat the line as-is
+    if (delimiterIndex === -1) {
       return line;
     }
 
-    const key = line.substring(0, delimeterIndex).trim();
-    const value = line.substring(delimeterIndex + 1).trim();
+    // Extract the key and the remainder after "="
+    const key = line.substring(0, delimiterIndex).trim();
+    let remainder = line.substring(delimiterIndex + 1);
 
-    if (PRESERVED_KEYS.includes(key)) {
-      return `${key}=${value}`;
+    // Attempt to separate value and inline comment (if any)
+    let value = remainder;
+    let comment = "";
+
+    // Look for an inline comment that starts with " #"
+    const commentIndex = remainder.indexOf(" #");
+    if (commentIndex !== -1) {
+      value = remainder.substring(0, commentIndex).trim(); // Extract the actual value
+      comment = remainder.substring(commentIndex); // Preserve the comment
     }
-    return `${key}=`;
+
+    // If key is in the preserved list, keep the value and comment
+    if (PRESERVED_KEYS.includes(key)) {
+      return `${key}=${value}${comment}`;
+    }
+
+    // Otherwise, clear the value but preserve the comment
+    return `${key}=${comment}`;
   });
 
+  // Write the processed lines into the .env.example file
   fs.writeFileSync(envExamplePath, processedLines.join("\n"));
   console.log("File .env.example berhasil diperbarui!");
 } catch (error) {
+  // Catch and log any unexpected errors
   console.error("Error while creating .env.example:", error);
   process.exit(1);
 }
