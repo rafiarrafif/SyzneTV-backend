@@ -1,3 +1,4 @@
+import { captureException } from "@sentry/node";
 import { Context } from "elysia";
 
 /**
@@ -68,6 +69,8 @@ export function returnErrorResponse<T>(
   errorDetails?: T
 ) {
   set.status = status;
+
+  if (errorDetails) captureException(errorDetails);
 
   return {
     status: "error",

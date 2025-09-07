@@ -5,6 +5,9 @@ validateEnv();
 const { Elysia } = await import("elysia");
 const { routes } = await import("./routes");
 
+const { sentryInit } = await import("./utils/monitoring/sentry/init");
+sentryInit();
+
 const app = new Elysia()
   // .use(appAccessTokenMiddleware())
   .use(routes)
