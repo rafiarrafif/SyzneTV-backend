@@ -43,8 +43,10 @@ export const googleCallbackService = async (
       }
     );
 
+    // parse the user data response
     const userData = (await response.json()) as GoogleCallbackUserData;
 
+    // Provision or authenticate the user in the system
     return await OAuthUserProvisionService(
       {
         provider: "google",

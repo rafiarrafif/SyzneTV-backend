@@ -9,9 +9,14 @@ export const githubCallbackService = async (
   userHeaderInfo: UserHeaderInformation
 ) => {
   try {
+    // Initialize GitHub provider
     const github = githubProvider(query.callbackURI);
+
+    // Validate the authorization code and get tokens
     const tokens = await github.validateAuthorizationCode(query.code);
     const accessToken = tokens.accessToken();
+
+    // Fetch user data and email from GitHub API
     const userdata = await fetch("https://api.github.com/user", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -23,11 +28,13 @@ export const githubCallbackService = async (
       },
     });
 
+    // Parse the user data and email responses into JSON, then combine them into a single payload
     const userPayload: GithubCallbackUserData = {
       user_data: await userdata.json(),
       user_email: await useremail.json(),
     };
 
+    // Provision or authenticate the user in the system
     return await OAuthUserProvisionService(
       {
         provider: "github",
