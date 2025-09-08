@@ -1,4 +1,4 @@
-import { AppError } from "../../../../helpers/error/instances/app";
+import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { UserHeaderInformation } from "../../../../helpers/http/userHeader/getUserHeaderInformation/types";
 import { GithubCallbackUserData } from "../../auth.types";
 import { githubProvider } from "../../providers/github.provider";
@@ -54,6 +54,6 @@ export const githubCallbackService = async (
       userHeaderInfo
     );
   } catch (error) {
-    return new AppError(500, "Authentication service error", error);
+    ErrorForwarder(error, 500, "Authentication service error");
   }
 };
