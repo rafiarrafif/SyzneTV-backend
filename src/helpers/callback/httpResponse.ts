@@ -70,7 +70,10 @@ export function returnErrorResponse<T>(
 ) {
   set.status = status;
 
-  if (errorDetails) captureException(errorDetails);
+  if (errorDetails) {
+    captureException(errorDetails);
+    console.error(errorDetails);
+  }
 
   return {
     status: "error",
