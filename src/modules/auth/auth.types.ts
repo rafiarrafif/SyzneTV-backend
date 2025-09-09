@@ -32,15 +32,15 @@ interface GithubUserData {
   type: string;
   user_view_type: string;
   site_admin: boolean;
-  name: string;
-  company: null;
-  blog: string;
-  location: string;
-  email: null;
-  hireable: null;
-  bio: string;
-  twitter_username: null;
-  notification_email: null;
+  name?: string;
+  company?: string;
+  blog?: string;
+  location?: string;
+  email?: string;
+  hireable?: boolean;
+  bio?: string;
+  twitter_username?: string;
+  notification_email?: string;
   public_repos: number;
   public_gists: number;
   followers: number;
@@ -52,5 +52,5 @@ interface GithubUserEmail {
   email: string;
   primary: boolean;
   verified: boolean;
-  visibility: null | string;
+  visibility?: string;
 }

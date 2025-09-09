@@ -45,7 +45,7 @@ export const githubCallbackService = async (
           userPayload.user_email.find((email) => email.primary === true)
             ?.email || userPayload.user_email[0].email,
         username: `git_${userPayload.user_data.id}`,
-        name: userPayload.user_data.name,
+        name: userPayload.user_data.name ?? userPayload.user_data.login,
         avatar: userPayload.user_data.avatar_url,
         password: Math.random()
           .toString(36)
