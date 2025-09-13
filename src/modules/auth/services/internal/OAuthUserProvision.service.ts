@@ -5,6 +5,7 @@ import { createUserSessionService } from "../../../userSession/services/createUs
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { createUserViaOauth } from "../../../user/user.types";
 import { createUserService } from "../../../user/services/internal/createUser.service";
+import { AppError } from "../../../../helpers/error/instances/app";
 
 export const OAuthUserProvisionService = async (
   payload: createUserViaOauth,
@@ -21,6 +22,15 @@ export const OAuthUserProvisionService = async (
     if (findUserResult) {
       return await createUserSessionService(findUserResult.id, userHeaderInfo);
     } else {
+      const findUserByEmailOnly = await findUserService({
+        identifier: payload.email,
+        queryTarget: "email",
+        options: { verbosity: "exist" },
+      });
+
+      if (findUserByEmailOnly)
+        throw new AppError(409, "Email already in use with another account");
+
       const createdUser = await createUserService(payload);
       return await createUserSessionService(createdUser.id, userHeaderInfo);
     }
