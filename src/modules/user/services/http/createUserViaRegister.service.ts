@@ -1,18 +1,16 @@
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
-import { hashPassword } from "../../../../helpers/security/password/hash";
-import { createUserViaRegisterRepository } from "../../repositories/create/createUserViaRegister.repository";
+import { UserHeaderInformation } from "../../../../helpers/http/userHeader/getUserHeaderInformation/types";
+import { createUserSessionService } from "../../../userSession/services/createUserSession.service";
 import { createUserViaRegisterInput } from "../../user.types";
+import { createUserService } from "../internal/createUser.service";
 
 export const createUserViaRegisterService = async (
-  payload: createUserViaRegisterInput
+  payload: createUserViaRegisterInput,
+  userHeaderInfo: UserHeaderInformation
 ) => {
   try {
-    const hashedPassword = await hashPassword(payload.password);
-
-    return createUserViaRegisterRepository({
-      ...payload,
-      password: hashedPassword,
-    });
+    const createdUser = await createUserService(payload);
+    return createUserSessionService(createdUser.id, userHeaderInfo);
   } catch (error) {
     ErrorForwarder(error);
   }

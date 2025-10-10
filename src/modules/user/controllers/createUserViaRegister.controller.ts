@@ -3,12 +3,17 @@ import { createUserViaRegisterSchema } from "../schemas/createUserViaRegister.sc
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
 import { createUserViaRegisterService } from "../services/http/createUserViaRegister.service";
+import { getUserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation";
 
 export const createUserViaRegisterController = async (ctx: Context) => {
   try {
     const validate = createUserViaRegisterSchema.parse(ctx.body);
 
-    const createUser = await createUserViaRegisterService(validate);
+    const userHeaderInfo = getUserHeaderInformation(ctx);
+    const createUser = await createUserViaRegisterService(
+      validate,
+      userHeaderInfo
+    );
     return returnWriteResponse(
       ctx.set,
       201,
