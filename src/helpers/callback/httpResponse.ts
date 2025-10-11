@@ -21,6 +21,7 @@ export function returnWriteResponse<T>(
   set.status = status;
 
   return {
+    success: true,
     status,
     message,
     ...(process.env.APP_ENV === "development" && { data }),
@@ -46,6 +47,7 @@ export function returnReadResponse<T>(
 ) {
   set.status = status;
   return {
+    success: true,
     status,
     message,
     data,
@@ -76,7 +78,8 @@ export function returnErrorResponse<T>(
   }
 
   return {
-    status: "error",
+    success: false,
+    status,
     message,
     ...(process.env.APP_ENV === "development" &&
       errorDetails && {
