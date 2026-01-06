@@ -1,4 +1,4 @@
-import { appAccessTokenMiddleware } from "./middleware/global/appAccessToken.middleware";
+import { middleware } from "./middleware";
 import { validateEnv } from "./utils/startups/validateEnv";
 validateEnv();
 
@@ -9,7 +9,7 @@ const { sentryInit } = await import("./utils/monitoring/sentry/init");
 sentryInit();
 
 const app = new Elysia()
-  // .use(appAccessTokenMiddleware())
+  .use(middleware)
   .use(routes)
   .listen(process.env.APP_PORT || 3000);
 
