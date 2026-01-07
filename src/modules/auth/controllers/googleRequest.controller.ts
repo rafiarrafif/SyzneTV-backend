@@ -8,12 +8,9 @@ export const googleRequestController = async (
 ) => {
   try {
     const loginUrl = await googleRequestService(ctx.query.callback);
-    return returnReadResponse(
-      ctx.set,
-      200,
-      "Google login url created!",
-      loginUrl
-    );
+    return returnReadResponse(ctx.set, 200, "Google login url created!", {
+      endpointUrl: loginUrl,
+    });
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
   }

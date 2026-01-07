@@ -6,10 +6,7 @@ export const githubRequestController = async (
   ctx: Context & { query: { callback?: string } }
 ) => {
   const loginUrl = await githubRequestService(ctx.query.callback);
-  return returnReadResponse(
-    ctx.set,
-    200,
-    "Login URL generated successfully",
-    loginUrl
-  );
+  return returnReadResponse(ctx.set, 200, "Login URL generated successfully", {
+    endpointUrl: loginUrl,
+  });
 };
