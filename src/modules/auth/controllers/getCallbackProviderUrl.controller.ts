@@ -14,7 +14,9 @@ export const getCallbackProviderUrlController = async (
       ctx.set,
       200,
       "The callback URL on the provider has been found.",
-      callbackProviderUrl
+      {
+        callback_url: callbackProviderUrl,
+      }
     );
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
