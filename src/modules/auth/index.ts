@@ -4,9 +4,11 @@ import { githubCallbackController } from "./controllers/githubCallback.controlle
 import { googleRequestController } from "./controllers/googleRequest.controller";
 import { googleCallbackController } from "./controllers/googleCallback.controller";
 import { getOauthProvidersController } from "./controllers/getOauthProviders.controller";
+import { getCallbackProviderUrlController } from "./controllers/getCallbackProviderUrl.controller";
 
 export const authModule = new Elysia({ prefix: "/auth" })
   .get("/providers", getOauthProvidersController)
+  .get("/providers/:name/callback", getCallbackProviderUrlController)
   .get("/github", githubRequestController)
   .get("/github/callback", githubCallbackController)
   .get("/google", googleRequestController)
