@@ -176,7 +176,6 @@ Table users {
   providerToken String
   providerPayload Json
   preference user_preferences
-  preferenceId String [unique]
   verifiedAt DateTime
   disabledAt DateTime
   deletedAt DateTime
@@ -213,7 +212,8 @@ Table users {
 
 Table user_preferences {
   id String [pk]
-  userId users
+  user users [not null]
+  userId String [unique, not null]
   lang languages
   langPreference String
   adultFiltering AdultFiltering [not null, default: 'hide']
@@ -655,7 +655,7 @@ Ref: videos.uploadedBy > users.id
 
 Ref: video_services.createdBy > users.id
 
-Ref: users.preferenceId - user_preferences.id
+Ref: user_preferences.userId - users.id
 
 Ref: user_preferences.langPreference > languages.code
 

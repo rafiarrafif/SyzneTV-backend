@@ -7,7 +7,12 @@ export const createUserViaRegisterRepository = async (
 ) => {
   try {
     return await userModel.create({
-      data: payload,
+      data: {
+        ...payload,
+        preference: {
+          create: {},
+        },
+      },
     });
   } catch (error) {
     ErrorForwarder(error);

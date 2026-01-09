@@ -211,8 +211,7 @@ model User {
   providerId        String?         @unique @db.VarChar(255)
   providerToken     String?         @db.Text
   providerPayload   Json?           @db.Json
-  preference        UserPreference? @relation(fields: [preferenceId], references: [id])
-  preferenceId      String?         @unique
+  preference        UserPreference? 
   verifiedAt        DateTime? 
   disabledAt        DateTime?
   deletedAt         DateTime?
@@ -251,7 +250,8 @@ model User {
 
 model UserPreference {
   id                String          @id @default(uuid())
-  userId            User?           @relation()
+  user              User            @relation(fields: [userId], references: [id])
+  userId            String          @unique
   lang              Language?       @relation("UserPreferenceLang", fields: [langPreference], references: [code])
   langPreference    String?      
   adultFiltering    AdultFiltering  @default(hide)
