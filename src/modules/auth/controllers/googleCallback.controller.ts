@@ -10,13 +10,10 @@ export const googleCallbackController = async (
   try {
     const userHeaderInfo = getUserHeaderInformation(ctx);
 
-    const userData = await googleCallbackService(ctx.query, userHeaderInfo);
-    return returnReadResponse(
-      ctx.set,
-      200,
-      "Authenticated successfully!",
-      userData
-    );
+    const authToken = await googleCallbackService(ctx.query, userHeaderInfo);
+    return returnReadResponse(ctx.set, 200, "Authenticated successfully!", {
+      authToken,
+    });
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
   }

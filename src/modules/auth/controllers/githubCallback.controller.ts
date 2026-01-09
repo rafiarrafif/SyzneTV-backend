@@ -10,13 +10,10 @@ export const githubCallbackController = async (
   try {
     const userHeaderInfo = getUserHeaderInformation(ctx);
 
-    const userData = await githubCallbackService(ctx.query, userHeaderInfo);
-    return returnWriteResponse(
-      ctx.set,
-      200,
-      "Authenticated successfully!",
-      userData
-    );
+    const authToken = await githubCallbackService(ctx.query, userHeaderInfo);
+    return returnWriteResponse(ctx.set, 200, "Authenticated successfully!", {
+      authToken,
+    });
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
   }
