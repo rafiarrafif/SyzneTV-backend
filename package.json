@@ -13,6 +13,7 @@
     "env:publish": "bun run ./scripts/create-example-env.ts"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@sentry/node": "^10.10.0",
     "@types/bcrypt": "^5.0.2",
@@ -30,6 +31,7 @@
     "minio": "^8.0.5",
     "mock-aws-s3": "^4.0.2",
     "nock": "^14.0.4",
+    "pg": "^8.17.1",
     "ua-parser-js": "^2.0.3",
     "zod": "^4.0.5"
   },
