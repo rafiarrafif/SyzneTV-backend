@@ -23,14 +23,13 @@ type CreateUserSessionResponse = Prisma.UserSessionGetPayload<{
 }>;
 
 export const createUserSessionRepository = async (
-  data: Prisma.UserSessionUncheckedCreateInput
+  data: Prisma.UserSessionUncheckedCreateInput,
 ) => {
   try {
     return await userSessionModel.create({
       data,
       select: {
         id: true,
-        deviceType: true,
         isAuthenticated: true,
         validUntil: true,
         user: {
@@ -42,6 +41,12 @@ export const createUserSessionRepository = async (
             avatar: true,
             birthDate: true,
             bioProfile: true,
+            preference: {
+              omit: {
+                updatedAt: true,
+                createdAt: true,
+              },
+            },
           },
         },
       },

@@ -32,7 +32,6 @@
     "mock-aws-s3": "^4.0.2",
     "nock": "^14.0.4",
     "pg": "^8.17.1",
-    "ua-parser-js": "^2.0.3",
     "zod": "^4.0.5"
   },
   "devDependencies": {

@@ -1,25 +1,36 @@
 import { Context } from "elysia";
-import { UAParser } from "ua-parser-js";
 import { UserHeaderInformation } from "./types";
 
-export const getUserHeaderInformation = (
-  ctx: Context
-): UserHeaderInformation => {
-  const headers = ctx.request.headers;
-  const userAgentHeader = headers.get("user-agent") || "desktop";
-  const userAgent = new UAParser(userAgentHeader);
+export interface ClientInfoHeader {
+  os: string;
+  osVersion: string;
+  browser: string;
+  browserVersion: string;
+  deviceType: string;
+  ip: string;
+}
 
-  const userIP =
-    headers.get("cf-connecting-ip") ||
-    headers.get("x-real-ip") ||
-    headers.get("x-forwarded-for")?.split(",")[0] ||
-    "Unknown IP";
+export const getUserHeaderInformation = (
+  ctx: Context,
+): UserHeaderInformation => {
+  const clientInfoHeader = JSON.parse(
+    (ctx.request.headers.get("x-client-info") as string) ??
+      ("unknown" as string),
+  ) as ClientInfoHeader;
+
+  console.log("Client Info Header:", clientInfoHeader);
 
   const userHeaderInformation = {
-    ip: userIP,
-    deviceType: userAgent.getDevice().type || "desktop",
-    deviceOS: userAgent.getOS().name + " " + userAgent.getOS().version,
-    browser: userAgent.getBrowser().name + " " + userAgent.getBrowser().version,
+    ip: clientInfoHeader.ip ?? "unknown",
+    deviceType: clientInfoHeader.deviceType ?? "unknown",
+    deviceOS:
+      (clientInfoHeader.os ?? "unknown") +
+      " " +
+      (clientInfoHeader.osVersion ?? "unknown"),
+    browser:
+      (clientInfoHeader.browser ?? "unknown") +
+      " " +
+      (clientInfoHeader.browserVersion ?? "unknown"),
   };
 
   return userHeaderInformation;
