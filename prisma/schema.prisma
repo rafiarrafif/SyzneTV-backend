@@ -26,23 +26,22 @@ model Media {
   id                String    @id @default(uuid())
   title             String    @db.Text
   titleAlternative  Json 
-  slug              String    @db.Text
+  slug              String    @db.Text @unique
+  malId             Int?      @unique
   pictureMedium     String    @db.Text
   pictureLarge      String    @db.Text
   genres            Genre[]   @relation("MediaGenres")
-  country           Country   @relation("MediaCounty", fields: [countryId], references: [id])
-  countryId         String
-  isAiring          Boolean   @default(false)
-  isTba             Boolean   @default(false)
-  startAiring       DateTime
-  endAiring         DateTime
+  country           Country   @default(JP)
+  status            Status
+  startAiring       DateTime?
+  finishAiring      DateTime?
   synopsis          String    @db.Text
   nfsw              Boolean   @default(false)
   ageRating         AgeRating
   mediaType         MediaType 
   source            Source
   studios           Studio[]  @relation("MediaStudios")
-  pendingUpload     Boolean   @default(true)
+  onDraft           Boolean   @default(false)
   uploader          User      @relation("UserUploadedMedias", fields: [uploadedBy], references: [id])
   uploadedBy        String   
   deletedAt         DateTime?
@@ -102,22 +101,6 @@ model Studio {
 
   medias      Media[]   @relation("MediaStudios") 
   @@map("studios")
-}
-
-model Country {
-  id          String    @id @default(uuid())
-  name        String    @db.VarChar(255)
-  code        String    @db.VarChar(5)
-  flag        String    @db.VarChar(10)
-  creator     User      @relation("UserCreatedCountry", fields: [createdBy], references: [id])
-  createdBy   String    
-  deletedAt   DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
-
-  medias              Media[]           @relation("MediaCounty") 
-  user_show_countries UserPreference[]  @relation("UserShowContries")
-  @@map("countries")
 }
 
 model Episode {
@@ -222,7 +205,6 @@ model User {
   media_approveds   MediaLog[]           @relation("UserApprovedMedias")
   genres            Genre[]              @relation("UserCreatedGenres")
   studios           Studio[]             @relation("UserCreatedStudios") 
-  countries         Country[]            @relation("UserCreatedCountry")
   episodes          Episode[]            @relation("UserEpisodes")
   episode_likes     EpisodeLike[]        @relation("UserEpisodeLikes") 
   videos            Video[]              @relation("UserVideos")
@@ -258,7 +240,7 @@ model UserPreference {
   videoQuality      VideoQuality    @default(Q1080)
   serviceDefault    VideoService?   @relation("UserServiceDefault", fields: [serviceDefaultId], references: [id])
   serviceDefaultId  String?
-  showContries      Country[]       @relation("UserShowContries")
+  hideContries      Country[]
   favoriteGenres    Genre[]         @relation("UserFavoriteGenres")
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now()) @updatedAt
@@ -562,6 +544,17 @@ enum Source {
   manga
   light_novel
   game
+}
+enum Status {
+  FINISHED_AIRING @map("Finished Airing")
+  CURRENTLY_AIRING @map("Currently Airing")
+  NOT_YET_AIRED @map("Not yet aired")
+}
+enum Country {
+  JP @map("Japanese")
+  EN @map("English")
+  ID @map("Indonesia")
+  KR @map("Korea")
 }
 
 // MediaLog Enum
