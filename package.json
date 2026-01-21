@@ -9,6 +9,9 @@
     "lint": "bunx eslint",
     "commit": "bun x git-cz",
     "push": "bun scripts/git-multipush.ts",
+    "prisma:generate": "bunx prisma generate",
+    "prisma:dbml": "bunx prisma db pull && bunx prisma dbml --output ./prisma/dbml/schema.dbml",
+    "prisma:seed": "bun run ./prisma/seed/index.ts",
     "route:sync": "bun run ./scripts/sync-routes.ts",
     "env:publish": "bun run ./scripts/create-example-env.ts"
   },

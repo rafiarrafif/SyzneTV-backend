@@ -230,6 +230,7 @@ Table user_preferences {
 Table user_roles {
   id String [pk]
   name String [unique, not null]
+  description String
   primaryColor String
   secondaryColor String
   pictureImage String
