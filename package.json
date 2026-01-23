@@ -9,6 +9,7 @@
     "lint": "bunx eslint",
     "commit": "bun x git-cz",
     "push": "bun scripts/git-multipush.ts",
+    "prisma:push": "bunx prisma db push",
     "prisma:generate": "bunx prisma generate",
     "prisma:dbml": "bunx prisma db pull && bunx prisma dbml --output ./prisma/dbml/schema.dbml",
     "prisma:seed": "bun run ./prisma/seed/index.ts",
@@ -35,6 +36,7 @@
     "mock-aws-s3": "^4.0.2",
     "nock": "^14.0.4",
     "pg": "^8.17.1",
+    "slugify": "^1.6.6",
     "zod": "^4.0.5"
   },
   "devDependencies": {

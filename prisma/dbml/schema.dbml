@@ -6,23 +6,22 @@ Table medias {
   id String [pk]
   title String [not null]
   titleAlternative Json [not null]
-  slug String [not null]
+  slug String [unique, not null]
+  malId Int [unique]
   pictureMedium String [not null]
   pictureLarge String [not null]
   genres genres [not null]
-  country countries [not null]
-  countryId String [not null]
-  isAiring Boolean [not null, default: false]
-  isTba Boolean [not null, default: false]
-  startAiring DateTime [not null]
-  endAiring DateTime [not null]
+  country Country [not null, default: 'JP']
+  score Decimal [not null, default: 0]
+  status String [not null]
+  startAiring DateTime
+  endAiring DateTime
   synopsis String [not null]
-  nfsw Boolean [not null, default: false]
-  ageRating AgeRating [not null]
+  ageRating String [not null]
   mediaType MediaType [not null]
-  source Source [not null]
+  source String
   studios studios [not null]
-  pendingUpload Boolean [not null, default: true]
+  onDraft Boolean [not null, default: true]
   uploader users [not null]
   uploadedBy String [not null]
   deletedAt DateTime
@@ -51,7 +50,7 @@ Table media_logs {
 Table genres {
   id String [pk]
   name String [not null]
-  slug String [not null]
+  slug String [unique, not null]
   malId Int [not null]
   malUrl String [not null]
   creator users [not null]
@@ -66,29 +65,16 @@ Table genres {
 Table studios {
   id String [pk]
   name String [not null]
-  slug String [not null]
-  logoUrl String [not null]
-  colorHex String [not null]
+  slug String [unique, not null]
+  linkAbout String [not null]
+  malId Int [not null]
+  logoUrl String
   creator users [not null]
   createdBy String [not null]
   deletedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
   medias medias [not null]
-}
-
-Table countries {
-  id String [pk]
-  name String [not null]
-  code String [not null]
-  flag String [not null]
-  creator users [not null]
-  createdBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  medias medias [not null]
-  user_show_countries user_preferences [not null]
 }
 
 Table episodes {
@@ -186,7 +172,6 @@ Table users {
   media_approveds media_logs [not null]
   genres genres [not null]
   studios studios [not null]
-  countries countries [not null]
   episodes episodes [not null]
   episode_likes episode_likes [not null]
   videos videos [not null]
@@ -221,7 +206,7 @@ Table user_preferences {
   videoQuality VideoQuality [not null, default: 'Q1080']
   serviceDefault video_services
   serviceDefaultId String
-  showContries countries [not null]
+  hideContries Country[] [not null]
   favoriteGenres genres [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
@@ -495,23 +480,9 @@ Table UserFavoriteGenres {
   favoritegenresId String [ref: > genres.id]
 }
 
-Table UserShowContries {
-  user_show_countriesId String [ref: > user_preferences.id]
-  showcontriesId String [ref: > countries.id]
-}
-
 Table UserSelectedSharingCollention {
   allowed_collectionsId String [ref: > collections.id]
   usersallowedId String [ref: > users.id]
-}
-
-Enum AgeRating {
-  G
-  PG
-  PG_13
-  R
-  R_plus
-  Rx
 }
 
 Enum MediaType {
@@ -523,11 +494,11 @@ Enum MediaType {
   Music
 }
 
-Enum Source {
-  original
-  manga
-  light_novel
-  game
+Enum Country {
+  JP
+  EN
+  ID
+  KR
 }
 
 Enum MediaOperation {
@@ -622,8 +593,6 @@ Enum TypeSystemNotification {
   toast
 }
 
-Ref: medias.countryId > countries.id
-
 Ref: medias.uploadedBy > users.id
 
 Ref: media_logs.proposedBy > users.id
@@ -635,8 +604,6 @@ Ref: media_logs.mediaId > medias.id
 Ref: genres.createdBy > users.id
 
 Ref: studios.createdBy > users.id
-
-Ref: countries.createdBy > users.id
 
 Ref: episodes.mediaId > medias.id
 

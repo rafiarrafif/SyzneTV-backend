@@ -32,16 +32,16 @@ model Media {
   pictureLarge      String    @db.Text
   genres            Genre[]   @relation("MediaGenres")
   country           Country   @default(JP)
-  status            Status
+  score             Decimal   @db.Decimal(4, 2) @default(0.00)
+  status            String
   startAiring       DateTime?
-  finishAiring      DateTime?
+  endAiring         DateTime?
   synopsis          String    @db.Text
-  nfsw              Boolean   @default(false)
-  ageRating         AgeRating
+  ageRating         String
   mediaType         MediaType 
-  source            Source
+  source            String?
   studios           Studio[]  @relation("MediaStudios")
-  onDraft           Boolean   @default(false)
+  onDraft           Boolean   @default(true)
   uploader          User      @relation("UserUploadedMedias", fields: [uploadedBy], references: [id])
   uploadedBy        String   
   deletedAt         DateTime?
@@ -52,6 +52,11 @@ model Media {
   episodes          Episode[]     @relation("MediaEpisodes")
   collections       Collection[]  @relation("MediaCollections")
   reviews           MediaReview[] @relation("MediaReviews")
+
+  @@index([status, onDraft, deletedAt])
+  @@index([mediaType])
+  @@index([uploadedBy])
+  @@index([createdAt])
   @@map("medias")
 }
 
@@ -73,7 +78,7 @@ model MediaLog {
 model Genre {
   id          String    @id @default(uuid())
   name        String    @db.VarChar(255)
-  slug        String    @db.VarChar(255)
+  slug        String    @db.VarChar(255) @unique
   malId       Int       
   malUrl      String    @db.VarChar(255)
   creator     User      @relation("UserCreatedGenres", fields: [createdBy], references: [id])
@@ -84,15 +89,17 @@ model Genre {
 
   medias                Media[]           @relation("MediaGenres") 
   user_favourite_genres UserPreference[]  @relation("UserFavoriteGenres")
+
   @@map("genres")
 }
 
 model Studio {
   id          String    @id @default(uuid())
   name        String    @db.VarChar(255)
-  slug        String    @db.VarChar(255)
-  logoUrl     String    @db.Text
-  colorHex    String    @db.VarChar(10)
+  slug        String    @db.VarChar(255) @unique
+  linkAbout   String    @db.Text
+  malId       Int
+  logoUrl     String?   @db.Text
   creator     User      @relation("UserCreatedStudios", fields: [createdBy], references: [id])
   createdBy   String    
   deletedAt   DateTime?
@@ -101,6 +108,40 @@ model Studio {
 
   medias      Media[]   @relation("MediaStudios") 
   @@map("studios")
+}
+
+model Character {
+  id String @id @default(uuid()) @db.Uuid
+  name String
+  role CharacterRole
+  favorites Int @default(0)
+  imageUrl String?
+  smallImageUrl String?
+  createdBy User @relation("UserCreatedCharacters", fields: [creatorId], references: [id])
+  creatorId String
+  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@map("characters")
+}
+
+model VoiceActor {
+  id          String    @id @default(uuid()) @db.Uuid
+  malId       Int
+  name        String
+  birthday    DateTime?
+  description String    @db.Text
+  aboutUrl    String
+  imageUrl    String?
+  websiteUrl  String?
+  createdBy   User      @relation("UserCreatedVoiceActors", fields: [creatorId], references: [id])
+  creatorId   String
+  deletedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  @@map("voice_actors")
 }
 
 model Episode {
@@ -205,6 +246,8 @@ model User {
   media_approveds   MediaLog[]           @relation("UserApprovedMedias")
   genres            Genre[]              @relation("UserCreatedGenres")
   studios           Studio[]             @relation("UserCreatedStudios") 
+  characters        Character[]          @relation("UserCreatedCharacters")
+  voice_actor       VoiceActor[]         @relation("UserCreatedVoiceActors")
   episodes          Episode[]            @relation("UserEpisodes")
   episode_likes     EpisodeLike[]        @relation("UserEpisodeLikes") 
   videos            Video[]              @relation("UserVideos")
@@ -523,14 +566,6 @@ model SystemLog {
 //// Prisma Enum Values ////
 
 // Media Enum
-enum AgeRating {
-  G       // All Ages
-  PG      // Children
-  PG_13   // Teens 13 or older
-  R       // 17+ (violance & profanity)
-  R_plus  // Mild Nudity
-  Rx      // Hentai
-}
 enum MediaType {
   TV 
   ONA
@@ -539,22 +574,17 @@ enum MediaType {
   Special
   Music
 }
-enum Source {
-  original
-  manga
-  light_novel
-  game
-}
-enum Status {
-  FINISHED_AIRING @map("Finished Airing")
-  CURRENTLY_AIRING @map("Currently Airing")
-  NOT_YET_AIRED @map("Not yet aired")
-}
 enum Country {
   JP @map("Japanese")
   EN @map("English")
   ID @map("Indonesia")
   KR @map("Korea")
+}
+
+// Character Enum
+enum CharacterRole {
+  Main
+  Supporting
 }
 
 // MediaLog Enum
