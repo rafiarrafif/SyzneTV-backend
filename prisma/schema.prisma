@@ -111,24 +111,25 @@ model Studio {
 }
 
 model Character {
-  id String @id @default(uuid()) @db.Uuid
-  name String
-  role CharacterRole
-  favorites Int @default(0)
-  imageUrl String?
+  id            String    @id @default(uuid()) @db.Uuid
+  malId         Int       @unique
+  name          String
+  role          CharacterRole
+  favorites     Int       @default(0)
+  imageUrl      String?
   smallImageUrl String?
-  createdBy User @relation("UserCreatedCharacters", fields: [creatorId], references: [id])
-  creatorId String
-  deletedAt DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  createdBy     User      @relation("UserCreatedCharacters", fields: [creatorId], references: [id])
+  creatorId     String
+  deletedAt     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @default(now()) @updatedAt
 
   @@map("characters")
 }
 
 model VoiceActor {
   id          String    @id @default(uuid()) @db.Uuid
-  malId       Int
+  malId       Int       @unique
   name        String
   birthday    DateTime?
   description String    @db.Text

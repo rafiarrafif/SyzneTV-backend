@@ -77,6 +77,37 @@ Table studios {
   medias medias [not null]
 }
 
+Table characters {
+  id String [pk]
+  malId Int [unique, not null]
+  name String [not null]
+  role CharacterRole [not null]
+  favorites Int [not null, default: 0]
+  imageUrl String
+  smallImageUrl String
+  createdBy users [not null]
+  creatorId String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
+Table voice_actors {
+  id String [pk]
+  malId Int [unique, not null]
+  name String [not null]
+  birthday DateTime
+  description String [not null]
+  aboutUrl String [not null]
+  imageUrl String
+  websiteUrl String
+  createdBy users [not null]
+  creatorId String [not null]
+  deletedAt DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+}
+
 Table episodes {
   id String [pk]
   media medias [not null]
@@ -172,6 +203,8 @@ Table users {
   media_approveds media_logs [not null]
   genres genres [not null]
   studios studios [not null]
+  characters characters [not null]
+  voice_actor voice_actors [not null]
   episodes episodes [not null]
   episode_likes episode_likes [not null]
   videos videos [not null]
@@ -501,6 +534,11 @@ Enum Country {
   KR
 }
 
+Enum CharacterRole {
+  Main
+  Supporting
+}
+
 Enum MediaOperation {
   create
   update
@@ -604,6 +642,10 @@ Ref: media_logs.mediaId > medias.id
 Ref: genres.createdBy > users.id
 
 Ref: studios.createdBy > users.id
+
+Ref: characters.creatorId > users.id
+
+Ref: voice_actors.creatorId > users.id
 
 Ref: episodes.mediaId > medias.id
 

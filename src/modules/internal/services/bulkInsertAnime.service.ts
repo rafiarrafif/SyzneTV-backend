@@ -2,7 +2,7 @@ import { Prisma } from "@prisma/client";
 import { getContentReferenceAPI } from "../../../config/apis/media.reference";
 import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 import { bulkInsertGenresRepository } from "../repositories/bulkInsertGenres.repository";
-import { InsertMediaRepository } from "../repositories/bulkinsertMediaa.repository";
+import { InsertMediaRepository } from "../repositories/bulkinsertMedia.repository";
 import { bulkInsertStudiosRepository } from "../repositories/bulkInsertStudios.repository";
 import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
 import { generateSlug } from "../../../helpers/characters/generateSlug";
