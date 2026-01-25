@@ -1,6 +1,8 @@
+import { baseURL } from "./baseUrl";
+
 export const getContentReferenceAPI = (malId: number) => {
   return {
-    baseURL: "https://api.jikan.moe/v4",
+    baseURL,
     getMediaFullInfo: `/anime/${malId}/full`,
     getMediaCharactersWithVA: `/anime/${malId}/characters`,
   };

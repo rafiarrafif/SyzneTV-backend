@@ -90,6 +90,7 @@ Table characters {
   deletedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
+  voice_actors lang_va_char [not null]
 }
 
 Table voice_actors {
@@ -106,6 +107,24 @@ Table voice_actors {
   deletedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
+  characters lang_va_char [not null]
+}
+
+Table lang_va_char {
+  id String [pk]
+  language String [not null]
+  voiceActor voice_actors [not null]
+  vaId String [not null]
+  character characters [not null]
+  charId String [not null]
+  createdBy users [not null]
+  creatorId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (language, vaId, charId) [unique]
+  }
 }
 
 Table episodes {
@@ -205,6 +224,7 @@ Table users {
   studios studios [not null]
   characters characters [not null]
   voice_actor voice_actors [not null]
+  lang_va_char lang_va_char [not null]
   episodes episodes [not null]
   episode_likes episode_likes [not null]
   videos videos [not null]
@@ -646,6 +666,12 @@ Ref: studios.createdBy > users.id
 Ref: characters.creatorId > users.id
 
 Ref: voice_actors.creatorId > users.id
+
+Ref: lang_va_char.vaId > voice_actors.id
+
+Ref: lang_va_char.charId > characters.id
+
+Ref: lang_va_char.creatorId > users.id
 
 Ref: episodes.mediaId > medias.id
 

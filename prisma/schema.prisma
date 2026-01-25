@@ -124,6 +124,7 @@ model Character {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
 
+  voice_actors  LangVAChar[]  @relation("CharVALanguage")
   @@map("characters")
 }
 
@@ -142,7 +143,24 @@ model VoiceActor {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
 
+  characters  LangVAChar[]  @relation("VACharLanguage")
   @@map("voice_actors")
+}
+
+model LangVAChar {
+  id          String      @id @default(uuid()) @db.Uuid
+  language    String
+  voiceActor  VoiceActor  @relation("VACharLanguage", fields: [vaId], references: [id])
+  vaId        String      @db.Uuid
+  character   Character   @relation("CharVALanguage", fields: [charId], references: [id])
+  charId      String      @db.Uuid
+  createdBy   User        @relation("UserCreatedLangVAChar", fields: [creatorId], references: [id])
+  creatorId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @default(now()) @updatedAt
+
+  @@unique([language, vaId, charId])
+  @@map("lang_va_char")
 }
 
 model Episode {
@@ -249,6 +267,7 @@ model User {
   studios           Studio[]             @relation("UserCreatedStudios") 
   characters        Character[]          @relation("UserCreatedCharacters")
   voice_actor       VoiceActor[]         @relation("UserCreatedVoiceActors")
+  lang_va_char      LangVAChar[]         @relation("UserCreatedLangVAChar")
   episodes          Episode[]            @relation("UserEpisodes")
   episode_likes     EpisodeLike[]        @relation("UserEpisodeLikes") 
   videos            Video[]              @relation("UserVideos")
