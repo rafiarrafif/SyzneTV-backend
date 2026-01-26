@@ -133,8 +133,8 @@ model VoiceActor {
   malId       Int       @unique
   name        String
   birthday    DateTime?
-  description String    @db.Text
-  aboutUrl    String
+  description String?   @db.Text
+  aboutUrl    String?
   imageUrl    String?
   websiteUrl  String?
   createdBy   User      @relation("UserCreatedVoiceActors", fields: [creatorId], references: [id])
