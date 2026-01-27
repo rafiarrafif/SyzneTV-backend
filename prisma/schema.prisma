@@ -23,26 +23,27 @@ generator dbml {
 //// Prisma Model ////
 
 model Media {
-  id                String    @id @default(uuid())
-  title             String    @db.Text
+  id                String      @id @default(uuid())
+  title             String      @db.Text
   titleAlternative  Json 
-  slug              String    @db.Text @unique
-  malId             Int?      @unique
-  pictureMedium     String    @db.Text
-  pictureLarge      String    @db.Text
-  genres            Genre[]   @relation("MediaGenres")
-  country           Country   @default(JP)
-  score             Decimal   @db.Decimal(4, 2) @default(0.00)
+  slug              String      @db.Text @unique
+  malId             Int?        @unique
+  pictureMedium     String      @db.Text
+  pictureLarge      String      @db.Text
+  genres            Genre[]     @relation("MediaGenres")
+  country           Country     @default(JP)
+  score             Decimal     @db.Decimal(4, 2) @default(0.00)
   status            String
   startAiring       DateTime?
   endAiring         DateTime?
-  synopsis          String    @db.Text
+  synopsis          String      @db.Text
   ageRating         String
   mediaType         MediaType 
   source            String?
-  studios           Studio[]  @relation("MediaStudios")
-  onDraft           Boolean   @default(true)
-  uploader          User      @relation("UserUploadedMedias", fields: [uploadedBy], references: [id])
+  studios           Studio[]    @relation("MediaStudios")
+  characters        Character[] @relation("MediaCharacters")
+  onDraft           Boolean     @default(true)
+  uploader          User        @relation("UserUploadedMedias", fields: [uploadedBy], references: [id])
   uploadedBy        String   
   deletedAt         DateTime?
   createdAt         DateTime  @default(now())
@@ -124,6 +125,7 @@ model Character {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
 
+  medias        Media[]       @relation("MediaCharacters")
   voice_actors  LangVAChar[]  @relation("CharVALanguage")
   @@map("characters")
 }
@@ -133,8 +135,8 @@ model VoiceActor {
   malId       Int       @unique
   name        String
   birthday    DateTime?
-  description String    @db.Text
-  aboutUrl    String
+  description String?   @db.Text
+  aboutUrl    String?
   imageUrl    String?
   websiteUrl  String?
   createdBy   User      @relation("UserCreatedVoiceActors", fields: [creatorId], references: [id])

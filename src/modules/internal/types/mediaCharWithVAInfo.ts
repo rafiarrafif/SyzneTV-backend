@@ -35,7 +35,7 @@ enum Role {
   Supporting = "Supporting",
 }
 
-interface VoiceActor {
+export interface VoiceActor {
   person: Person;
   language: Language;
 }
@@ -47,7 +47,7 @@ enum Language {
   Spanish = "Spanish",
 }
 
-interface Person {
+export interface Person {
   mal_id: number;
   url: string;
   images: PersonImages;

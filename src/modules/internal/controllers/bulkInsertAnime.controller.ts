@@ -8,8 +8,7 @@ export const bulkInsertAnimeController = async (
   ctx: Context & { body: { mal_id: number } },
 ) => {
   try {
-    // const bulkInsertResult = await bulkInsertAnimeService(ctx.body.mal_id);
-    const bulkInsertResult = await bulkInsertCharWithVAService(ctx.body.mal_id);
+    const bulkInsertResult = await bulkInsertAnimeService(ctx.body.mal_id);
     return returnWriteResponse(
       ctx.set,
       201,

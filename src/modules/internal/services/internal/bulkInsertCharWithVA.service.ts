@@ -30,7 +30,7 @@ export const bulkInsertCharWithVAService = async (malId: number) => {
       const insertedVAs: { staffId: string; lang: string }[] = [];
       for (const VAEntries of charEntry.voice_actors) {
         const insertedVAId = await bulkInsertStaffOrPeopleService(
-          VAEntries.person.mal_id,
+          VAEntries.person,
         );
         insertedVAs.push({
           staffId: insertedVAId.id,

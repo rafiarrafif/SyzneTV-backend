@@ -6,6 +6,7 @@ import { InsertMediaRepository } from "../repositories/bulkinsertMedia.repositor
 import { bulkInsertStudiosRepository } from "../repositories/bulkInsertStudios.repository";
 import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
 import { generateSlug } from "../../../helpers/characters/generateSlug";
+import { bulkInsertCharWithVAService } from "./internal/bulkInsertCharWithVA.service";
 
 export const bulkInsertAnimeService = async (malId: number) => {
   try {
@@ -16,8 +17,9 @@ export const bulkInsertAnimeService = async (malId: number) => {
 
     const insertedGenres = await bulkInsertGenresRepository(mediaFullInfo);
     const insertedStudios = await bulkInsertStudiosRepository(mediaFullInfo);
+    const insertedCharacters = await bulkInsertCharWithVAService(malId);
 
-    const constructMediaPayload = {
+    const constructMediaPayload: Prisma.MediaUpsertArgs["create"] = {
       title: mediaFullInfo.data.title,
       titleAlternative: (mediaFullInfo.data
         .titles as unknown) as Prisma.InputJsonValue,
@@ -31,6 +33,9 @@ export const bulkInsertAnimeService = async (malId: number) => {
       },
       studios: {
         connect: insertedStudios.map((id) => ({ id })),
+      },
+      characters: {
+        connect: insertedCharacters.map(({ id }) => ({ id })),
       },
       score: mediaFullInfo.data.score,
       pictureMedium: mediaFullInfo.data.images.webp.image_url,
