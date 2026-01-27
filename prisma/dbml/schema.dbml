@@ -52,7 +52,7 @@ Table genres {
   id String [pk]
   name String [not null]
   slug String [unique, not null]
-  malId Int [not null]
+  malId Int [unique, not null]
   malUrl String [not null]
   creator users [not null]
   createdBy String [not null]
@@ -68,7 +68,7 @@ Table studios {
   name String [not null]
   slug String [unique, not null]
   linkAbout String [not null]
-  malId Int [not null]
+  malId Int [unique, not null]
   logoUrl String
   creator users [not null]
   createdBy String [not null]

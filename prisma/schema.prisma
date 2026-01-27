@@ -23,7 +23,7 @@ generator dbml {
 //// Prisma Model ////
 
 model Media {
-  id                String      @id @default(uuid())
+  id                String      @id @db.Uuid
   title             String      @db.Text
   titleAlternative  Json 
   slug              String      @db.Text @unique
@@ -44,7 +44,7 @@ model Media {
   characters        Character[] @relation("MediaCharacters")
   onDraft           Boolean     @default(true)
   uploader          User        @relation("UserUploadedMedias", fields: [uploadedBy], references: [id])
-  uploadedBy        String   
+  uploadedBy        String      @db.Uuid
   deletedAt         DateTime?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now()) @updatedAt
@@ -62,28 +62,28 @@ model Media {
 }
 
 model MediaLog {
-  id            String          @id @default(uuid())
+  id            String          @id @db.Uuid
   status        MediaOperation
   approval      Boolean         @default(false)
   proposer      User            @relation("UserProposedMedias", fields: [proposedBy], references: [id])
-  proposedBy    String 
+  proposedBy    String          @db.Uuid
   approver      User            @relation("UserApprovedMedias", fields: [approvedBy], references: [id])
-  approvedBy    String
+  approvedBy    String          @db.Uuid
   media         Media           @relation("MediaLogs", fields: [mediaId], references: [id])
-  mediaId       String 
+  mediaId       String          @db.Uuid
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @default(now()) @updatedAt
   @@map("media_logs")
 }
 
 model Genre {
-  id          String    @id @default(uuid())
+  id          String    @id @db.Uuid
   name        String    @db.VarChar(255)
   slug        String    @db.VarChar(255) @unique
-  malId       Int       
+  malId       Int       @unique
   malUrl      String    @db.VarChar(255)
   creator     User      @relation("UserCreatedGenres", fields: [createdBy], references: [id])
-  createdBy   String    
+  createdBy   String    @db.Uuid
   deletedAt   DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
@@ -95,14 +95,14 @@ model Genre {
 }
 
 model Studio {
-  id          String    @id @default(uuid())
+  id          String    @id @db.Uuid
   name        String    @db.VarChar(255)
   slug        String    @db.VarChar(255) @unique
   linkAbout   String    @db.Text
-  malId       Int
+  malId       Int       @unique
   logoUrl     String?   @db.Text
   creator     User      @relation("UserCreatedStudios", fields: [createdBy], references: [id])
-  createdBy   String    
+  createdBy   String    @db.Uuid
   deletedAt   DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
@@ -112,7 +112,7 @@ model Studio {
 }
 
 model Character {
-  id            String    @id @default(uuid()) @db.Uuid
+  id            String    @id@db.Uuid
   malId         Int       @unique
   name          String
   role          CharacterRole
@@ -120,7 +120,7 @@ model Character {
   imageUrl      String?
   smallImageUrl String?
   createdBy     User      @relation("UserCreatedCharacters", fields: [creatorId], references: [id])
-  creatorId     String
+  creatorId     String    @db.Uuid
   deletedAt     DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
@@ -131,7 +131,7 @@ model Character {
 }
 
 model VoiceActor {
-  id          String    @id @default(uuid()) @db.Uuid
+  id          String    @id @db.Uuid
   malId       Int       @unique
   name        String
   birthday    DateTime?
@@ -140,7 +140,7 @@ model VoiceActor {
   imageUrl    String?
   websiteUrl  String?
   createdBy   User      @relation("UserCreatedVoiceActors", fields: [creatorId], references: [id])
-  creatorId   String
+  creatorId   String    @db.Uuid
   deletedAt   DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
@@ -150,14 +150,14 @@ model VoiceActor {
 }
 
 model LangVAChar {
-  id          String      @id @default(uuid()) @db.Uuid
+  id          String      @id @db.Uuid
   language    String
   voiceActor  VoiceActor  @relation("VACharLanguage", fields: [vaId], references: [id])
   vaId        String      @db.Uuid
   character   Character   @relation("CharVALanguage", fields: [charId], references: [id])
   charId      String      @db.Uuid
   createdBy   User        @relation("UserCreatedLangVAChar", fields: [creatorId], references: [id])
-  creatorId   String
+  creatorId   String      @db.Uuid
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
 
@@ -166,9 +166,9 @@ model LangVAChar {
 }
 
 model Episode {
-  id                String    @id @default(uuid())
+  id                String    @id @db.Uuid
   media             Media     @relation("MediaEpisodes", fields: [mediaId], references: [id])
-  mediaId           String
+  mediaId           String    @db.Uuid
   episode           Int
   name              String    @db.VarChar(255)
   pictureThumbnail  String    @db.Text
@@ -177,7 +177,7 @@ model Episode {
   dislikes          BigInt    @default(0)
   pendingUpload     Boolean   @default(true)
   uploader          User      @relation("UserEpisodes", fields: [uploadedBy], references: [id])
-  uploadedBy        String
+  uploadedBy        String    @db.Uuid
   deletedAt         DateTime?
   createdAt         DateTime  @default(now()) 
   updatedAt         DateTime  @default(now()) @updatedAt
@@ -190,28 +190,28 @@ model Episode {
 }
 
 model EpisodeLike {
-  id          String      @id @default(uuid())
+  id          String      @id @db.Uuid
   user        User        @relation("UserEpisodeLikes", fields: [userId], references: [id])
-  userId      String
+  userId      String      @db.Uuid
   session     UserSession @relation("SessionEpisodeLikes", fields: [sessionId], references: [id])
-  sessionId   String
+  sessionId   String      @db.Uuid
   episode     Episode     @relation("EpisodeLikes", fields: [episodeId], references: [id])
-  episodeId   String
+  episodeId   String      @db.Uuid
   createdAt   DateTime    @default(now()) 
   updatedAt   DateTime    @default(now()) @updatedAt
   @@map("episode_likes")
 }
 
 model Video {
-  id              String    @id @default(uuid())
+  id              String    @id @db.Uuid
   episode         Episode   @relation("EpisodeVideos", fields: [episodeId], references: [id])
-  episodeId       String
+  episodeId       String    @db.Uuid
   service         VideoService @relation("VideoServices", fields: [serviceId], references: [id])
-  serviceId       String
+  serviceId       String    @db.Uuid
   code            String    @db.VarChar(255)
   pendingUpload   Boolean   @default(true)
   uploader        User      @relation("UserVideos", fields: [uploadedBy], references: [id]) 
-  uploadedBy      String
+  uploadedBy      String    @db.Uuid
   deletedAt       DateTime?
   createdAt       DateTime  @default(now()) 
   updatedAt       DateTime  @default(now()) @updatedAt
@@ -219,7 +219,7 @@ model Video {
 }
 
 model VideoService {
-  id                String    @id @default(uuid())
+  id                String    @id @db.Uuid
   name              String    @db.VarChar(255) @unique
   domain            String    @db.VarChar(255)
   logo              String?   @db.Text 
@@ -227,7 +227,7 @@ model VideoService {
   endpointVideo     String    @db.Text
   endpointThumbnail String?   @db.Text
   creator           User      @relation("UserVideoServices", fields: [createdBy], references: [id])
-  createdBy         String
+  createdBy         String    @db.Uuid
   deletedAt         DateTime?
   createdAt         DateTime  @default(now()) 
   updatedAt         DateTime  @default(now()) @updatedAt
@@ -238,7 +238,7 @@ model VideoService {
 }
 
 model User {
-  id                String          @id @default(uuid())
+  id                String          @id @db.Uuid
   name              String          @db.VarChar(255)
   username          String          @unique @db.VarChar(255)
   email             String          @unique @db.Text
@@ -295,16 +295,16 @@ model User {
 }
 
 model UserPreference {
-  id                String          @id @default(uuid())
+  id                String          @id @db.Uuid
   user              User            @relation(fields: [userId], references: [id])
-  userId            String          @unique
+  userId            String          @unique @db.Uuid
   lang              Language?       @relation("UserPreferenceLang", fields: [langPreference], references: [code])
-  langPreference    String?      
+  langPreference    String?
   adultFiltering    AdultFiltering  @default(hide)
   adultAlert        AdultAlert      @default(show)
   videoQuality      VideoQuality    @default(Q1080)
   serviceDefault    VideoService?   @relation("UserServiceDefault", fields: [serviceDefaultId], references: [id])
-  serviceDefaultId  String?
+  serviceDefaultId  String?         @db.Uuid
   hideContries      Country[]
   favoriteGenres    Genre[]         @relation("UserFavoriteGenres")
   createdAt         DateTime        @default(now())
@@ -313,7 +313,7 @@ model UserPreference {
 }
 
 model UserRole {
-  id                String          @id @default(uuid())
+  id                String          @id @db.Uuid
   name              String          @db.VarChar(255) @unique
   description       String?         @db.Text
   primaryColor      String?         @db.VarChar(10)
@@ -332,7 +332,7 @@ model UserRole {
   canEditSystem     Boolean         @default(false)
   canManageSystem   Boolean         @default(false)
   creator           User            @relation("UserCreateRoles", fields: [createdBy], references: [id])
-  createdBy         String
+  createdBy         String          @db.Uuid
   deletedAt         DateTime?
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @default(now()) @updatedAt
@@ -343,10 +343,10 @@ model UserRole {
 
 model UserRoleAssignment {
   user          User      @relation(fields: [userId], references: [id])
-  userId        String
+  userId        String    @db.Uuid
 
   role          UserRole  @relation(fields: [roleId], references: [id])
-  roleId        String
+  roleId        String    @db.Uuid
 
   assignmentAt  DateTime  @default(now())
 
@@ -355,14 +355,14 @@ model UserRoleAssignment {
 }
 
 model UserNotification {
-  id          String    @id @default(uuid())
+  id          String    @id @db.Uuid
   title       String    @db.VarChar(255)
   content     String    @db.Text
   picture     String    @db.Text
   state       UserNotificationState 
   ctaLink     String    @db.Text
   user        User      @relation("UserNotifications", fields: [userId], references: [id])
-  userId      String
+  userId      String    @db.Uuid
   isReaded    Boolean   @default(false)
   deletedAt   DateTime?
   createdAt   DateTime  @default(now())
@@ -371,10 +371,10 @@ model UserNotification {
 }
 
 model UserSession {
-  id              String    @id @default(uuid())
+  id              String    @id @db.Uuid
   isAuthenticated Boolean   @default(false)
   user            User      @relation("UserSession", fields: [userId], references: [id])
-  userId          String 
+  userId          String    @db.Uuid
   deviceType      String    @db.VarChar(255)
   deviceOs        String    @db.VarChar(255)
   deviceIp        String    @db.VarChar(255)
@@ -393,24 +393,24 @@ model UserSession {
 }
 
 model UserLog {
-  id        String      @id @default(uuid())
+  id        String      @id @db.Uuid
   title     String      @db.VarChar(255)
   notes     String      @db.Text
   user      User        @relation("UserLogs", fields: [userId], references: [id])
-  userId    String
+  userId    String      @db.Uuid
   session   UserSession @relation("UserSessionLogs", fields: [sessionId], references: [id])
-  sessionId String
+  sessionId String      @db.Uuid
   createdAt DateTime    @default(now())
   updatedAt DateTime    @default(now()) @updatedAt
   @@map("user_logs")
 }
 
 model Collection {
-  id              String        @id @default(uuid())
+  id              String        @id @db.Uuid
   name            String        @db.VarChar(255)
   medias          Media[]       @relation("MediaCollections")
   owner           User          @relation("UserCollections", fields: [ownerId], references: [id])
-  ownerId         String
+  ownerId         String        @db.Uuid
   accessStatus    AccessStatus  @default(private)
   password        String?       @db.VarChar(255)
   usersAllowed    User[]        @relation("UserSelectedSharingCollention")
@@ -422,28 +422,28 @@ model Collection {
 }
 
 model WatchHistory {
-  id          String      @id @default(uuid())
+  id          String      @id @db.Uuid
   episode     Episode     @relation("EpisodeWatchHistories", fields: [id], references: [id])
-  episodeId   String
+  episodeId   String      @db.Uuid
   user        User        @relation("UserWatchHistories", fields: [userId], references: [id])
-  userId      String
+  userId      String      @db.Uuid
   session     UserSession @relation("SessionWatchHistories", fields: [sessionId], references: [id])
-  sessionId   String
+  sessionId   String      @db.Uuid
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @default(now()) @updatedAt
   @@map("watch_histories")
 }
 
 model MediaReview {
-  id          String      @id @default(uuid())
+  id          String      @id @db.Uuid
   media       Media       @relation("MediaReviews", fields: [mediaId], references:[id])
-  mediaId     String
+  mediaId     String      @db.Uuid
   rating      Int 
   title       String      @db.VarChar(255)
   text        String      @db.Text
   reaction    MediaReviewReaction
   creator     User        @relation("UserMediaReviews", fields: [createdBy], references: [id])
-  createdBy   String
+  createdBy   String      @db.Uuid
   deletedAt   DateTime?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @default(now()) @updatedAt
@@ -451,15 +451,15 @@ model MediaReview {
 }
 
 model Comment {
-  id String @id @default(uuid())
+  id String @id @db.Uuid
   episode   Episode   @relation("EpisodeComments", fields: [episodeId], references: [id])
-  episodeId String
+  episodeId String    @db.Uuid
   text      String    @db.Text
   isParent  Boolean   @default(false)
   parent    Comment?  @relation("ParentReplyComments", fields: [parentId], references: [id])
-  parentId  String?
+  parentId  String?   @db.Uuid
   user      User      @relation("UserComments", fields: [userId], references: [id])
-  userId    String
+  userId    String    @db.Uuid
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
 
@@ -469,40 +469,40 @@ model Comment {
 }
 
 model CommentLike {
-  id        String    @id @default(uuid())
+  id        String    @id @db.Uuid
   comment   Comment   @relation("CommentLikes", fields: [commentId], references: [id])
-  commentId String
+  commentId String    @db.Uuid
   user      User      @relation("UserCommentLikes", fields: [userLiked], references: [id])
-  userLiked String
+  userLiked String    @db.Uuid
   createdAt DateTime  @default(now())
   updatedAt DateTime  @default(now()) @updatedAt
   @@map("comment_likes")
 }
 
 model CommentReport {
-  id                  String        @id @default(uuid())
+  id                  String        @id @db.Uuid
   reporter            User          @relation("UserReportComments", fields: [userReporter], references: [id])
-  userReporter        String
-  commentReported     String
+  userReporter        String        @db.Uuid
+  commentReported     String        @db.Uuid
   isSupervisorReport  Boolean       @default(false)
   reason              ReportReason
   status              ReportStatus
   description         String        @db.VarChar(255)
   approver            User?         @relation("ApprovedReportComments", fields: [approvedBy], references: [id])
-  approvedBy          String?
+  approvedBy          String?       @db.Uuid
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @default(now()) @updatedAt
   @@map("comment_reports")
 }
 
 model Language {
-  id            String    @id @default(uuid())
+  id            String    @id @db.Uuid
   name          String    @db.VarChar(255)
   code          String    @db.VarChar(5) @unique
   countryFlag   String    @db.VarChar(10)
   fileLocation  String    @db.Text
   creator       User      @relation("UserCreateLanguages", fields: [craetedBy], references: [id])
-  craetedBy     String
+  craetedBy     String    @db.Uuid
   deletedAt     DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
@@ -512,7 +512,7 @@ model Language {
 }
 
 model EmailSystemAccount {
-  id          String    @id @default(uuid())
+  id          String    @id @db.Uuid
   name        String    @unique
   host        String    @db.VarChar(255)
   port        Int
@@ -522,7 +522,7 @@ model EmailSystemAccount {
   password    String    @db.VarChar(255)
   purpose     EmailPorpose
   creator     User      @relation("UserCreateSystemAccount", fields: [createdBy], references: [id])
-  createdBy   String  
+  createdBy   String    @db.Uuid
   deletedAt   DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
@@ -530,12 +530,12 @@ model EmailSystemAccount {
 }
 
 model EmailSystemHistory {
-  id          String        @id @default(uuid())
+  id          String        @id @db.Uuid
   purpose     EmailPorpose
   fromEmail   String        @db.Text
   toEmail     String        @db.Text
   user        User          @relation("UserEmails", fields: [userRelated], references: [id])
-  userRelated String
+  userRelated String        @db.Uuid
   title       String        @db.VarChar(255)
   htmlContent String        @db.Text
   deletedAt   DateTime?
@@ -545,7 +545,7 @@ model EmailSystemHistory {
 }
 
 model SystemPreference {
-  id          String    @id @default(uuid()) 
+  id          String    @id @db.Uuid 
   key         String    @db.VarChar(225)
   value       String    @db.VarChar(225)
   description String    @db.Text
@@ -556,14 +556,14 @@ model SystemPreference {
 }
 
 model SystemNotification {
-  id            String    @id @default(uuid())
+  id            String    @id @db.Uuid
   type          TypeSystemNotification
   componentName String?   @db.VarChar(255) 
   popupImage    String?   @db.Text
   titleToast    String?   @db.VarChar(255)
   contentToast  String?   @db.Text
   creator       User      @relation("UserCreatorSystemNotifications", fields: [createdBy], references: [id])
-  createdBy     String
+  createdBy     String    @db.Uuid
   deletedAt     DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
@@ -571,11 +571,11 @@ model SystemNotification {
 }
 
 model SystemLog {
-  id String @id @default(uuid())
+  id String @id @db.Uuid
   title String @db.VarChar(255)
   notes String @db.Text
   user User? @relation("UserSystemLogs", fields: [relatedUser], references: [id])
-  relatedUser String?
+  relatedUser String? @db.Uuid
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @default(now()) @updatedAt
   @@map("system_logs")
