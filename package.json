@@ -12,6 +12,7 @@
     "prisma:push": "bunx prisma db push",
     "prisma:generate": "bunx prisma generate",
     "prisma:dbml": "bunx prisma db pull && bunx prisma dbml --output ./prisma/dbml/schema.dbml",
+    "prisma:reset": "bunx prisma db push --force-reset",
     "prisma:seed": "bun run ./prisma/seed/index.ts",
     "route:sync": "bun run ./scripts/sync-routes.ts",
     "env:publish": "bun run ./scripts/create-example-env.ts"
@@ -37,6 +38,7 @@
     "nock": "^14.0.4",
     "pg": "^8.17.1",
     "slugify": "^1.6.6",
+    "uuidv7": "^1.1.0",
     "zod": "^4.0.5"
   },
   "devDependencies": {
