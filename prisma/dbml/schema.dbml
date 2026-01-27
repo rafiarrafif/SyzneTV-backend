@@ -21,6 +21,7 @@ Table medias {
   mediaType MediaType [not null]
   source String
   studios studios [not null]
+  characters characters [not null]
   onDraft Boolean [not null, default: true]
   uploader users [not null]
   uploadedBy String [not null]
@@ -90,6 +91,7 @@ Table characters {
   deletedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
+  medias medias [not null]
   voice_actors lang_va_char [not null]
 }
 
@@ -98,8 +100,8 @@ Table voice_actors {
   malId Int [unique, not null]
   name String [not null]
   birthday DateTime
-  description String [not null]
-  aboutUrl String [not null]
+  description String
+  aboutUrl String
   imageUrl String
   websiteUrl String
   createdBy users [not null]
@@ -520,6 +522,11 @@ Table MediaGenres {
 
 Table MediaStudios {
   studiosId String [ref: > studios.id]
+  mediasId String [ref: > medias.id]
+}
+
+Table MediaCharacters {
+  charactersId String [ref: > characters.id]
   mediasId String [ref: > medias.id]
 }
 

@@ -1,24 +1,14 @@
 import { SystemAccountId } from "../../../../config/account/system";
-import { getPeopleAPI } from "../../../../config/apis/people.reference";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { bulkInsertVoiceActorRepository } from "../../repositories/bulkInsertVoiceActor.repository";
-import { PeopleInfoResponse } from "../../types/peopleInfo";
+import { Person } from "../../types/mediaCharWithVAInfo";
 
-export const bulkInsertStaffOrPeopleService = async (malId: number) => {
+export const bulkInsertStaffOrPeopleService = async (peopleData: Person) => {
   try {
-    const { baseURL, getPeopleInfo } = getPeopleAPI(malId);
-    const peopleData = (await fetch(baseURL + getPeopleInfo).then((res) =>
-      res.json(),
-    )) as PeopleInfoResponse;
-
     return await bulkInsertVoiceActorRepository({
-      malId: peopleData.data.mal_id,
-      name: peopleData.data.name,
-      birthday: peopleData.data.birthday,
-      description: peopleData.data.about,
-      aboutUrl: peopleData.data.url,
-      imageUrl: peopleData.data.images.jpg.image_url,
-      websiteUrl: peopleData.data.website_url,
+      malId: peopleData.mal_id,
+      name: peopleData.name,
+      imageUrl: peopleData.images.jpg.image_url,
       creatorId: SystemAccountId,
     });
   } catch (error) {
