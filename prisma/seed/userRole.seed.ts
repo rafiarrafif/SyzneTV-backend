@@ -6,7 +6,6 @@ export const userRoleSeed = async () => {
   console.log("🔃 Seeding user roles...", SystemAccountId);
   const roles = [
     {
-      id: generateUUIDv7(),
       name: "ADMIN",
       description: "Administrator with full access",
       isSuperadmin: true,
@@ -23,7 +22,6 @@ export const userRoleSeed = async () => {
       createdBy: SystemAccountId,
     },
     {
-      id: generateUUIDv7(),
       name: "USER",
       description: "Regular user with limited access",
       isSuperadmin: false,
@@ -48,7 +46,10 @@ export const userRoleSeed = async () => {
           await tx.userRole.upsert({
             where: { name: role.name },
             update: role,
-            create: role,
+            create: {
+              id: generateUUIDv7(),
+              ...role,
+            },
           }),
       ),
     );
