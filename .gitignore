@@ -56,6 +56,9 @@ server.exe
 /src/routes.ts
 /src/modules/debug
 
+# Credential files
+/src/config/account/*.ts
+
 # uploaded files
 /uploads
 
