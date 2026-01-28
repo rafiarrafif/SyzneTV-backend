@@ -1,7 +1,9 @@
+import { SystemAccountId } from "../../src/config/account/system";
 import { generateUUIDv7 } from "../../src/helpers/databases/uuidv7";
 import { prisma } from "../../src/utils/databases/prisma/connection";
 
-export const userRoleSeed = async (systemId: string) => {
+export const userRoleSeed = async () => {
+  console.log("🔃 Seeding user roles...", SystemAccountId);
   const roles = [
     {
       id: generateUUIDv7(),
@@ -18,7 +20,7 @@ export const userRoleSeed = async (systemId: string) => {
       canManageUser: true,
       canEditSystem: true,
       canManageSystem: true,
-      createdBy: systemId,
+      createdBy: SystemAccountId,
     },
     {
       id: generateUUIDv7(),
@@ -35,17 +37,37 @@ export const userRoleSeed = async (systemId: string) => {
       canManageUser: false,
       canEditSystem: false,
       canManageSystem: false,
-      createdBy: systemId,
+      createdBy: SystemAccountId,
     },
   ];
 
-  await prisma.$transaction(
-    roles.map((role) =>
-      prisma.userRole.upsert({
-        where: { name: role.name },
-        update: role,
-        create: role,
-      }),
-    ),
-  );
+  await prisma.$transaction(async (tx) => {
+    const createdRoles = await Promise.all(
+      roles.map(
+        async (role) =>
+          await tx.userRole.upsert({
+            where: { name: role.name },
+            update: role,
+            create: role,
+          }),
+      ),
+    );
+
+    await tx.userRoleAssignment.upsert({
+      where: {
+        userId_roleId: {
+          userId: SystemAccountId,
+          roleId: createdRoles.find((r) => r.name === "ADMIN")!.id,
+        },
+      },
+      create: {
+        userId: SystemAccountId,
+        roleId: createdRoles.find((r) => r.name === "ADMIN")!.id,
+      },
+      update: {
+        userId: SystemAccountId,
+        roleId: createdRoles.find((r) => r.name === "ADMIN")!.id,
+      },
+    });
+  });
 };

@@ -6,8 +6,8 @@ async function main() {
   console.log("🌱 Running all seeds...");
   console.log("🔌 Connecting to database...");
 
-  const systemUserId = await userSystemSeed();
-  await userRoleSeed(systemUserId.id);
+  await userSystemSeed();
+  await userRoleSeed();
 
   console.log("🌳 All seeds completed");
 }
