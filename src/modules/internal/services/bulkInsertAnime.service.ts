@@ -8,6 +8,7 @@ import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
 import { generateSlug } from "../../../helpers/characters/generateSlug";
 import { bulkInsertCharWithVAService } from "./internal/bulkInsertCharWithVA.service";
 import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
+import { SystemAccountId } from "../../../config/account/system";
 
 export const bulkInsertAnimeService = async (malId: number) => {
   try {
@@ -50,7 +51,7 @@ export const bulkInsertAnimeService = async (malId: number) => {
       mediaType: mediaFullInfo.data.type,
       source: mediaFullInfo.data.source,
       onDraft: false,
-      uploadedBy: "b734b9bc-b4ea-408f-a80e-0a837ce884da",
+      uploadedBy: SystemAccountId,
     };
     const insertedMedia = await InsertMediaRepository({
       malId: mediaFullInfo.data.mal_id,

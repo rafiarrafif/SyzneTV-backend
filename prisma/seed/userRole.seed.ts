@@ -1,9 +1,8 @@
-import { SystemAccountId } from "../../src/config/account/system";
 import { generateUUIDv7 } from "../../src/helpers/databases/uuidv7";
 import { prisma } from "../../src/utils/databases/prisma/connection";
 
-export const userRoleSeed = async () => {
-  console.log("🔃 Seeding user roles...", SystemAccountId);
+export const userRoleSeed = async (SystemAccountId: string) => {
+  console.log("🔃 Seeding user roles...");
   const roles = [
     {
       name: "ADMIN",
