@@ -7,6 +7,7 @@ import { bulkInsertStudiosRepository } from "../repositories/bulkInsertStudios.r
 import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
 import { generateSlug } from "../../../helpers/characters/generateSlug";
 import { bulkInsertCharWithVAService } from "./internal/bulkInsertCharWithVA.service";
+import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 
 export const bulkInsertAnimeService = async (malId: number) => {
   try {
@@ -20,6 +21,7 @@ export const bulkInsertAnimeService = async (malId: number) => {
     const insertedCharacters = await bulkInsertCharWithVAService(malId);
 
     const constructMediaPayload: Prisma.MediaUpsertArgs["create"] = {
+      id: generateUUIDv7(),
       title: mediaFullInfo.data.title,
       titleAlternative: (mediaFullInfo.data
         .titles as unknown) as Prisma.InputJsonValue,

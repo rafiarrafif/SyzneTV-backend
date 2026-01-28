@@ -1,8 +1,10 @@
+import { generateUUIDv7 } from "../../src/helpers/databases/uuidv7";
 import { prisma } from "../../src/utils/databases/prisma/connection";
 
 export const userRoleSeed = async (systemId: string) => {
   const roles = [
     {
+      id: generateUUIDv7(),
       name: "ADMIN",
       description: "Administrator with full access",
       isSuperadmin: true,
@@ -19,6 +21,7 @@ export const userRoleSeed = async (systemId: string) => {
       createdBy: systemId,
     },
     {
+      id: generateUUIDv7(),
       name: "USER",
       description: "Regular user with limited access",
       isSuperadmin: false,
@@ -40,7 +43,7 @@ export const userRoleSeed = async (systemId: string) => {
     roles.map((role) =>
       prisma.userRole.upsert({
         where: { name: role.name },
-        update: {},
+        update: role,
         create: role,
       }),
     ),

@@ -1,5 +1,6 @@
 import { SystemAccountId } from "../../../../config/account/system";
 import { getContentReferenceAPI } from "../../../../config/apis/media.reference";
+import { generateUUIDv7 } from "../../../../helpers/databases/uuidv7";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { bulkInsertCharactersRepository } from "../../repositories/bulkInsertCharacters.repository";
 import { bulkInsertLangVARepository } from "../../repositories/bulkInsertLangVA.repository";
@@ -17,6 +18,7 @@ export const bulkInsertCharWithVAService = async (malId: number) => {
     for (const charEntry of charactersWithVAData.data) {
       // Insert character if not exists
       const characterInsertedId = await bulkInsertCharactersRepository({
+        id: generateUUIDv7(),
         malId: charEntry.character.mal_id,
         name: charEntry.character.name,
         role: charEntry.role,
@@ -41,6 +43,7 @@ export const bulkInsertCharWithVAService = async (malId: number) => {
       // Link character with inserted VAs
       for (const langVA of insertedVAs) {
         await bulkInsertLangVARepository({
+          id: generateUUIDv7(),
           language: langVA.lang,
           vaId: langVA.staffId,
           charId: characterInsertedId.id,

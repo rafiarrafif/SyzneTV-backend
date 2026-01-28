@@ -1,7 +1,9 @@
+import { generateUUIDv7 } from "../../src/helpers/databases/uuidv7";
 import { prisma } from "../../src/utils/databases/prisma/connection";
 
 export const userSystemSeed = async () => {
   const payload = {
+    id: generateUUIDv7(),
     name: "SYSTEM",
     username: process.env.DEFAULT_ADMIN_USERNAME || "system",
     email: process.env.DEFAULT_ADMIN_EMAIL || "system@example.com",
