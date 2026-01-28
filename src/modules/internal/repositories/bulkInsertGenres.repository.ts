@@ -1,4 +1,5 @@
 import { generateSlug } from "../../../helpers/characters/generateSlug";
+import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 import { AppError } from "../../../helpers/error/instances/app";
 import { prisma } from "../../../utils/databases/prisma/connection";
 import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
@@ -31,7 +32,10 @@ export const bulkInsertGenresRepository = async (
       };
       const insertedGenre = await prisma.genre.upsert({
         where: { slug },
-        create: genrePayload,
+        create: {
+          id: generateUUIDv7(),
+          ...genrePayload,
+        },
         update: genrePayload,
         select: { id: true },
       });

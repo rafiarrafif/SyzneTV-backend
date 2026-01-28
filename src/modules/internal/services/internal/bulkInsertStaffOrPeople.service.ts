@@ -7,7 +7,6 @@ import { Person } from "../../types/mediaCharWithVAInfo";
 export const bulkInsertStaffOrPeopleService = async (peopleData: Person) => {
   try {
     return await bulkInsertVoiceActorRepository({
-      id: generateUUIDv7(),
       malId: peopleData.mal_id,
       name: peopleData.name,
       imageUrl: peopleData.images.jpg.image_url,

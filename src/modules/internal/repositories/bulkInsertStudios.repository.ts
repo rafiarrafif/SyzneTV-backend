@@ -1,4 +1,5 @@
 import { generateSlug } from "../../../helpers/characters/generateSlug";
+import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 import { AppError } from "../../../helpers/error/instances/app";
 import { prisma } from "../../../utils/databases/prisma/connection";
 import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
@@ -31,7 +32,10 @@ export const bulkInsertStudiosRepository = async (
       };
       const insertedStudio = await prisma.studio.upsert({
         where: { slug },
-        create: studioPayload,
+        create: {
+          id: generateUUIDv7(),
+          ...studioPayload,
+        },
         update: studioPayload,
         select: { id: true },
       });
@@ -48,7 +52,10 @@ export const bulkInsertStudiosRepository = async (
       };
       const insertedStudio = await prisma.studio.upsert({
         where: { slug },
-        create: studioPayload,
+        create: {
+          id: generateUUIDv7(),
+          ...studioPayload,
+        },
         update: studioPayload,
         select: { id: true },
       });

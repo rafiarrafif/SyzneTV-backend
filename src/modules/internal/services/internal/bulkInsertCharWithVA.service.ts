@@ -18,7 +18,6 @@ export const bulkInsertCharWithVAService = async (malId: number) => {
     for (const charEntry of charactersWithVAData.data) {
       // Insert character if not exists
       const characterInsertedId = await bulkInsertCharactersRepository({
-        id: generateUUIDv7(),
         malId: charEntry.character.mal_id,
         name: charEntry.character.name,
         role: charEntry.role,
@@ -43,7 +42,6 @@ export const bulkInsertCharWithVAService = async (malId: number) => {
       // Link character with inserted VAs
       for (const langVA of insertedVAs) {
         await bulkInsertLangVARepository({
-          id: generateUUIDv7(),
           language: langVA.lang,
           vaId: langVA.staffId,
           charId: characterInsertedId.id,

@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { AppError } from "../../../helpers/error/instances/app";
 import { prisma } from "../../../utils/databases/prisma/connection";
 import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
+import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 
 /**
  * Media Payload Construction and Upsert
@@ -22,13 +23,16 @@ export const InsertMediaRepository = async ({
   payload,
 }: {
   malId: number;
-  payload: Prisma.MediaUpsertArgs["create"];
+  payload: Omit<Prisma.MediaUncheckedCreateInput, "id">;
 }) => {
   try {
     return await prisma.media.upsert({
       where: { malId },
       update: payload,
-      create: payload,
+      create: {
+        id: generateUUIDv7(),
+        ...payload,
+      },
     });
   } catch (error) {
     throw new AppError(500, "Failed to insert media", error);
