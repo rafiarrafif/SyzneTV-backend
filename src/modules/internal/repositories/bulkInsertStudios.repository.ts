@@ -1,3 +1,4 @@
+import { SystemAccountId } from "../../../config/account/system";
 import { generateSlug } from "../../../helpers/characters/generateSlug";
 import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 import { AppError } from "../../../helpers/error/instances/app";
@@ -27,7 +28,7 @@ export const bulkInsertStudiosRepository = async (
         name: studio.name,
         malId: studio.mal_id,
         linkAbout: studio.url,
-        createdBy: "b734b9bc-b4ea-408f-a80e-0a837ce884da",
+        createdBy: SystemAccountId,
         slug,
       };
       const insertedStudio = await prisma.studio.upsert({
@@ -47,7 +48,7 @@ export const bulkInsertStudiosRepository = async (
         name: studio.name,
         malId: studio.mal_id,
         linkAbout: studio.url,
-        createdBy: "b734b9bc-b4ea-408f-a80e-0a837ce884da",
+        createdBy: SystemAccountId,
         slug,
       };
       const insertedStudio = await prisma.studio.upsert({

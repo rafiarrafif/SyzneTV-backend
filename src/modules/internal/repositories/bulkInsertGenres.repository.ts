@@ -1,3 +1,4 @@
+import { SystemAccountId } from "../../../config/account/system";
 import { generateSlug } from "../../../helpers/characters/generateSlug";
 import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 import { AppError } from "../../../helpers/error/instances/app";
@@ -27,7 +28,7 @@ export const bulkInsertGenresRepository = async (
         name: genre.name,
         malId: genre.mal_id,
         malUrl: genre.url,
-        createdBy: "b734b9bc-b4ea-408f-a80e-0a837ce884da",
+        createdBy: SystemAccountId,
         slug,
       };
       const insertedGenre = await prisma.genre.upsert({
