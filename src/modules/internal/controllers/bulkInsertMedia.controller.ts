@@ -4,7 +4,7 @@ import { bulkInsertAnimeService } from "../services/http/bulkInsertAnime.service
 import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
 
 /**
- * @function bulkInsertAnimeController
+ * @function bulkInsertMediaController
  * @description Insert new anime to the database only with mal_id. This operation including inserting related data such as genres, studios, producers, licensors, themes, demographics, and relations.
  *
  * @param {Context & { body: { mal_id: number } }} ctx
