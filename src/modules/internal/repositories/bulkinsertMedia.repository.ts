@@ -1,7 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { AppError } from "../../../helpers/error/instances/app";
 import { prisma } from "../../../utils/databases/prisma/connection";
-import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
 import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 
 /**

@@ -135,7 +135,8 @@ Table episodes {
   mediaId String [not null]
   episode Int [not null]
   name String [not null]
-  pictureThumbnail String [not null]
+  score Decimal [not null, default: 0]
+  pictureThumbnail String
   viewed BigInt [not null, default: 0]
   likes BigInt [not null, default: 0]
   dislikes BigInt [not null, default: 0]
@@ -149,6 +150,10 @@ Table episodes {
   videos videos [not null]
   user_histories watch_histories [not null]
   comments comments [not null]
+
+  indexes {
+    (mediaId, episode) [unique]
+  }
 }
 
 Table episode_likes {
