@@ -20,6 +20,8 @@ import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
  * {
  *   "media_mal_id": 12345
  * }
+ * Query parameter:
+ * ?page=2 (Optional, specifies the page number of episodes to fetch and insert)
  *
  * @returns {Promise<Object>}
  * A response object indicating success or failure.
