@@ -1,18 +1,25 @@
 import { middleware } from "./middleware";
 import { validateEnv } from "./utils/startups/validateEnv";
+
 validateEnv();
 
-const { Elysia } = await import("elysia");
-const { routes } = await import("./routes");
+async function bootstrap() {
+  const { Elysia } = await import("elysia");
 
-const { sentryInit } = await import("./utils/monitoring/sentry/init");
-sentryInit();
+  const { routes } = require("./routes");
+  const { sentryInit } = require("./utils/monitoring/sentry/init");
 
-const app = new Elysia()
-  .use(middleware)
-  .use(routes)
-  .listen(process.env.APP_PORT || 3000);
+  sentryInit();
 
-console.log(
-  `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
-);
+  console.log("\x1b[1m\x1b[33m🚀 Starting backend services...\x1b[0m");
+  const app = new Elysia()
+    .use(middleware)
+    .use(routes)
+    .listen(process.env.APP_PORT || 3000);
+
+  console.log(
+    `\x1b[1m\x1b[32m✅ Backend service started on: ${process.env.APP_URL}\x1b[0m`,
+  );
+}
+
+bootstrap();

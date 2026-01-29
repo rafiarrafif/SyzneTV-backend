@@ -171,7 +171,8 @@ model Episode {
   mediaId           String    @db.Uuid
   episode           Int
   name              String    @db.VarChar(255)
-  pictureThumbnail  String    @db.Text
+  score             Decimal   @db.Decimal(4,2) @default(0.00)
+  pictureThumbnail  String?   @db.Text
   viewed            BigInt    @default(0)
   likes             BigInt    @default(0)
   dislikes          BigInt    @default(0)
@@ -186,6 +187,8 @@ model Episode {
   videos            Video[]         @relation("EpisodeVideos")
   user_histories    WatchHistory[]  @relation("EpisodeWatchHistories")
   comments          Comment[]       @relation("EpisodeComments")
+
+  @@unique([mediaId, episode])
   @@map("episodes")
 }
 

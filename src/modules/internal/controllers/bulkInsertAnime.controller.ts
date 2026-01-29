@@ -1,6 +1,6 @@
 import { Context } from "elysia";
 import { mainErrorHandler } from "../../../helpers/error/handler";
-import { bulkInsertAnimeService } from "../services/bulkInsertAnime.service";
+import { bulkInsertAnimeService } from "../services/http/bulkInsertAnime.service";
 import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
 import { bulkInsertCharWithVAService } from "../services/internal/bulkInsertCharWithVA.service";
 
