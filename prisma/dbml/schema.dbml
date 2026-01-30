@@ -181,6 +181,10 @@ Table videos {
   deletedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (serviceId, code) [unique]
+  }
 }
 
 Table video_services {

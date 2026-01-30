@@ -218,6 +218,8 @@ model Video {
   deletedAt       DateTime?
   createdAt       DateTime  @default(now()) 
   updatedAt       DateTime  @default(now()) @updatedAt
+
+  @@unique([serviceId, code])
   @@map("videos")
 }
 
