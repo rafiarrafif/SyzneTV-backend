@@ -218,6 +218,8 @@ model Video {
   deletedAt       DateTime?
   createdAt       DateTime  @default(now()) 
   updatedAt       DateTime  @default(now()) @updatedAt
+
+  @@unique([serviceId, code])
   @@map("videos")
 }
 
@@ -229,6 +231,7 @@ model VideoService {
   hexColor          String    @db.VarChar(10)
   endpointVideo     String    @db.Text
   endpointThumbnail String?   @db.Text
+  endpointDownload  String?
   creator           User      @relation("UserVideoServices", fields: [createdBy], references: [id])
   createdBy         String    @db.Uuid
   deletedAt         DateTime?

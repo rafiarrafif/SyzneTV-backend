@@ -181,6 +181,10 @@ Table videos {
   deletedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (serviceId, code) [unique]
+  }
 }
 
 Table video_services {
@@ -191,6 +195,7 @@ Table video_services {
   hexColor String [not null]
   endpointVideo String [not null]
   endpointThumbnail String
+  endpointDownload String
   creator users [not null]
   createdBy String [not null]
   deletedAt DateTime
