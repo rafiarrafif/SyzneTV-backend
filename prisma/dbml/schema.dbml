@@ -191,6 +191,7 @@ Table video_services {
   hexColor String [not null]
   endpointVideo String [not null]
   endpointThumbnail String
+  endpointDownload String
   creator users [not null]
   createdBy String [not null]
   deletedAt DateTime
