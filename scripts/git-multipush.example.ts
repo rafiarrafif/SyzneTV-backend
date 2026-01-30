@@ -14,7 +14,7 @@ for (const remote of remotes) {
   try {
     execSync(`git push ${remote} main`, { stdio: "inherit" });
   } catch (err) {
-    console.error(`❌ Failed to push to ${remote}`);
+    console.error(`❌ Failed to push to ${remote}`, err);
   }
 }
 

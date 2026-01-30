@@ -12,7 +12,7 @@ async function bootstrap() {
   sentryInit();
 
   console.log("\x1b[1m\x1b[33m🚀 Starting backend services...\x1b[0m");
-  const app = new Elysia()
+  new Elysia()
     .use(middleware)
     .use(routes)
     .listen(process.env.APP_PORT || 3000);
