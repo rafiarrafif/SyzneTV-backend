@@ -25,4 +25,6 @@ export const createFile = async (content: string, config: CreateFileConfig) => {
 
   // Write content to the file
   await fs.promises.writeFile(targetFile, content, "utf8");
+
+  return targetFile;
 };
