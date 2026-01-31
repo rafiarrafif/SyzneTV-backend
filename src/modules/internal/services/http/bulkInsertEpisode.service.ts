@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { getEpisodeReferenceAPI } from "../../../../config/apis/episode.reference";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { MediaEpisodeInfoResponse } from "../../types/mediaEpisodeInfo.type";

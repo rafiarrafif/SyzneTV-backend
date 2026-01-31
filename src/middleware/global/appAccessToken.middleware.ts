@@ -1,4 +1,4 @@
-import Elysia, { Context } from "elysia";
+import Elysia from "elysia";
 import { returnErrorResponse } from "../../helpers/callback/httpResponse";
 
 export const appAccessTokenMiddleware = () =>

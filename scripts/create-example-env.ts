@@ -50,7 +50,7 @@ try {
 
     // Extract the key and the remainder after "="
     const key = line.substring(0, delimiterIndex).trim();
-    let remainder = line.substring(delimiterIndex + 1);
+    const remainder = line.substring(delimiterIndex + 1);
 
     // Attempt to separate value and inline comment (if any)
     let value = remainder;

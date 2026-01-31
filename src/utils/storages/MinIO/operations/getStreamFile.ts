@@ -1,4 +1,4 @@
-import { minioBucketName, minioClient } from "../client";
+import { minioClient } from "../client";
 import { ensureBucketExists } from "../validations/ensureBucketExists";
 
 export const getStreamFile = async (filename: string) => {

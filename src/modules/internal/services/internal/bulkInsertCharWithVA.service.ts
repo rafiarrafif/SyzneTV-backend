@@ -1,6 +1,5 @@
 import { SystemAccountId } from "../../../../config/account/system";
 import { getContentReferenceAPI } from "../../../../config/apis/media.reference";
-import { generateUUIDv7 } from "../../../../helpers/databases/uuidv7";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { bulkInsertCharactersRepository } from "../../repositories/bulkInsertCharacters.repository";
 import { bulkInsertLangVARepository } from "../../repositories/bulkInsertLangVA.repository";
