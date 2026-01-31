@@ -1,4 +1,4 @@
-import { minioBucketName, minioClient, minioProtocol } from "../client";
+import { minioBucketName, minioClient } from "../client";
 import { ensureBucketExists } from "../validations/ensureBucketExists";
 import { Readable } from "stream";
 
@@ -7,7 +7,7 @@ export const uploadFile = async (
   options?: {
     fileDir?: string;
     fileName?: string;
-  }
+  },
 ): Promise<string> => {
   // Ensure the target MinIO bucket exists before performing any upload
   await ensureBucketExists();

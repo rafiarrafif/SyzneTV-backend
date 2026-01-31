@@ -10,7 +10,7 @@ interface Data {
   name: string;
   given_name: null;
   family_name: null;
-  alternate_names: any[];
+  alternate_names: string[];
   birthday: Date;
   favorites: number;
   about: string;

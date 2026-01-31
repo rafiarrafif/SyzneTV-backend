@@ -34,12 +34,12 @@ interface Data {
   year: number;
   broadcast: Broadcast;
   producers: Genre[];
-  licensors: any[];
+  licensors: unknown[];
   studios: Genre[];
   genres: Genre[];
-  explicit_genres: any[];
+  explicit_genres: unknown[];
   themes: Genre[];
-  demographics: any[];
+  demographics: unknown[];
   relations: Relation[];
   theme: Theme;
   external: External[];
