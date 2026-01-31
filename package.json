@@ -14,6 +14,7 @@
     "prisma:dbml": "bunx prisma db pull && bunx prisma dbml --output ./prisma/dbml/schema.dbml",
     "prisma:reset": "bunx prisma db push --force-reset",
     "prisma:seed": "bun run ./prisma/seed/index.ts",
+    "dummy:systemaccount": "bun run ./scripts/create-dummy-system-account.ts",
     "route:sync": "bun run ./scripts/sync-routes.ts",
     "env:publish": "bun run ./scripts/create-example-env.ts"
   },

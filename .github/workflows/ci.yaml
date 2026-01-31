@@ -25,6 +25,9 @@ jobs:
       - name: Linting test
         run: bun run lint
 
+      - name: Create dummy system account
+        run: bun run dummy:systemaccount
+
       - name: Generate prisma schema
         run: bunx prisma generate
 
