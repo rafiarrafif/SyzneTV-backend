@@ -14,17 +14,13 @@ export async function generateSlug(
   const baseSlug = slugify(input, { lower: true, strict: true });
   let uniqueSlug = baseSlug;
 
-  // CASE 1: Tidak ada config → langsung return slug
   if (!config) return uniqueSlug;
-
   const { model, target } = config;
 
-  // CASE 2: Validasi pasangan model-target
   if (!model || !target) {
     throw new Error(`Both "model" and "target" must be provided together.`);
   }
 
-  // CASE 3: Cek unique
   const prismaModel = (prisma as any)[model];
   if (!prismaModel) {
     throw new Error(`Model "${model as string}" not found in PrismaClient.`);

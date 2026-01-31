@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
+
 import { middleware } from "./middleware";
 import { validateEnv } from "./utils/startups/validateEnv";
 

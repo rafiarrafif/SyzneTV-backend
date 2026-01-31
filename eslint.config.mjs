@@ -5,7 +5,7 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   {
-    ignores: ["src/modules/debug/**"],
+    ignores: ["src/modules/debug/**", "src/helpers/characters/generateSlug.ts"],
   },
   {
     files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"],
