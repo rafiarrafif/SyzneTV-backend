@@ -25,5 +25,8 @@ jobs:
       - name: Linting test
         run: bun run lint
 
+      - name: Generate prisma schema
+        run: bunx prisma generate
+
       - name: Build test
         run: bun run build
