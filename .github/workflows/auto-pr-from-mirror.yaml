@@ -1,0 +1,23 @@
+name: Auto PR from mirror-main
+
+on:
+  push:
+    branches:
+      - mirror-main
+
+jobs:
+  pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Create PR via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.BOT_PAT }}
+        run: |
+          gh pr create \
+            --base main \
+            --head mirror-main \
+            --title "Sync from Gitea main" \
+            --body "Automated PR created from Gitea mirror branch."
