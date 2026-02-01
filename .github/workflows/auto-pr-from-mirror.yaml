@@ -1,4 +1,4 @@
-name: Auto PR from Local Git Mirror
+name: Auto PR from mirror-main
 
 on:
   push:
@@ -6,14 +6,15 @@ on:
       - mirror-main
 
 jobs:
-  create-pr:
+  pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: mirror-main
-          base: main
-          title: "Sync from local git mirror"
-          body: "Automated PR created from local git mirror branch main."
+      - name: Create PR via GitHub CLI
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create \
+            --base main \
+            --head mirror-main \
+            --title "Sync from Gitea main" \
+            --body "Automated PR created from Gitea mirror branch."
