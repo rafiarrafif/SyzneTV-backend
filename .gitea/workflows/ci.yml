@@ -13,6 +13,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup Node (required by Prisma)
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24.13.0"
+
       - name: Setup runtime environment (Bun)
         uses: oven-sh/setup-bun@v1
         with:
