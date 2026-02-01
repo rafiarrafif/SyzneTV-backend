@@ -1,0 +1,37 @@
+name: Integration Tests
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup runtime environment (Bun)
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Index route sync
+        run: bun run route:sync
+
+      - name: Linting test
+        run: bun run lint
+
+      - name: Create dummy system account
+        run: bun run dummy:systemaccount
+
+      - name: Generate prisma schema
+        run: bunx prisma generate
+
+      - name: Build test
+        run: bun run build
