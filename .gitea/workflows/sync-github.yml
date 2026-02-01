@@ -1,0 +1,18 @@
+name: Sync to GitHub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout from Gitea
+        uses: actions/checkout@v4
+
+      - name: Push to GitHub mirror-main
+        run: |
+          git remote add github https://vivy-agent:${{ secrets.GH_TOKEN }}@github.com/rafiarrafif/SyzneTV-backend.git
+          git push github HEAD:mirror-main --force
