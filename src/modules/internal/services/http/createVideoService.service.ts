@@ -1,10 +1,10 @@
 import { SystemAccountId } from "../../../../config/account/system";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
-import { CreateVideoServiceBodyRequest } from "../../controllers/createVideoService.controller";
+import { CreateVideoServiceInternalBodyRequest } from "../../controllers/createVideoService.controller";
 import { createVideoServiceInternalRepository } from "../../repositories/createVideoService.repository";
 
 export const createVideoServiceInternalService = async (
-  body: CreateVideoServiceBodyRequest,
+  body: CreateVideoServiceInternalBodyRequest,
 ) => {
   try {
     return await createVideoServiceInternalRepository({
