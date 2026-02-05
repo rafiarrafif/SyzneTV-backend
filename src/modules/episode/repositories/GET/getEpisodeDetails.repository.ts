@@ -1,3 +1,4 @@
+import { serializeBigInt } from "../../../../helpers/characters/serializeBigInt";
 import { AppError } from "../../../../helpers/error/instances/app";
 import { episodeModel } from "../../episode.model";
 
@@ -6,7 +7,7 @@ export const getEpisodeDetailsRepository = async (payload: {
   episode: number;
 }) => {
   try {
-    return await episodeModel.findUnique({
+    const result = await episodeModel.findUnique({
       where: {
         mediaId_episode: {
           mediaId: payload.mediaId,
@@ -57,6 +58,8 @@ export const getEpisodeDetailsRepository = async (payload: {
         },
       },
     });
+
+    return serializeBigInt(result);
   } catch (error) {
     throw new AppError(500, "Failed to fetch episode details.", error);
   }
