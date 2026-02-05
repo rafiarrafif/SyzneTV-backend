@@ -3,9 +3,11 @@ import { bulkInsertEpisodeController } from "./controllers/bulkInsertEpisode.con
 import { bulkInsertMediaController } from "./controllers/bulkInsertMedia.controller";
 import { createVideoServiceInternalController } from "./controllers/createVideoService.controller";
 import { bulkInsertVideoController } from "./controllers/bulkInsertVideo.controller";
+import { updateAllEpisodeThumbnailController } from "./controllers/updateAllEpisodeThumbnail.controller";
 
 export const internalModule = new Elysia({ prefix: "/internal" })
   .post("/media/bulk-insert", bulkInsertMediaController)
   .post("/episode/bulk-insert", bulkInsertEpisodeController)
+  .post("/episode/update-thumbnails", updateAllEpisodeThumbnailController)
   .post("/video/bulk-insert", bulkInsertVideoController)
   .post("/video-service", createVideoServiceInternalController);
