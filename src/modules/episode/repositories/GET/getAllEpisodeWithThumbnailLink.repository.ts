@@ -1,11 +1,11 @@
-import { AppError } from "../../../helpers/error/instances/app";
-import { prisma } from "../../../utils/databases/prisma/connection";
+import { AppError } from "../../../../helpers/error/instances/app";
+import { episodeModel } from "../../episode.model";
 
 export const getAllEpisodeWithThumbnailLinkRepository = async (
   serviceReferenceId: string,
 ) => {
   try {
-    return await prisma.episode.findMany({
+    return await episodeModel.findMany({
       where: {
         deletedAt: null,
       },
@@ -29,6 +29,6 @@ export const getAllEpisodeWithThumbnailLinkRepository = async (
       },
     });
   } catch (error) {
-    throw new AppError(500, "Failed to update all episode thumbnails", error);
+    throw new AppError(500, "Failed to get all episode thumbnails", error);
   }
 };

@@ -1,7 +1,7 @@
 import { AppError } from "../../../../helpers/error/instances/app";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { updateEpisodeRepository } from "../../../episode/repositories/PUT/updateEpisode.repository";
-import { getAllEpisodeWithThumbnailLinkRepository } from "../../repositories/getAllEpisodeWithThumbnailLink.repository";
+import { getAllEpisodeWithThumbnailLinkRepository } from "../../../episode/repositories/GET/getAllEpisodeWithThumbnailLink.repository";
 
 export const updateAllEpisodeThumbnailService = async (
   serviceReferenceId: string,
