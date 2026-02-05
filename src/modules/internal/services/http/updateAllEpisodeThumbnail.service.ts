@@ -13,7 +13,6 @@ export const updateAllEpisodeThumbnailService = async (
     const episodesData = await getAllEpisodeWithThumbnailLinkRepository(
       serviceReferenceId,
     );
-    console.log("episodesData", episodesData);
 
     let updatedThumbnailsCount = 0;
     for (const episode of episodesData) {
