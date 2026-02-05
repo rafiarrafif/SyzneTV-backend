@@ -17,6 +17,7 @@ export const bulkInsertVideoService = async (
 
       for (const videoData of episodeData.videos) {
         const insertedVideo = await bulkInsertVideoRepository({
+          pendingUpload: false,
           episodeId: episodeId.id,
           serviceId: videoData.service_id,
           code: videoData.code,
