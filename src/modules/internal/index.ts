@@ -8,6 +8,6 @@ import { updateAllEpisodeThumbnailController } from "./controllers/updateAllEpis
 export const internalModule = new Elysia({ prefix: "/internal" })
   .post("/media/bulk-insert", bulkInsertMediaController)
   .post("/episode/bulk-insert", bulkInsertEpisodeController)
-  .post("/episode/update-thumbnails", updateAllEpisodeThumbnailController)
+  .put("/episode/update-thumbnails", updateAllEpisodeThumbnailController)
   .post("/video/bulk-insert", bulkInsertVideoController)
   .post("/video-service", createVideoServiceInternalController);
