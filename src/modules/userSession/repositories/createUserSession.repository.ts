@@ -1,13 +1,17 @@
 import { Prisma } from "@prisma/client";
 import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 import { userSessionModel } from "../userSession.model";
+import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 
 export const createUserSessionRepository = async (
-  data: Prisma.UserSessionUncheckedCreateInput,
+  data: Omit<Prisma.UserSessionUncheckedCreateInput, "id">,
 ) => {
   try {
     return await userSessionModel.create({
-      data,
+      data: {
+        id: generateUUIDv7(),
+        ...data,
+      },
       select: {
         id: true,
         isAuthenticated: true,
