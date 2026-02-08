@@ -13,12 +13,10 @@ export interface ClientInfoHeader {
 export const getUserHeaderInformation = (
   ctx: Context,
 ): UserHeaderInformation => {
-  const clientInfoHeader = JSON.parse(
-    (ctx.request.headers.get("x-client-info") as string) ??
-      ("unknown" as string),
-  ) as ClientInfoHeader;
-
-  console.log("Client Info Header:", clientInfoHeader);
+  const clientInfoHeader =
+    (JSON.parse(
+      ctx.request.headers.get("x-client-info") as string,
+    ) as ClientInfoHeader) ?? ("unknown" as string);
 
   const userHeaderInformation = {
     ip: clientInfoHeader.ip ?? "unknown",
