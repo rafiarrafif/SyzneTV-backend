@@ -6,6 +6,7 @@ import { googleCallbackController } from "./controllers/googleCallback.controlle
 import { getOauthProvidersController } from "./controllers/getOauthProviders.controller";
 import { getCallbackProviderUrlController } from "./controllers/getCallbackProviderUrl.controller";
 import { tokenValidationController } from "./controllers/tokenValidation.controller";
+import { logoutController } from "./controllers/logout.controller";
 
 export const authModule = new Elysia({ prefix: "/auth" })
   .post("/token/validate", tokenValidationController)
@@ -14,4 +15,5 @@ export const authModule = new Elysia({ prefix: "/auth" })
   .get("/github", githubRequestController)
   .get("/github/callback", githubCallbackController)
   .get("/google", googleRequestController)
-  .get("/google/callback", googleCallbackController);
+  .get("/google/callback", googleCallbackController)
+  .post("/logout", logoutController);
