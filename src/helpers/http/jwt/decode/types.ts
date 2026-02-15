@@ -26,5 +26,5 @@ interface Preference {
   adultAlert: string;
   videoQuality: string;
   serviceDefaultId: null;
-  hideContries: any[];
+  hideContries: string[];
 }
