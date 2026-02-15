@@ -2,13 +2,12 @@ import { Context } from "elysia";
 import { tokenValidationService } from "../services/http/tokenValidation.service";
 import { returnReadResponse } from "../../../helpers/callback/httpResponse";
 import { mainErrorHandler } from "../../../helpers/error/handler";
+import { parse } from "cookie";
 
-export const tokenValidationController = (
-  ctx: Context & { body: { token: string } },
-) => {
+export const tokenValidationController = (ctx: Context) => {
   try {
-    const { token } = ctx.body;
-    const validationResult = tokenValidationService(token);
+    const { auth_token } = parse(ctx.request.headers.get("cookie") || "");
+    const validationResult = tokenValidationService(auth_token as string);
     return returnReadResponse(
       ctx.set,
       200,

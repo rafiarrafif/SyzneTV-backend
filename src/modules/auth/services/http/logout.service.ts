@@ -4,7 +4,7 @@ import { jwtDecode } from "../../../../helpers/http/jwt/decode";
 import { redis } from "../../../../utils/databases/redis/connection";
 import { deleteUserSessionRepository } from "../../../userSession/repositories/deleteUserSession.repository";
 
-export const logoutService = async (jwtToken?: any) => {
+export const logoutService = async (jwtToken?: string) => {
   try {
     if (!jwtToken) throw new AppError(403, "No auth token provided");
 

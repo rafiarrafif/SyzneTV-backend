@@ -2,10 +2,12 @@ import { Context } from "elysia";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { logoutService } from "../services/http/logout.service";
 import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
+import { parse } from "cookie";
 
 export const logoutController = async (ctx: Context) => {
   try {
-    const jwtToken = ctx.cookie.auth_token?.value;
+    const jwtToken = parse(ctx.request.headers.get("auth_token") || "")
+      .auth_token as string;
     const serviceResponse = await logoutService(jwtToken);
     return returnWriteResponse(
       ctx.set,
