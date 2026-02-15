@@ -1,16 +1,7 @@
 export interface JWTAuthToken {
   id: string;
   isAuthenticated: boolean;
-  userId: string;
-  deviceType: string;
-  deviceOs: string;
-  deviceIp: string;
-  isOnline: boolean;
-  lastOnline: Date;
   validUntil: Date;
-  deletedAt: null;
-  createdAt: Date;
-  updatedAt: Date;
   user: User;
   iat: number;
   exp: number;
@@ -19,44 +10,21 @@ export interface JWTAuthToken {
 interface User {
   id: string;
   name: string;
-  username: string;
   email: string;
+  username: string;
+  avatar: string;
   birthDate: null;
-  gender: null;
-  phoneCC: null;
-  phoneNumber: null;
   bioProfile: null;
-  profilePicture: null;
-  commentPicture: null;
-  preferenceId: null;
-  verifiedAt: null;
-  disabledAt: null;
-  deletedAt: null;
-  createdAt: Date;
-  updatedAt: Date;
-  roles: Role[];
+  preference: Preference;
 }
 
-interface Role {
+interface Preference {
   id: string;
-  name: string;
-  primaryColor: string;
-  secondaryColor: string;
-  pictureImage: string;
-  badgeImage: null;
-  isSuperadmin: boolean;
-  canEditMedia: boolean;
-  canManageMedia: boolean;
-  canEditEpisodes: boolean;
-  canManageEpisodes: boolean;
-  canEditComment: boolean;
-  canManageComment: boolean;
-  canEditUser: boolean;
-  canManageUser: boolean;
-  canEditSystem: boolean;
-  canManageSystem: boolean;
-  createdBy: string;
-  deletedAt: null;
-  createdAt: Date;
-  updatedAt: Date;
+  userId: string;
+  langPreference: null;
+  adultFiltering: string;
+  adultAlert: string;
+  videoQuality: string;
+  serviceDefaultId: null;
+  hideContries: string[];
 }
