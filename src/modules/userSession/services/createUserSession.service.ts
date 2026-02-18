@@ -2,7 +2,6 @@ import { Prisma } from "@prisma/client";
 import { UserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation/types";
 import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 import { createUserSessionRepository } from "../repositories/createUserSession.repository";
-import { redis } from "../../../utils/databases/redis/connection";
 import { jwtEncode } from "../../../helpers/http/jwt/encode";
 import { createUserSessionInRedisService } from "./internal/createUserSessionInRedis.service";
 
