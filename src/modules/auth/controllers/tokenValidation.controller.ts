@@ -4,10 +4,10 @@ import { returnReadResponse } from "../../../helpers/callback/httpResponse";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { parse } from "cookie";
 
-export const tokenValidationController = (ctx: Context) => {
+export const tokenValidationController = async (ctx: Context) => {
   try {
     const { auth_token } = parse(ctx.request.headers.get("cookie") || "");
-    const validationResult = tokenValidationService(auth_token as string);
+    const validationResult = await tokenValidationService(auth_token as string);
     return returnReadResponse(
       ctx.set,
       200,
