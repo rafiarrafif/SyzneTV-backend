@@ -6,7 +6,7 @@ import { parse } from "cookie";
 
 export const logoutController = async (ctx: Context) => {
   try {
-    const jwtToken = parse(ctx.request.headers.get("auth_token") || "")
+    const jwtToken = parse(ctx.request.headers.get("Cookie") || "")
       .auth_token as string;
     const serviceResponse = await logoutService(jwtToken);
     return returnWriteResponse(

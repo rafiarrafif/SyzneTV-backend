@@ -2,12 +2,12 @@ import { Prisma } from "@prisma/client";
 import { UserHeaderInformation } from "../../../helpers/http/userHeader/getUserHeaderInformation/types";
 import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
 import { createUserSessionRepository } from "../repositories/createUserSession.repository";
-import { redis } from "../../../utils/databases/redis/connection";
 import { jwtEncode } from "../../../helpers/http/jwt/encode";
+import { createUserSessionInRedisService } from "./internal/createUserSessionInRedis.service";
 
 export const createUserSessionService = async (
   userId: string,
-  userHeaderInfo: UserHeaderInformation
+  userHeaderInfo: UserHeaderInformation,
 ) => {
   try {
     // set the date when the token will expire
@@ -29,13 +29,11 @@ export const createUserSessionService = async (
     const createUserSession = await createUserSessionRepository(constructData);
 
     // caching user session data into Redis
-    const createRedisKey = `${process.env.APP_NAME}:users:${userId}:sessions:${createUserSession.id}`;
-    await redis.hset(createRedisKey, {
+    await createUserSessionInRedisService({
       userId,
       sessionId: createUserSession.id,
       validUntil: createUserSession.validUntil,
     });
-    await redis.expire(createRedisKey, Number(process.env.SESSION_EXPIRE));
 
     // create a jwt token with a payload containing the created user session, then return jwt
     return jwtEncode(createUserSession);

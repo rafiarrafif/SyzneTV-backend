@@ -9,7 +9,7 @@ export const jwtDecode = (payload: string) => {
   try {
     const decodedPayload = jwt.verify(payload, JWTKey);
     return decodedPayload as JWTAuthToken;
-  } catch (error) {
-    throw new AppError(401, "Invalid or expired token", error);
+  } catch {
+    throw new AppError(403, "Invalid or expired token");
   }
 };
