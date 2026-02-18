@@ -3,6 +3,7 @@ import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { jwtDecode } from "../../../../helpers/http/jwt/decode";
 import { redis } from "../../../../utils/databases/redis/connection";
 import { checkUserSessionInDBService } from "../../../userSession/services/internal/checkUserSessionInDB.service";
+import { createUserSessionInRedisService } from "../../../userSession/services/internal/createUserSessionInRedis.service";
 
 export const tokenValidationService = async (payload: string) => {
   try {
@@ -20,13 +21,11 @@ export const tokenValidationService = async (payload: string) => {
       const dbValidationResult = await checkUserSessionInDBService(decoded.id);
       if (!dbValidationResult)
         throw new AppError(403, "Unauthorized: Invalid session");
-      const createRedisKey = `${process.env.APP_NAME}:users:${decoded.user.id}:sessions:${decoded.id}`;
-      await redis.hset(createRedisKey, {
+      await createUserSessionInRedisService({
         userId: decoded.user.id,
         sessionId: decoded.id,
         validUntil: decoded.validUntil,
       });
-      await redis.expire(createRedisKey, Number(process.env.SESSION_EXPIRE));
     }
 
     return decoded;
