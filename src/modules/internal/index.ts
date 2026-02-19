@@ -4,10 +4,12 @@ import { bulkInsertMediaController } from "./controllers/bulkInsertMedia.control
 import { createVideoServiceInternalController } from "./controllers/createVideoService.controller";
 import { bulkInsertVideoController } from "./controllers/bulkInsertVideo.controller";
 import { updateAllEpisodeThumbnailController } from "./controllers/updateAllEpisodeThumbnail.controller";
+import { purgeUnusedSessionController } from "./controllers/purgeUnusedSession.controller";
 
 export const internalModule = new Elysia({ prefix: "/internal" })
   .post("/media/bulk-insert", bulkInsertMediaController)
   .post("/episode/bulk-insert", bulkInsertEpisodeController)
   .put("/episode/update-thumbnails", updateAllEpisodeThumbnailController)
   .post("/video/bulk-insert", bulkInsertVideoController)
-  .post("/video-service", createVideoServiceInternalController);
+  .post("/video-service", createVideoServiceInternalController)
+  .post("/user-session/purge-unused", purgeUnusedSessionController);
