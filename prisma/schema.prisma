@@ -395,6 +395,8 @@ model UserSession {
   logs            UserLog[]       @relation("UserSessionLogs")
   episode_likes   EpisodeLike[]   @relation("SessionEpisodeLikes")
   watch_histories WatchHistory[]  @relation("SessionWatchHistories")
+
+  @@index([userId, isAuthenticated, deletedAt])
   @@map("user_sessions")
 }
 
