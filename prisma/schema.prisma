@@ -211,7 +211,7 @@ model Video {
   episodeId       String    @db.Uuid
   service         VideoService @relation("VideoServices", fields: [serviceId], references: [id])
   serviceId       String    @db.Uuid
-  code            String    @db.VarChar(255)
+  videoCode       String    @db.VarChar(255)
   pendingUpload   Boolean   @default(true)
   uploader        User      @relation("UserVideos", fields: [uploadedBy], references: [id]) 
   uploadedBy      String    @db.Uuid
@@ -219,7 +219,7 @@ model Video {
   createdAt       DateTime  @default(now()) 
   updatedAt       DateTime  @default(now()) @updatedAt
 
-  @@unique([serviceId, code])
+  @@unique([serviceId, videoCode])
   @@map("videos")
 }
 

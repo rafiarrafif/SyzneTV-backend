@@ -174,7 +174,7 @@ Table videos {
   episodeId String [not null]
   service video_services [not null]
   serviceId String [not null]
-  code String [not null]
+  videoCode String [not null]
   pendingUpload Boolean [not null, default: true]
   uploader users [not null]
   uploadedBy String [not null]
@@ -183,7 +183,7 @@ Table videos {
   updatedAt DateTime [default: `now()`, not null]
 
   indexes {
-    (serviceId, code) [unique]
+    (serviceId, videoCode) [unique]
   }
 }
 
