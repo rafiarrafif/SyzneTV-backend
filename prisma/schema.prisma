@@ -212,6 +212,7 @@ model Video {
   service         VideoService @relation("VideoServices", fields: [serviceId], references: [id])
   serviceId       String    @db.Uuid
   videoCode       String    @db.VarChar(255)
+  thumbnailCode   String?
   pendingUpload   Boolean   @default(true)
   uploader        User      @relation("UserVideos", fields: [uploadedBy], references: [id]) 
   uploadedBy      String    @db.Uuid
