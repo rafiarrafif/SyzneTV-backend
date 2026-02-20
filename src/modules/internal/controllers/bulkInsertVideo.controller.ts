@@ -9,8 +9,8 @@ export interface BulkInsertVideoBodyRequest {
     episode: number;
     videos: Array<{
       service_id: string;
-      videoCode: string;
-      thumbnailCode?: string;
+      video_code: string;
+      thumbnail_code?: string;
     }>;
   }>;
 }

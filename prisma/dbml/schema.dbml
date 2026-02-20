@@ -175,6 +175,7 @@ Table videos {
   service video_services [not null]
   serviceId String [not null]
   videoCode String [not null]
+  thumbnailCode String
   pendingUpload Boolean [not null, default: true]
   uploader users [not null]
   uploadedBy String [not null]
