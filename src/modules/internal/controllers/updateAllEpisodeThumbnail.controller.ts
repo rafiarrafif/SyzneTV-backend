@@ -48,7 +48,8 @@ export const updateAllEpisodeThumbnailController = async (
     return returnWriteResponse(
       ctx.set,
       204,
-      `Updating ${newEpisodeThumbnailsCount} episode thumbnails successfully.`,
+      `Updating episode thumbnails successfully.`,
+      newEpisodeThumbnailsCount,
     );
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
