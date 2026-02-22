@@ -9,9 +9,9 @@ export const bulkInsertVideoRepository = async (
   try {
     return await prisma.video.upsert({
       where: {
-        serviceId_code: {
+        serviceId_videoCode: {
           serviceId: payload.serviceId,
-          code: payload.code,
+          videoCode: payload.videoCode,
         },
       },
       create: {

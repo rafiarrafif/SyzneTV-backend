@@ -1,11 +1,14 @@
--- CreateEnum
-CREATE TYPE "AgeRating" AS ENUM ('G', 'PG', 'PG_13', 'R', 'R_plus', 'Rx');
+-- CreateSchema
+CREATE SCHEMA IF NOT EXISTS "public";
 
 -- CreateEnum
 CREATE TYPE "MediaType" AS ENUM ('TV', 'ONA', 'OVA', 'Movie', 'Special', 'Music');
 
 -- CreateEnum
-CREATE TYPE "Source" AS ENUM ('original', 'manga', 'light_novel', 'game');
+CREATE TYPE "Country" AS ENUM ('Japanese', 'English', 'Indonesia', 'Korea');
+
+-- CreateEnum
+CREATE TYPE "CharacterRole" AS ENUM ('Main', 'Supporting');
 
 -- CreateEnum
 CREATE TYPE "MediaOperation" AS ENUM ('create', 'update', 'delete');
@@ -48,24 +51,24 @@ CREATE TYPE "TypeSystemNotification" AS ENUM ('component', 'popup', 'toast');
 
 -- CreateTable
 CREATE TABLE "medias" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "title" TEXT NOT NULL,
     "titleAlternative" JSONB NOT NULL,
     "slug" TEXT NOT NULL,
+    "malId" INTEGER,
     "pictureMedium" TEXT NOT NULL,
     "pictureLarge" TEXT NOT NULL,
-    "countryId" TEXT NOT NULL,
-    "isAiring" BOOLEAN NOT NULL DEFAULT false,
-    "isTba" BOOLEAN NOT NULL DEFAULT false,
-    "startAiring" TIMESTAMP(3) NOT NULL,
-    "endAiring" TIMESTAMP(3) NOT NULL,
+    "country" "Country" NOT NULL DEFAULT 'Japanese',
+    "score" DECIMAL(4,2) NOT NULL DEFAULT 0.00,
+    "status" TEXT NOT NULL,
+    "startAiring" TIMESTAMP(3),
+    "endAiring" TIMESTAMP(3),
     "synopsis" TEXT NOT NULL,
-    "nfsw" BOOLEAN NOT NULL DEFAULT false,
-    "ageRating" "AgeRating" NOT NULL,
+    "ageRating" TEXT NOT NULL,
     "mediaType" "MediaType" NOT NULL,
-    "source" "Source" NOT NULL,
-    "pendingUpload" BOOLEAN NOT NULL DEFAULT true,
-    "uploadedBy" TEXT NOT NULL,
+    "source" TEXT,
+    "onDraft" BOOLEAN NOT NULL DEFAULT true,
+    "uploadedBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -75,12 +78,12 @@ CREATE TABLE "medias" (
 
 -- CreateTable
 CREATE TABLE "media_logs" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "status" "MediaOperation" NOT NULL,
     "approval" BOOLEAN NOT NULL DEFAULT false,
-    "proposedBy" TEXT NOT NULL,
-    "approvedBy" TEXT NOT NULL,
-    "mediaId" TEXT NOT NULL,
+    "proposedBy" UUID NOT NULL,
+    "approvedBy" UUID NOT NULL,
+    "mediaId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -89,12 +92,12 @@ CREATE TABLE "media_logs" (
 
 -- CreateTable
 CREATE TABLE "genres" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "slug" VARCHAR(255) NOT NULL,
     "malId" INTEGER NOT NULL,
     "malUrl" VARCHAR(255) NOT NULL,
-    "createdBy" TEXT NOT NULL,
+    "createdBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -104,12 +107,13 @@ CREATE TABLE "genres" (
 
 -- CreateTable
 CREATE TABLE "studios" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "slug" VARCHAR(255) NOT NULL,
-    "logoUrl" TEXT NOT NULL,
-    "colorHex" VARCHAR(10) NOT NULL,
-    "createdBy" TEXT NOT NULL,
+    "linkAbout" TEXT NOT NULL,
+    "malId" INTEGER NOT NULL,
+    "logoUrl" TEXT,
+    "createdBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -118,31 +122,66 @@ CREATE TABLE "studios" (
 );
 
 -- CreateTable
-CREATE TABLE "countries" (
-    "id" TEXT NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
-    "code" VARCHAR(5) NOT NULL,
-    "flag" VARCHAR(10) NOT NULL,
-    "createdBy" TEXT NOT NULL,
+CREATE TABLE "characters" (
+    "id" UUID NOT NULL,
+    "malId" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "role" "CharacterRole" NOT NULL,
+    "favorites" INTEGER NOT NULL DEFAULT 0,
+    "imageUrl" TEXT,
+    "smallImageUrl" TEXT,
+    "creatorId" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "countries_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "characters_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "voice_actors" (
+    "id" UUID NOT NULL,
+    "malId" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "birthday" TIMESTAMP(3),
+    "description" TEXT,
+    "aboutUrl" TEXT,
+    "imageUrl" TEXT,
+    "websiteUrl" TEXT,
+    "creatorId" UUID NOT NULL,
+    "deletedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "voice_actors_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "lang_va_char" (
+    "id" UUID NOT NULL,
+    "language" TEXT NOT NULL,
+    "vaId" UUID NOT NULL,
+    "charId" UUID NOT NULL,
+    "creatorId" UUID NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "lang_va_char_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "episodes" (
-    "id" TEXT NOT NULL,
-    "mediaId" TEXT NOT NULL,
+    "id" UUID NOT NULL,
+    "mediaId" UUID NOT NULL,
     "episode" INTEGER NOT NULL,
     "name" VARCHAR(255) NOT NULL,
-    "pictureThumbnail" TEXT NOT NULL,
+    "score" DECIMAL(4,2) NOT NULL DEFAULT 0.00,
+    "pictureThumbnail" TEXT,
     "viewed" BIGINT NOT NULL DEFAULT 0,
     "likes" BIGINT NOT NULL DEFAULT 0,
     "dislikes" BIGINT NOT NULL DEFAULT 0,
     "pendingUpload" BOOLEAN NOT NULL DEFAULT true,
-    "uploadedBy" TEXT NOT NULL,
+    "uploadedBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -152,10 +191,10 @@ CREATE TABLE "episodes" (
 
 -- CreateTable
 CREATE TABLE "episode_likes" (
-    "id" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "sessionId" TEXT NOT NULL,
-    "episodeId" TEXT NOT NULL,
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "sessionId" UUID NOT NULL,
+    "episodeId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -164,12 +203,12 @@ CREATE TABLE "episode_likes" (
 
 -- CreateTable
 CREATE TABLE "videos" (
-    "id" TEXT NOT NULL,
-    "episodeId" TEXT NOT NULL,
-    "serviceId" TEXT NOT NULL,
+    "id" UUID NOT NULL,
+    "episodeId" UUID NOT NULL,
+    "serviceId" UUID NOT NULL,
     "code" VARCHAR(255) NOT NULL,
     "pendingUpload" BOOLEAN NOT NULL DEFAULT true,
-    "uploadedBy" TEXT NOT NULL,
+    "uploadedBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -179,14 +218,15 @@ CREATE TABLE "videos" (
 
 -- CreateTable
 CREATE TABLE "video_services" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "domain" VARCHAR(255) NOT NULL,
     "logo" TEXT,
     "hexColor" VARCHAR(10) NOT NULL,
     "endpointVideo" TEXT NOT NULL,
     "endpointThumbnail" TEXT,
-    "createdBy" TEXT NOT NULL,
+    "endpointDownload" TEXT,
+    "createdBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -196,7 +236,7 @@ CREATE TABLE "video_services" (
 
 -- CreateTable
 CREATE TABLE "users" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "username" VARCHAR(255) NOT NULL,
     "email" TEXT NOT NULL,
@@ -206,9 +246,12 @@ CREATE TABLE "users" (
     "phoneCC" INTEGER,
     "phoneNumber" INTEGER,
     "bioProfile" TEXT,
-    "profilePicture" TEXT,
-    "commentPicture" TEXT,
-    "preferenceId" TEXT,
+    "avatar" TEXT,
+    "commentBackground" TEXT,
+    "provider" VARCHAR(255),
+    "providerId" VARCHAR(255),
+    "providerToken" TEXT,
+    "providerPayload" JSON,
     "verifiedAt" TIMESTAMP(3),
     "disabledAt" TIMESTAMP(3),
     "deletedAt" TIMESTAMP(3),
@@ -220,12 +263,14 @@ CREATE TABLE "users" (
 
 -- CreateTable
 CREATE TABLE "user_preferences" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
+    "userId" UUID NOT NULL,
     "langPreference" TEXT,
     "adultFiltering" "AdultFiltering" NOT NULL DEFAULT 'hide',
     "adultAlert" "AdultAlert" NOT NULL DEFAULT 'show',
     "videoQuality" "VideoQuality" NOT NULL DEFAULT 'Q1080',
-    "serviceDefaultId" TEXT,
+    "serviceDefaultId" UUID,
+    "hideContries" "Country"[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -234,8 +279,9 @@ CREATE TABLE "user_preferences" (
 
 -- CreateTable
 CREATE TABLE "user_roles" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
+    "description" TEXT,
     "primaryColor" VARCHAR(10),
     "secondaryColor" VARCHAR(10),
     "pictureImage" TEXT,
@@ -251,7 +297,7 @@ CREATE TABLE "user_roles" (
     "canManageUser" BOOLEAN NOT NULL DEFAULT false,
     "canEditSystem" BOOLEAN NOT NULL DEFAULT false,
     "canManageSystem" BOOLEAN NOT NULL DEFAULT false,
-    "createdBy" TEXT NOT NULL,
+    "createdBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -260,14 +306,23 @@ CREATE TABLE "user_roles" (
 );
 
 -- CreateTable
+CREATE TABLE "user_role_assignments" (
+    "userId" UUID NOT NULL,
+    "roleId" UUID NOT NULL,
+    "assignmentAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "user_role_assignments_pkey" PRIMARY KEY ("userId","roleId")
+);
+
+-- CreateTable
 CREATE TABLE "user_notifications" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "content" TEXT NOT NULL,
     "picture" TEXT NOT NULL,
     "state" "UserNotificationState" NOT NULL,
     "ctaLink" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
+    "userId" UUID NOT NULL,
     "isReaded" BOOLEAN NOT NULL DEFAULT false,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -278,12 +333,13 @@ CREATE TABLE "user_notifications" (
 
 -- CreateTable
 CREATE TABLE "user_sessions" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "isAuthenticated" BOOLEAN NOT NULL DEFAULT false,
-    "userId" TEXT NOT NULL,
+    "userId" UUID NOT NULL,
     "deviceType" VARCHAR(255) NOT NULL,
     "deviceOs" VARCHAR(255) NOT NULL,
     "deviceIp" VARCHAR(255) NOT NULL,
+    "browser" VARCHAR(255) NOT NULL,
     "isOnline" BOOLEAN NOT NULL DEFAULT false,
     "lastOnline" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "validUntil" TIMESTAMP(3) NOT NULL,
@@ -296,11 +352,11 @@ CREATE TABLE "user_sessions" (
 
 -- CreateTable
 CREATE TABLE "user_logs" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "notes" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "sessionId" TEXT NOT NULL,
+    "userId" UUID NOT NULL,
+    "sessionId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -309,9 +365,9 @@ CREATE TABLE "user_logs" (
 
 -- CreateTable
 CREATE TABLE "collections" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
-    "ownerId" TEXT NOT NULL,
+    "ownerId" UUID NOT NULL,
     "accessStatus" "AccessStatus" NOT NULL DEFAULT 'private',
     "password" VARCHAR(255),
     "accessScope" "AccessScope" NOT NULL DEFAULT 'viewer',
@@ -324,10 +380,10 @@ CREATE TABLE "collections" (
 
 -- CreateTable
 CREATE TABLE "watch_histories" (
-    "id" TEXT NOT NULL,
-    "episodeId" TEXT NOT NULL,
-    "userId" TEXT NOT NULL,
-    "sessionId" TEXT NOT NULL,
+    "id" UUID NOT NULL,
+    "episodeId" UUID NOT NULL,
+    "userId" UUID NOT NULL,
+    "sessionId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -336,13 +392,13 @@ CREATE TABLE "watch_histories" (
 
 -- CreateTable
 CREATE TABLE "movie_reviews" (
-    "id" TEXT NOT NULL,
-    "mediaId" TEXT NOT NULL,
+    "id" UUID NOT NULL,
+    "mediaId" UUID NOT NULL,
     "rating" INTEGER NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "text" TEXT NOT NULL,
     "reaction" "MediaReviewReaction" NOT NULL,
-    "createdBy" TEXT NOT NULL,
+    "createdBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -352,12 +408,12 @@ CREATE TABLE "movie_reviews" (
 
 -- CreateTable
 CREATE TABLE "comments" (
-    "id" TEXT NOT NULL,
-    "episodeId" TEXT NOT NULL,
+    "id" UUID NOT NULL,
+    "episodeId" UUID NOT NULL,
     "text" TEXT NOT NULL,
     "isParent" BOOLEAN NOT NULL DEFAULT false,
-    "parentId" TEXT,
-    "userId" TEXT NOT NULL,
+    "parentId" UUID,
+    "userId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -366,9 +422,9 @@ CREATE TABLE "comments" (
 
 -- CreateTable
 CREATE TABLE "comment_likes" (
-    "id" TEXT NOT NULL,
-    "commentId" TEXT NOT NULL,
-    "userLiked" TEXT NOT NULL,
+    "id" UUID NOT NULL,
+    "commentId" UUID NOT NULL,
+    "userLiked" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -377,14 +433,14 @@ CREATE TABLE "comment_likes" (
 
 -- CreateTable
 CREATE TABLE "comment_reports" (
-    "id" TEXT NOT NULL,
-    "userReporter" TEXT NOT NULL,
-    "commentReported" TEXT NOT NULL,
+    "id" UUID NOT NULL,
+    "userReporter" UUID NOT NULL,
+    "commentReported" UUID NOT NULL,
     "isSupervisorReport" BOOLEAN NOT NULL DEFAULT false,
     "reason" "ReportReason" NOT NULL,
     "status" "ReportStatus" NOT NULL,
     "description" VARCHAR(255) NOT NULL,
-    "approvedBy" TEXT,
+    "approvedBy" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -393,12 +449,12 @@ CREATE TABLE "comment_reports" (
 
 -- CreateTable
 CREATE TABLE "languages" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" VARCHAR(255) NOT NULL,
     "code" VARCHAR(5) NOT NULL,
     "countryFlag" VARCHAR(10) NOT NULL,
     "fileLocation" TEXT NOT NULL,
-    "craetedBy" TEXT NOT NULL,
+    "craetedBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -408,7 +464,7 @@ CREATE TABLE "languages" (
 
 -- CreateTable
 CREATE TABLE "email_system_accounts" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "host" VARCHAR(255) NOT NULL,
     "port" INTEGER NOT NULL,
@@ -417,7 +473,7 @@ CREATE TABLE "email_system_accounts" (
     "username" VARCHAR(255) NOT NULL,
     "password" VARCHAR(255) NOT NULL,
     "purpose" "EmailPorpose" NOT NULL,
-    "createdBy" TEXT NOT NULL,
+    "createdBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -427,11 +483,11 @@ CREATE TABLE "email_system_accounts" (
 
 -- CreateTable
 CREATE TABLE "email_system_histories" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "purpose" "EmailPorpose" NOT NULL,
     "fromEmail" TEXT NOT NULL,
     "toEmail" TEXT NOT NULL,
-    "userRelated" TEXT NOT NULL,
+    "userRelated" UUID NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "htmlContent" TEXT NOT NULL,
     "deletedAt" TIMESTAMP(3),
@@ -443,7 +499,7 @@ CREATE TABLE "email_system_histories" (
 
 -- CreateTable
 CREATE TABLE "system_preferences" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "key" VARCHAR(225) NOT NULL,
     "value" VARCHAR(225) NOT NULL,
     "description" TEXT NOT NULL,
@@ -456,13 +512,13 @@ CREATE TABLE "system_preferences" (
 
 -- CreateTable
 CREATE TABLE "system_notifications" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "type" "TypeSystemNotification" NOT NULL,
     "componentName" VARCHAR(255),
     "popupImage" TEXT,
     "titleToast" VARCHAR(255),
     "contentToast" TEXT,
-    "createdBy" TEXT NOT NULL,
+    "createdBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -472,10 +528,10 @@ CREATE TABLE "system_notifications" (
 
 -- CreateTable
 CREATE TABLE "system_logs" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL,
     "title" VARCHAR(255) NOT NULL,
     "notes" TEXT NOT NULL,
-    "relatedUser" TEXT,
+    "relatedUser" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
@@ -484,59 +540,96 @@ CREATE TABLE "system_logs" (
 
 -- CreateTable
 CREATE TABLE "_MediaStudios" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL,
+    "A" UUID NOT NULL,
+    "B" UUID NOT NULL,
 
     CONSTRAINT "_MediaStudios_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateTable
 CREATE TABLE "_MediaGenres" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL,
+    "A" UUID NOT NULL,
+    "B" UUID NOT NULL,
 
     CONSTRAINT "_MediaGenres_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateTable
 CREATE TABLE "_UserFavoriteGenres" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL,
+    "A" UUID NOT NULL,
+    "B" UUID NOT NULL,
 
     CONSTRAINT "_UserFavoriteGenres_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateTable
-CREATE TABLE "_UserShowContries" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL,
+CREATE TABLE "_MediaCharacters" (
+    "A" UUID NOT NULL,
+    "B" UUID NOT NULL,
 
-    CONSTRAINT "_UserShowContries_AB_pkey" PRIMARY KEY ("A","B")
-);
-
--- CreateTable
-CREATE TABLE "_UserRoles" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL,
-
-    CONSTRAINT "_UserRoles_AB_pkey" PRIMARY KEY ("A","B")
+    CONSTRAINT "_MediaCharacters_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateTable
 CREATE TABLE "_MediaCollections" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL,
+    "A" UUID NOT NULL,
+    "B" UUID NOT NULL,
 
     CONSTRAINT "_MediaCollections_AB_pkey" PRIMARY KEY ("A","B")
 );
 
 -- CreateTable
 CREATE TABLE "_UserSelectedSharingCollention" (
-    "A" TEXT NOT NULL,
-    "B" TEXT NOT NULL,
+    "A" UUID NOT NULL,
+    "B" UUID NOT NULL,
 
     CONSTRAINT "_UserSelectedSharingCollention_AB_pkey" PRIMARY KEY ("A","B")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "medias_slug_key" ON "medias"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "medias_malId_key" ON "medias"("malId");
+
+-- CreateIndex
+CREATE INDEX "medias_status_onDraft_deletedAt_idx" ON "medias"("status", "onDraft", "deletedAt");
+
+-- CreateIndex
+CREATE INDEX "medias_mediaType_idx" ON "medias"("mediaType");
+
+-- CreateIndex
+CREATE INDEX "medias_uploadedBy_idx" ON "medias"("uploadedBy");
+
+-- CreateIndex
+CREATE INDEX "medias_createdAt_idx" ON "medias"("createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "genres_slug_key" ON "genres"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "genres_malId_key" ON "genres"("malId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "studios_slug_key" ON "studios"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "studios_malId_key" ON "studios"("malId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "characters_malId_key" ON "characters"("malId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "voice_actors_malId_key" ON "voice_actors"("malId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "lang_va_char_language_vaId_charId_key" ON "lang_va_char"("language", "vaId", "charId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "episodes_mediaId_episode_key" ON "episodes"("mediaId", "episode");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "videos_serviceId_code_key" ON "videos"("serviceId", "code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "video_services_name_key" ON "video_services"("name");
@@ -548,10 +641,16 @@ CREATE UNIQUE INDEX "users_username_key" ON "users"("username");
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "users_preferenceId_key" ON "users"("preferenceId");
+CREATE UNIQUE INDEX "users_providerId_key" ON "users"("providerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_preferences_userId_key" ON "user_preferences"("userId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_roles_name_key" ON "user_roles"("name");
+
+-- CreateIndex
+CREATE INDEX "user_sessions_userId_isAuthenticated_deletedAt_idx" ON "user_sessions"("userId", "isAuthenticated", "deletedAt");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "languages_code_key" ON "languages"("code");
@@ -575,19 +674,13 @@ CREATE INDEX "_MediaGenres_B_index" ON "_MediaGenres"("B");
 CREATE INDEX "_UserFavoriteGenres_B_index" ON "_UserFavoriteGenres"("B");
 
 -- CreateIndex
-CREATE INDEX "_UserShowContries_B_index" ON "_UserShowContries"("B");
-
--- CreateIndex
-CREATE INDEX "_UserRoles_B_index" ON "_UserRoles"("B");
+CREATE INDEX "_MediaCharacters_B_index" ON "_MediaCharacters"("B");
 
 -- CreateIndex
 CREATE INDEX "_MediaCollections_B_index" ON "_MediaCollections"("B");
 
 -- CreateIndex
 CREATE INDEX "_UserSelectedSharingCollention_B_index" ON "_UserSelectedSharingCollention"("B");
-
--- AddForeignKey
-ALTER TABLE "medias" ADD CONSTRAINT "medias_countryId_fkey" FOREIGN KEY ("countryId") REFERENCES "countries"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "medias" ADD CONSTRAINT "medias_uploadedBy_fkey" FOREIGN KEY ("uploadedBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -608,7 +701,19 @@ ALTER TABLE "genres" ADD CONSTRAINT "genres_createdBy_fkey" FOREIGN KEY ("create
 ALTER TABLE "studios" ADD CONSTRAINT "studios_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "countries" ADD CONSTRAINT "countries_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "characters" ADD CONSTRAINT "characters_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "voice_actors" ADD CONSTRAINT "voice_actors_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "lang_va_char" ADD CONSTRAINT "lang_va_char_vaId_fkey" FOREIGN KEY ("vaId") REFERENCES "voice_actors"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "lang_va_char" ADD CONSTRAINT "lang_va_char_charId_fkey" FOREIGN KEY ("charId") REFERENCES "characters"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "lang_va_char" ADD CONSTRAINT "lang_va_char_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "episodes" ADD CONSTRAINT "episodes_mediaId_fkey" FOREIGN KEY ("mediaId") REFERENCES "medias"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -638,7 +743,7 @@ ALTER TABLE "videos" ADD CONSTRAINT "videos_uploadedBy_fkey" FOREIGN KEY ("uploa
 ALTER TABLE "video_services" ADD CONSTRAINT "video_services_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "users" ADD CONSTRAINT "users_preferenceId_fkey" FOREIGN KEY ("preferenceId") REFERENCES "user_preferences"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "user_preferences" ADD CONSTRAINT "user_preferences_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "user_preferences" ADD CONSTRAINT "user_preferences_langPreference_fkey" FOREIGN KEY ("langPreference") REFERENCES "languages"("code") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -648,6 +753,12 @@ ALTER TABLE "user_preferences" ADD CONSTRAINT "user_preferences_serviceDefaultId
 
 -- AddForeignKey
 ALTER TABLE "user_roles" ADD CONSTRAINT "user_roles_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "user_role_assignments" ADD CONSTRAINT "user_role_assignments_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "user_role_assignments" ADD CONSTRAINT "user_role_assignments_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "user_roles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "user_notifications" ADD CONSTRAINT "user_notifications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -734,16 +845,10 @@ ALTER TABLE "_UserFavoriteGenres" ADD CONSTRAINT "_UserFavoriteGenres_A_fkey" FO
 ALTER TABLE "_UserFavoriteGenres" ADD CONSTRAINT "_UserFavoriteGenres_B_fkey" FOREIGN KEY ("B") REFERENCES "user_preferences"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_UserShowContries" ADD CONSTRAINT "_UserShowContries_A_fkey" FOREIGN KEY ("A") REFERENCES "countries"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_MediaCharacters" ADD CONSTRAINT "_MediaCharacters_A_fkey" FOREIGN KEY ("A") REFERENCES "characters"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_UserShowContries" ADD CONSTRAINT "_UserShowContries_B_fkey" FOREIGN KEY ("B") REFERENCES "user_preferences"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_UserRoles" ADD CONSTRAINT "_UserRoles_A_fkey" FOREIGN KEY ("A") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_UserRoles" ADD CONSTRAINT "_UserRoles_B_fkey" FOREIGN KEY ("B") REFERENCES "user_roles"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_MediaCharacters" ADD CONSTRAINT "_MediaCharacters_B_fkey" FOREIGN KEY ("B") REFERENCES "medias"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_MediaCollections" ADD CONSTRAINT "_MediaCollections_A_fkey" FOREIGN KEY ("A") REFERENCES "collections"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -756,3 +861,4 @@ ALTER TABLE "_UserSelectedSharingCollention" ADD CONSTRAINT "_UserSelectedSharin
 
 -- AddForeignKey
 ALTER TABLE "_UserSelectedSharingCollention" ADD CONSTRAINT "_UserSelectedSharingCollention_B_fkey" FOREIGN KEY ("B") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
