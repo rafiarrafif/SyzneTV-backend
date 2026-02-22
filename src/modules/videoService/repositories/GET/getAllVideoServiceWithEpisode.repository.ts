@@ -8,6 +8,9 @@ export const getAllVideoServiceWithEpisodeRepository = async (
     return await videoServiceModel.findMany({
       where: {
         id: videoServiceId,
+        endpointThumbnail: {
+          not: null,
+        },
         videos: {
           some: {
             episode: {
@@ -21,6 +24,7 @@ export const getAllVideoServiceWithEpisodeRepository = async (
         videos: {
           select: {
             thumbnailCode: true,
+            videoCode: true,
             episode: {
               select: {
                 id: true,

@@ -1,5 +1,6 @@
 import { AppError } from "../../../../helpers/error/instances/app";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
+import { bulkUpdateThumbnailRepository } from "../../../episode/repositories/PUT/bulkUpdateThumbnail.repository";
 import { getAllVideoServiceWithEpisodeRepository } from "../../../videoService/repositories/GET/getAllVideoServiceWithEpisode.repository";
 
 export const updateAllEpisodeThumbnailService = async (
@@ -19,20 +20,20 @@ export const updateAllEpisodeThumbnailService = async (
         "No episode with no thumbnail found in the specified video service.",
       );
 
-    const updatePayload = videosData.map((videoService) => {
+    const updatePayload = videosData.flatMap((videoService) => {
       const { endpointThumbnail, videos } = videoService;
-      return videos
-        .filter((video) => video.thumbnailCode !== null)
-        .map((video) => ({
-          episodeId: video.episode.id,
-          thumbnailCode: endpointThumbnail?.replace(
-            ":code:",
-            video.thumbnailCode!,
-          ),
-        }));
+      return videos.map((video) => ({
+        episodeId: video.episode.id,
+        thumbnailCode: endpointThumbnail!.replace(
+          ":code:",
+          video.thumbnailCode || video.videoCode,
+        ),
+      }));
     });
 
-    return updatePayload;
+    await bulkUpdateThumbnailRepository(updatePayload);
+
+    return updatePayload.length;
   } catch (error) {
     ErrorForwarder(error);
   }
