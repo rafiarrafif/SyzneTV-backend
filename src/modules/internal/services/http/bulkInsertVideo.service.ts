@@ -20,7 +20,8 @@ export const bulkInsertVideoService = async (
           pendingUpload: false,
           episodeId: episodeId.id,
           serviceId: videoData.service_id,
-          code: videoData.code,
+          videoCode: videoData.video_code,
+          thumbnailCode: videoData.thumbnail_code,
           uploadedBy: SystemAccountId,
         });
 

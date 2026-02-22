@@ -39,7 +39,7 @@ import { updateAllEpisodeThumbnailService } from "../services/http/updateAllEpis
  * }
  */
 export const updateAllEpisodeThumbnailController = async (
-  ctx: Context & { body: { service_reference_id: string } },
+  ctx: Context & { body: { service_reference_id?: string } },
 ) => {
   try {
     const newEpisodeThumbnailsCount = await updateAllEpisodeThumbnailService(
