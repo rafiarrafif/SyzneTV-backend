@@ -38,6 +38,7 @@ export const getAllVideoServiceWithEpisodeRepository = async (
     throw new AppError(
       500,
       "An error occurred while fetching video services with episodes.",
+      error,
     );
   }
 };
