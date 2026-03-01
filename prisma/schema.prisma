@@ -296,6 +296,7 @@ model User {
   create_languages  Language[]           @relation("UserCreateLanguages")
   user_create_email EmailSystemAccount[] @relation("UserCreateSystemAccount")
   user_emails       EmailSystemHistory[] @relation("UserEmails")
+  user_hero_banner  HeroBanner[]         @relation("UserHeroBanner")
   sys_notifications SystemNotification[] @relation("UserCreatorSystemNotifications")
   sys_logs          SystemLog[]          @relation("UserSystemLogs")
   @@map("users")
@@ -551,6 +552,22 @@ model EmailSystemHistory {
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now()) @updatedAt
   @@map("email_system_histories")
+}
+
+model HeroBanner {
+  id            String   @id @db.Uuid
+  isClickable   Boolean  @default(false)
+  title         String?  @db.VarChar(225)
+  description   String?  @db.Text
+  buttonContent String?  @db.VarChar(100)
+  buttonLink    String?  @db.Text
+  imageUrl      String?  @db.Text
+  startDate     DateTime
+  endDate       DateTime
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+  creatorId     String   @db.Uuid
+  createdBy     User     @relation("UserHeroBanner", fields: [creatorId], references: [id])
 }
 
 model SystemPreference {
