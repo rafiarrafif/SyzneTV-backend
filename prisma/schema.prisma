@@ -568,6 +568,7 @@ model HeroBanner {
   updatedAt     DateTime @default(now()) @updatedAt
   creatorId     String   @db.Uuid
   createdBy     User     @relation("UserHeroBanner", fields: [creatorId], references: [id])
+  @@map("hero_banner")
 }
 
 model SystemPreference {
