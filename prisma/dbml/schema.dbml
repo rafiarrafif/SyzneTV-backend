@@ -495,6 +495,7 @@ Table email_system_histories {
 
 Table hero_banner {
   id String [pk]
+  orderPriority Int [unique]
   isClickable Boolean [not null, default: false]
   title String
   description String

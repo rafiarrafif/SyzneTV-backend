@@ -12,6 +12,14 @@ export const findAllActiveHeroBannerRepository = async () => {
           gte: new Date(),
         },
       },
+      orderBy: [
+        {
+          orderPriority: "asc",
+        },
+        {
+          startDate: "asc",
+        },
+      ],
     });
   } catch (error) {
     throw new AppError(500, "Failed to fetch active hero banners", error);

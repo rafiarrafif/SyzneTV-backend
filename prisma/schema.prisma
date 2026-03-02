@@ -556,6 +556,7 @@ model EmailSystemHistory {
 
 model HeroBanner {
   id            String   @id @db.Uuid
+  orderPriority Int?     @unique
   isClickable   Boolean  @default(false)
   title         String?  @db.VarChar(225)
   description   String?  @db.Text
