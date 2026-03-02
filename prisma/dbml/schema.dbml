@@ -257,6 +257,7 @@ Table users {
   create_languages languages [not null]
   user_create_email email_system_accounts [not null]
   user_emails email_system_histories [not null]
+  user_hero_banner hero_banner [not null]
   sys_notifications system_notifications [not null]
   sys_logs system_logs [not null]
 }
@@ -490,6 +491,23 @@ Table email_system_histories {
   deletedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
+}
+
+Table hero_banner {
+  id String [pk]
+  orderPriority Int [unique]
+  isClickable Boolean [not null, default: false]
+  title String
+  description String
+  buttonContent String
+  buttonLink String
+  imageUrl String
+  startDate DateTime [not null]
+  endDate DateTime [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [default: `now()`, not null]
+  creatorId String [not null]
+  createdBy users [not null]
 }
 
 Table system_preferences {
@@ -760,6 +778,8 @@ Ref: languages.craetedBy > users.id
 Ref: email_system_accounts.createdBy > users.id
 
 Ref: email_system_histories.userRelated > users.id
+
+Ref: hero_banner.creatorId > users.id
 
 Ref: system_notifications.createdBy > users.id
 
