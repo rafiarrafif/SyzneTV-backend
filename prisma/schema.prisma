@@ -564,7 +564,7 @@ model HeroBanner {
   imageUrl      String?  @db.Text
   startDate     DateTime
   endDate       DateTime
-  createdAt     DateTime @default(now())
+  createdAt     DateTime @default(now())  
   updatedAt     DateTime @default(now()) @updatedAt
   creatorId     String   @db.Uuid
   createdBy     User     @relation("UserHeroBanner", fields: [creatorId], references: [id])
