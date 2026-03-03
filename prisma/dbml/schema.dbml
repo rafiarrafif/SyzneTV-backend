@@ -498,6 +498,7 @@ Table hero_banner {
   orderPriority Int [unique]
   isClickable Boolean [not null, default: false]
   title String
+  tags String[] [not null]
   description String
   buttonContent String
   buttonLink String
