@@ -5,6 +5,7 @@ import { createHeroBannerService } from "../services/http/createHeroBanner.servi
 export interface CreateHeroBannerRequestBody {
   isClickable?: boolean;
   title?: string;
+  tags: string[];
   description?: string;
   buttonContent?: string;
   buttonLink?: string;
