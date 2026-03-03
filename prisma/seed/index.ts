@@ -1,4 +1,5 @@
 import { prisma } from "../../src/utils/databases/prisma/connection";
+import { systemPreferenceSeed } from "./systemPreference.seed";
 import { userRoleSeed } from "./userRole.seed";
 import { userSystemSeed } from "./userSystem.seed";
 
@@ -8,6 +9,7 @@ async function main() {
 
   const userSystemSeedResult = await userSystemSeed();
   await userRoleSeed(userSystemSeedResult.id);
+  await systemPreferenceSeed();
 
   console.log("🌳 All seeds completed");
 }

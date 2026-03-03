@@ -575,7 +575,7 @@ model HeroBanner {
 
 model SystemPreference {
   id          String    @id @db.Uuid 
-  key         String    @db.VarChar(225)
+  key         String    @db.VarChar(225) @unique
   value       String    @db.VarChar(225)
   description String    @db.Text
   deletedAt   DateTime?
