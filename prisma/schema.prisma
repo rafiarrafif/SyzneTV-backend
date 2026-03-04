@@ -559,6 +559,7 @@ model HeroBanner {
   orderPriority Int?     @unique
   isClickable   Boolean  @default(false)
   title         String?  @db.VarChar(225)
+  tags          String[]
   description   String?  @db.Text
   buttonContent String?  @db.VarChar(100)
   buttonLink    String?  @db.Text
@@ -574,7 +575,7 @@ model HeroBanner {
 
 model SystemPreference {
   id          String    @id @db.Uuid 
-  key         String    @db.VarChar(225)
+  key         String    @db.VarChar(225) @unique
   value       String    @db.VarChar(225)
   description String    @db.Text
   deletedAt   DateTime?
