@@ -76,6 +76,7 @@ bun run dev
 ```
 
 **Production Mode**
+
 Build the application:
 
 ```bash
@@ -158,7 +159,7 @@ module-name/
 - **types.ts**: Contains module-specific TypeScript types.
 - **index.ts**: Defines the module routes and route prefix (e.g., `/auth`).
 
-> **IMPORTANT**! Whenever you create a new module and configure its routes, you must run:
+> **IMPORTANT** Whenever you create a new module and configure its routes, you must run:
 
 ```bash
 bun run route:sync
