@@ -19,6 +19,7 @@
     "env:publish": "bun run ./scripts/create-example-env.ts"
   },
   "dependencies": {
+    "@elysiajs/openapi": "^1.4.14",
     "@prisma/adapter-pg": "^7.2.0",
     "@prisma/client": "^7.2.0",
     "@sentry/node": "^10.10.0",
