@@ -1,4 +1,4 @@
-import { t, type RouteSchema } from "elysia";
+import { type RouteSchema } from "elysia";
 import type { OpenAPIV3 } from "openapi-types";
 
 export type AppRouteSchema = RouteSchema & {

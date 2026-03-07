@@ -1,4 +1,4 @@
-import Elysia, { t } from "elysia";
+import Elysia from "elysia";
 import { bulkInsertEpisodeController } from "./controllers/bulkInsertEpisode.controller";
 import { bulkInsertMediaController } from "./controllers/bulkInsertMedia.controller";
 import { createVideoServiceInternalController } from "./controllers/createVideoService.controller";
