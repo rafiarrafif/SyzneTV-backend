@@ -6,9 +6,13 @@ import { bulkInsertVideoController } from "./controllers/bulkInsertVideo.control
 import { updateAllEpisodeThumbnailController } from "./controllers/updateAllEpisodeThumbnail.controller";
 import { purgeUnusedSessionController } from "./controllers/purgeUnusedSession.controller";
 import { createHeroBannerController } from "./controllers/createHeroBanner.controller";
+import { bulkInsertMediaSchema } from "./schemas/bulkInsertMedia.schema";
 
-export const internalModule = new Elysia({ prefix: "/internal" })
-  .post("/media/bulk-insert", bulkInsertMediaController)
+export const internalModule = new Elysia({
+  prefix: "/internal",
+  tags: ["Internal"],
+})
+  .post("/media/bulk-insert", bulkInsertMediaController, bulkInsertMediaSchema)
   .post("/episode/bulk-insert", bulkInsertEpisodeController)
   .put("/episode/update-thumbnails", updateAllEpisodeThumbnailController)
   .post("/video/bulk-insert", bulkInsertVideoController)
