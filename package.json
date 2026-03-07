@@ -1,6 +1,7 @@
 {
-  "name": "mvp.nounoz.com_v2",
+  "name": "backend-syzne-tv",
   "version": "1.0.50",
+  "license": "AGPL-3.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "bun build ./src/index.ts --compile --target bun --minify-whitespace --minify-syntax --minify-identifiers --outfile dist/server",

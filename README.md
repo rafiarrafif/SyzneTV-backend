@@ -166,3 +166,39 @@ bun run route:sync
 ```
 
 This command registers the module route into the root route automatically. This structure ensures consistency across the project and makes it easier to scale without turning the codebase into a mess.
+
+## API Endpoints
+
+Due to the large number of routes and their complexity, listing every endpoint directly in this README would quickly become messy and hard to maintain.
+
+Instead, we provides an OpenAPI-based documentation page that can be accessed at:
+
+```
+/openapi
+```
+
+#### Accessing the OpenAPI Documentation
+
+Before accessing the documentation, you need to temporarily disable the application protector.
+
+Open your .env file and change:
+
+```env
+ENABLED_APP_TOKEN=false
+```
+
+After that, start the server and open the /openapi route in your browser.
+
+#### Current Status
+
+The OpenAPI documentation is still in an early stage and may look a bit rough at the moment. It will be improved and structured more clearly as the project evolves.
+
+For now, it serves as a reference for exploring available routes and understanding how the API is structured.
+
+## License
+
+This project is licensed under the GNU Affero General Public License v3.0 (AGPL-3.0).
+
+You are free to use, modify, and distribute this project under the terms of the license. However, if you run a modified version of this software as a service, you must also make the source code available under the same license.
+
+For the full license text, please see the [LICENSE](LICENSE) file in this repository.
