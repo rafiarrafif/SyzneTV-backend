@@ -15,7 +15,6 @@ import { bulkInsertMediaSchema } from "../schemas/bulkInsertMedia.schema";
 export const bulkInsertMediaController = async (ctx: {
   set: Context["set"];
   body: Static<typeof bulkInsertMediaSchema.body>;
-  query: Static<typeof bulkInsertMediaSchema.query>;
 }) => {
   try {
     const bulkInsertResult = await bulkInsertAnimeService(ctx.body.mal_id);

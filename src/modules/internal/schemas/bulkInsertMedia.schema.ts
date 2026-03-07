@@ -8,13 +8,6 @@ export const bulkInsertMediaSchema = {
         "The MyAnimeList ID of the media for which episodes will be inserted",
     }),
   }),
-  query: t.Object({
-    page: t.Optional(
-      t.Number({
-        description: "Episode page number to fetch",
-      }),
-    ),
-  }),
   detail: {
     summary: "Bulk insert media",
     description:
