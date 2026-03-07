@@ -1,47 +1,22 @@
-import { Context } from "elysia";
+import { Context, Static } from "elysia";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { bulkInsertAnimeService } from "../services/http/bulkInsertAnime.service";
 import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
+import { bulkInsertMediaSchema } from "../schemas/bulkInsertMedia.schema";
 
 /**
- * @function bulkInsertMediaController
- * @description Insert new anime to the database only with mal_id. This operation including inserting related data such as genres, studios, producers, licensors, themes, demographics, and relations.
+ * Insert anime and its related data into the database using MAL ID.
  *
- * @param {Context & { body: { mal_id: number } }} ctx
- * The context object containing the request body.
- * The body must include:
- * - mal_id: number - The MyAnimeList ID of the anime to be inserted.
+ * This controller orchestrates the bulk insertion process including
+ * genres, studios, producers, licensors, themes, voice actors, and relations.
  *
- * @example
- * Request route: POST /internal/anime/bulk-insert
- * Request body:
- * {
- *   "mal_id": 12345
- * }
- *
- * @returns {Promise<Object>}
- * A response object indicating success or failure.
- * Return example:
- * {
- *   success: true,
- *   status: 201,
- *   message: "Bulk insert anime operation completed successfully",
- *   data: { ...bulkInsertResult } // Data returned only if the env run on development mode
- * }
- *
- * @throws {Object}
- * An error response object if validation fails or an error occurs during bulk insert operation.
- * Return example:
- * {
- *   success: false,
- *   status: <Status Code>,
- *   message: "<Error Message>",
- *   error: { ...errorDetails } // Additional error details if available and the env run on development mode
- * }
+ * See OpenAPI documentation for request/response schema.
  */
-export const bulkInsertMediaController = async (
-  ctx: Context & { body: { mal_id: number } },
-) => {
+export const bulkInsertMediaController = async (ctx: {
+  set: Context["set"];
+  body: Static<typeof bulkInsertMediaSchema.body>;
+  query: Static<typeof bulkInsertMediaSchema.query>;
+}) => {
   try {
     const bulkInsertResult = await bulkInsertAnimeService(ctx.body.mal_id);
     return returnWriteResponse(

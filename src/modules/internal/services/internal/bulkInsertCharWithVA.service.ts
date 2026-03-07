@@ -1,5 +1,5 @@
 import { SystemAccountId } from "../../../../config/account/system";
-import { getContentReferenceAPI } from "../../../../config/apis/media.reference";
+import { getContentReferenceAPI } from "../../../../config/apis/jikan/media.reference";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { bulkInsertCharactersRepository } from "../../repositories/bulkInsertCharacters.repository";
 import { bulkInsertLangVARepository } from "../../repositories/bulkInsertLangVA.repository";

@@ -1,5 +1,4 @@
 import { Prisma } from "@prisma/client";
-import { getContentReferenceAPI } from "../../../../config/apis/media.reference";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { bulkInsertGenresRepository } from "../../repositories/bulkInsertGenres.repository";
 import { InsertMediaRepository } from "../../repositories/bulkinsertMedia.repository";
@@ -9,6 +8,7 @@ import { generateSlug } from "../../../../helpers/characters/generateSlug";
 import { bulkInsertCharWithVAService } from "../internal/bulkInsertCharWithVA.service";
 import { generateUUIDv7 } from "../../../../helpers/databases/uuidv7";
 import { SystemAccountId } from "../../../../config/account/system";
+import { getContentReferenceAPI } from "../../../../config/apis/jikan/media.reference";
 
 export const bulkInsertAnimeService = async (malId: number) => {
   try {
@@ -24,8 +24,8 @@ export const bulkInsertAnimeService = async (malId: number) => {
     const constructMediaPayload: Prisma.MediaUpsertArgs["create"] = {
       id: generateUUIDv7(),
       title: mediaFullInfo.data.title,
-      titleAlternative: (mediaFullInfo.data
-        .titles as unknown) as Prisma.InputJsonValue,
+      titleAlternative: mediaFullInfo.data
+        .titles as unknown as Prisma.InputJsonValue,
       slug: await generateSlug(mediaFullInfo.data.title, {
         model: "media",
         target: "slug",
