@@ -8,6 +8,8 @@ import { purgeUnusedSessionController } from "./controllers/purgeUnusedSession.c
 import { createHeroBannerController } from "./controllers/createHeroBanner.controller";
 import { bulkInsertMediaSchema } from "./schemas/bulkInsertMedia.schema";
 import { bulkInsertEpisodeSchema } from "./schemas/bulkInsertEpisode.schema";
+import { updateAllEpisodeThumbnailSchema } from "./schemas/updateAllEpisodeThumbnail.schema";
+import { bulkInsertVideoSchema } from "./schemas/bulkInsertVideo.schema";
 
 export const internalModule = new Elysia({
   prefix: "/internal",
@@ -15,8 +17,8 @@ export const internalModule = new Elysia({
 })
   .post("/media/bulk-insert", bulkInsertMediaController, bulkInsertMediaSchema)
   .post("/episode/bulk-insert", bulkInsertEpisodeController, bulkInsertEpisodeSchema)
-  .put("/episode/update-thumbnails", updateAllEpisodeThumbnailController)
-  .post("/video/bulk-insert", bulkInsertVideoController)
+  .put("/episode/update-thumbnails", updateAllEpisodeThumbnailController, updateAllEpisodeThumbnailSchema)
+  .post("/video/bulk-insert", bulkInsertVideoController, bulkInsertVideoSchema)
   .post("/video-service", createVideoServiceInternalController)
   .post("/user-session/purge-unused", purgeUnusedSessionController)
   .post("/hero-banner", createHeroBannerController);
