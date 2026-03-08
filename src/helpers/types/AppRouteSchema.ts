@@ -12,9 +12,7 @@ export type AppRouteSchema = RouteSchema & {
     requestBody?: OpenAPIV3.ReferenceObject | OpenAPIV3.RequestBodyObject;
     responses: OpenAPIV3.ResponsesObject;
     callbacks?: {
-      [callback: string]:
-        | OpenAPIV3.ReferenceObject
-        | OpenAPIV3.CallbackObject;
+      [callback: string]: OpenAPIV3.ReferenceObject | OpenAPIV3.CallbackObject;
     };
     deprecated?: boolean;
     security?: OpenAPIV3.SecurityRequirementObject[];
