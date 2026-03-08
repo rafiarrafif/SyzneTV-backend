@@ -3,6 +3,7 @@
 import openapi from "@elysiajs/openapi";
 import { middleware } from "./middleware";
 import { validateEnv } from "./utils/startups/validateEnv";
+import { openAPIConfig } from "./config/documentation/openAPI";
 
 validateEnv();
 
@@ -18,19 +19,7 @@ async function bootstrap() {
   new Elysia()
     .use(middleware)
     .use(routes)
-    .use(
-      openapi({
-        documentation: {
-          tags: [
-            {
-              name: "Internal",
-              description:
-                "Endpoints for internal use only, not exposed to public API consumers.",
-            },
-          ],
-        },
-      }),
-    )
+    .use(openapi(openAPIConfig))
     .listen(process.env.APP_PORT || 3000);
 
   console.log(
