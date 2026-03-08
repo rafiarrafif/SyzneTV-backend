@@ -1,11 +1,10 @@
+import { Static } from "elysia";
 import { SystemAccountId } from "../../../../config/account/system";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
-import { CreateVideoServiceInternalBodyRequest } from "../../controllers/createVideoService.controller";
 import { createVideoServiceInternalRepository } from "../../repositories/createVideoService.repository";
+import { createVideoServiceInternalSchema } from "../../schemas/createVideoServiceInternal.schema";
 
-export const createVideoServiceInternalService = async (
-  body: CreateVideoServiceInternalBodyRequest,
-) => {
+export const createVideoServiceInternalService = async (body: Static<typeof createVideoServiceInternalSchema.body>) => {
   try {
     return await createVideoServiceInternalRepository({
       name: body.name,

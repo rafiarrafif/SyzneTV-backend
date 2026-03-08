@@ -1,6 +1,7 @@
 import { Context } from "elysia";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 import { createHeroBannerService } from "../services/http/createHeroBanner.service";
+import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
 
 export interface CreateHeroBannerRequestBody {
   isClickable?: boolean;
@@ -14,11 +15,10 @@ export interface CreateHeroBannerRequestBody {
   endDate: string;
 }
 
-export const createHeroBannerController = async (
-  ctx: Context & { body: CreateHeroBannerRequestBody },
-) => {
+export const createHeroBannerController = async (ctx: Context & { body: CreateHeroBannerRequestBody }) => {
   try {
-    return await createHeroBannerService(ctx.body);
+    const createdBanner = await createHeroBannerService(ctx.body);
+    return returnWriteResponse(ctx.set, 201, "Hero banner created successfully", createdBanner);
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
   }
