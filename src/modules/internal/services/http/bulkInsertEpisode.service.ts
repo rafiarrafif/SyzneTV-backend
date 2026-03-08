@@ -1,10 +1,10 @@
-import { getEpisodeReferenceAPI } from "../../../../config/apis/episode.reference";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { MediaEpisodeInfoResponse } from "../../types/mediaEpisodeInfo.type";
 import { getMediaByMalIdRepository } from "../../../media/repositories/GET/getMediaByMalId.repository";
 import { AppError } from "../../../../helpers/error/instances/app";
 import { SystemAccountId } from "../../../../config/account/system";
 import { bulkInsertEpisodesRepository } from "../../repositories/bulkInsertEpisodes.repository";
+import { getEpisodeReferenceAPI } from "../../../../config/apis/jikan/episode.reference";
 
 export const bulkInsertEpisodeService = async (
   mal_id: number,

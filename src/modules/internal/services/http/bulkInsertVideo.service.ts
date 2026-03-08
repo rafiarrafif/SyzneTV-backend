@@ -1,12 +1,11 @@
 import { SystemAccountId } from "../../../../config/account/system";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
-import { BulkInsertVideoBodyRequest } from "../../controllers/bulkInsertVideo.controller";
 import { findEpisodeWithMediaIdRepository } from "../../repositories/findEpisodeWithMediaId.repository";
 import { bulkInsertVideoRepository } from "../../repositories/bulkInsertVideo.repository";
+import { Static } from "elysia";
+import { bulkInsertVideoSchema } from "../../schemas/bulkInsertVideo.schema";
 
-export const bulkInsertVideoService = async (
-  body: BulkInsertVideoBodyRequest,
-) => {
+export const bulkInsertVideoService = async (body: Static<typeof bulkInsertVideoSchema.body>) => {
   try {
     const insertedVideos: string[] = [];
     for (const episodeData of body.data) {
