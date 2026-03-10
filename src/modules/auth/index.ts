@@ -8,10 +8,11 @@ import { getCallbackProviderUrlController } from "./controllers/getCallbackProvi
 import { tokenValidationController } from "./controllers/tokenValidation.controller";
 import { logoutController } from "./controllers/logout.controller";
 import { tokenValidationSchema } from "./schemas/tokenValidation.schema";
+import { getOauthProvidersSchema } from "./schemas/getOauthProviders.schema";
 
 export const authModule = new Elysia({ prefix: "/auth", tags: ["Authentication"] })
   .post("/token/validate", tokenValidationController, tokenValidationSchema)
-  .get("/providers", getOauthProvidersController)
+  .get("/providers", getOauthProvidersController, getOauthProvidersSchema)
   .get("/providers/:name/callback", getCallbackProviderUrlController)
   .get("/github", githubRequestController)
   .get("/github/callback", githubCallbackController)
