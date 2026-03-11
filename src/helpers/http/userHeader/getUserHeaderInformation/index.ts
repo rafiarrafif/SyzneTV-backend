@@ -1,4 +1,3 @@
-import { Context } from "elysia";
 import { UserHeaderInformation } from "./types";
 
 export interface ClientInfoHeader {
