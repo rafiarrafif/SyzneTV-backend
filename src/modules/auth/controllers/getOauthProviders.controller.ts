@@ -9,8 +9,8 @@ export const getOauthProvidersController = (ctx: Context) => {
     return returnReadResponse(
       ctx.set,
       200,
-      "Getting all oauth available list",
-      oauthProviderServices
+      "Successfully retrieved the list of oauth providers",
+      oauthProviderServices,
     );
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
