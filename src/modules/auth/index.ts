@@ -12,6 +12,9 @@ import { getOauthProvidersSchema } from "./schemas/getOauthProviders.schema";
 import { getCallbackProviderUrlSchema } from "./schemas/getCallbackProviderUrl.schema";
 import { googleRequestSchema } from "./schemas/googleRequest.schema";
 import { googleCallbackSchema } from "./schemas/googleCallback.schema";
+import { githubRequestSchema } from "./schemas/githubRequest.schema";
+import { githubCallbackSchema } from "./schemas/githubCallback.schema";
+import { logoutSchema } from "./schemas/logout.schema";
 
 export const authModule = new Elysia({ prefix: "/auth", tags: ["Authentication"] })
   .post("/token/validate", tokenValidationController, tokenValidationSchema)
@@ -19,6 +22,6 @@ export const authModule = new Elysia({ prefix: "/auth", tags: ["Authentication"]
   .get("/providers/:name/callback", getCallbackProviderUrlController, getCallbackProviderUrlSchema)
   .get("/google", googleRequestController, googleRequestSchema)
   .get("/google/callback", googleCallbackController, googleCallbackSchema)
-  .get("/github", githubRequestController)
-  .get("/github/callback", githubCallbackController)
-  .post("/logout", logoutController);
+  .get("/github", githubRequestController, githubRequestSchema)
+  .get("/github/callback", githubCallbackController, githubCallbackSchema)
+  .post("/logout", logoutController, logoutSchema);
