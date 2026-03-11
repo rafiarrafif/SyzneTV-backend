@@ -9,13 +9,16 @@ import { tokenValidationController } from "./controllers/tokenValidation.control
 import { logoutController } from "./controllers/logout.controller";
 import { tokenValidationSchema } from "./schemas/tokenValidation.schema";
 import { getOauthProvidersSchema } from "./schemas/getOauthProviders.schema";
+import { getCallbackProviderUrlSchema } from "./schemas/getCallbackProviderUrl.schema";
+import { googleRequestSchema } from "./schemas/googleRequest.schema";
+import { googleCallbackSchema } from "./schemas/googleCallback.schema";
 
 export const authModule = new Elysia({ prefix: "/auth", tags: ["Authentication"] })
   .post("/token/validate", tokenValidationController, tokenValidationSchema)
   .get("/providers", getOauthProvidersController, getOauthProvidersSchema)
-  .get("/providers/:name/callback", getCallbackProviderUrlController)
+  .get("/providers/:name/callback", getCallbackProviderUrlController, getCallbackProviderUrlSchema)
+  .get("/google", googleRequestController, googleRequestSchema)
+  .get("/google/callback", googleCallbackController, googleCallbackSchema)
   .get("/github", githubRequestController)
   .get("/github/callback", githubCallbackController)
-  .get("/google", googleRequestController)
-  .get("/google/callback", googleCallbackController)
   .post("/logout", logoutController);
