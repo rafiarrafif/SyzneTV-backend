@@ -7,13 +7,21 @@ import { getOauthProvidersController } from "./controllers/getOauthProviders.con
 import { getCallbackProviderUrlController } from "./controllers/getCallbackProviderUrl.controller";
 import { tokenValidationController } from "./controllers/tokenValidation.controller";
 import { logoutController } from "./controllers/logout.controller";
+import { tokenValidationSchema } from "./schemas/tokenValidation.schema";
+import { getOauthProvidersSchema } from "./schemas/getOauthProviders.schema";
+import { getCallbackProviderUrlSchema } from "./schemas/getCallbackProviderUrl.schema";
+import { googleRequestSchema } from "./schemas/googleRequest.schema";
+import { googleCallbackSchema } from "./schemas/googleCallback.schema";
+import { githubRequestSchema } from "./schemas/githubRequest.schema";
+import { githubCallbackSchema } from "./schemas/githubCallback.schema";
+import { logoutSchema } from "./schemas/logout.schema";
 
-export const authModule = new Elysia({ prefix: "/auth" })
-  .post("/token/validate", tokenValidationController)
-  .get("/providers", getOauthProvidersController)
-  .get("/providers/:name/callback", getCallbackProviderUrlController)
-  .get("/github", githubRequestController)
-  .get("/github/callback", githubCallbackController)
-  .get("/google", googleRequestController)
-  .get("/google/callback", googleCallbackController)
-  .post("/logout", logoutController);
+export const authModule = new Elysia({ prefix: "/auth", tags: ["Authentication"] })
+  .post("/token/validate", tokenValidationController, tokenValidationSchema)
+  .get("/providers", getOauthProvidersController, getOauthProvidersSchema)
+  .get("/providers/:name/callback", getCallbackProviderUrlController, getCallbackProviderUrlSchema)
+  .get("/google", googleRequestController, googleRequestSchema)
+  .get("/google/callback", googleCallbackController, googleCallbackSchema)
+  .get("/github", githubRequestController, githubRequestSchema)
+  .get("/github/callback", githubCallbackController, githubCallbackSchema)
+  .post("/logout", logoutController, logoutSchema);
