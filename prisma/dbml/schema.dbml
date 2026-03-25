@@ -28,6 +28,7 @@ Table medias {
   deletedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
+  bannerPromotion hero_banner [not null]
   logs media_logs [not null]
   episodes episodes [not null]
   collections collections [not null]
@@ -496,12 +497,8 @@ Table email_system_histories {
 Table hero_banner {
   id String [pk]
   orderPriority Int [unique]
-  isClickable Boolean [not null, default: false]
-  title String
-  tags String[] [not null]
-  description String
-  buttonContent String
-  buttonLink String
+  mediaId String [not null]
+  media medias [not null]
   imageUrl String
   startDate DateTime [not null]
   endDate DateTime [not null]
@@ -779,6 +776,8 @@ Ref: languages.craetedBy > users.id
 Ref: email_system_accounts.createdBy > users.id
 
 Ref: email_system_histories.userRelated > users.id
+
+Ref: hero_banner.mediaId > medias.id
 
 Ref: hero_banner.creatorId > users.id
 

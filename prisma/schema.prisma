@@ -49,6 +49,7 @@ model Media {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now()) @updatedAt
 
+  bannerPromotion   HeroBanner[]  @relation("MediaBannerPromotion")
   logs              MediaLog[]    @relation("MediaLogs")
   episodes          Episode[]     @relation("MediaEpisodes")
   collections       Collection[]  @relation("MediaCollections")
@@ -557,12 +558,8 @@ model EmailSystemHistory {
 model HeroBanner {
   id            String   @id @db.Uuid
   orderPriority Int?     @unique
-  isClickable   Boolean  @default(false)
-  title         String?  @db.VarChar(225)
-  tags          String[]
-  description   String?  @db.Text
-  buttonContent String?  @db.VarChar(100)
-  buttonLink    String?  @db.Text
+  mediaId       String   @db.Uuid 
+  media         Media    @relation("MediaBannerPromotion", fields: [mediaId], references: [id])
   imageUrl      String?  @db.Text
   startDate     DateTime
   endDate       DateTime

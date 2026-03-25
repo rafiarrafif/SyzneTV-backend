@@ -206,7 +206,8 @@ CREATE TABLE "videos" (
     "id" UUID NOT NULL,
     "episodeId" UUID NOT NULL,
     "serviceId" UUID NOT NULL,
-    "code" VARCHAR(255) NOT NULL,
+    "videoCode" VARCHAR(255) NOT NULL,
+    "thumbnailCode" TEXT,
     "pendingUpload" BOOLEAN NOT NULL DEFAULT true,
     "uploadedBy" UUID NOT NULL,
     "deletedAt" TIMESTAMP(3),
@@ -498,6 +499,26 @@ CREATE TABLE "email_system_histories" (
 );
 
 -- CreateTable
+CREATE TABLE "hero_banner" (
+    "id" UUID NOT NULL,
+    "orderPriority" INTEGER,
+    "isClickable" BOOLEAN NOT NULL DEFAULT false,
+    "title" VARCHAR(225),
+    "tags" TEXT[],
+    "description" TEXT,
+    "buttonContent" VARCHAR(100),
+    "buttonLink" TEXT,
+    "imageUrl" TEXT,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "creatorId" UUID NOT NULL,
+
+    CONSTRAINT "hero_banner_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "system_preferences" (
     "id" UUID NOT NULL,
     "key" VARCHAR(225) NOT NULL,
@@ -629,7 +650,7 @@ CREATE UNIQUE INDEX "lang_va_char_language_vaId_charId_key" ON "lang_va_char"("l
 CREATE UNIQUE INDEX "episodes_mediaId_episode_key" ON "episodes"("mediaId", "episode");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "videos_serviceId_code_key" ON "videos"("serviceId", "code");
+CREATE UNIQUE INDEX "videos_serviceId_videoCode_key" ON "videos"("serviceId", "videoCode");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "video_services_name_key" ON "video_services"("name");
@@ -663,6 +684,12 @@ CREATE UNIQUE INDEX "email_system_accounts_email_key" ON "email_system_accounts"
 
 -- CreateIndex
 CREATE UNIQUE INDEX "email_system_accounts_username_key" ON "email_system_accounts"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "hero_banner_orderPriority_key" ON "hero_banner"("orderPriority");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "system_preferences_key_key" ON "system_preferences"("key");
 
 -- CreateIndex
 CREATE INDEX "_MediaStudios_B_index" ON "_MediaStudios"("B");
@@ -819,6 +846,9 @@ ALTER TABLE "email_system_accounts" ADD CONSTRAINT "email_system_accounts_create
 
 -- AddForeignKey
 ALTER TABLE "email_system_histories" ADD CONSTRAINT "email_system_histories_userRelated_fkey" FOREIGN KEY ("userRelated") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "hero_banner" ADD CONSTRAINT "hero_banner_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "system_notifications" ADD CONSTRAINT "system_notifications_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
