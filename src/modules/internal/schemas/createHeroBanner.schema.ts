@@ -3,45 +3,18 @@ import { AppRouteSchema } from "../../../helpers/types/AppRouteSchema";
 
 export const createHeroBannerSchema = {
   body: t.Object({
-    isClickable: t.Optional(
-      t.Boolean({
-        description: "Indicates whether the hero banner is clickable",
-      }),
+    orderPriority: t.Optional(
+      t.Number({ description: "The priority order of the hero banner. Lower numbers indicate higher priority." }),
     ),
-    title: t.Optional(
-      t.String({
-        description: "The title of the hero banner",
-      }),
-    ),
-    tags: t.Array(t.String(), {
-      description: "An array of tags associated with the hero banner",
-    }),
-    description: t.Optional(
-      t.String({
-        description: "A brief description of the hero banner",
-      }),
-    ),
-    buttonContent: t.Optional(
-      t.String({
-        description: "The text content of the button on the hero banner",
-      }),
-    ),
-    buttonLink: t.Optional(
-      t.String({
-        description: "The URL that the button on the hero banner links to",
-      }),
-    ),
+    mediaId: t.String({ description: "The ID of the media associated with the hero banner" }),
     imageUrl: t.Optional(
       t.String({
-        description: "The URL of the image used in the hero banner",
+        description:
+          "The URL of the image used in the hero banner. If not provided, a thumbnail image of the media will be used.",
       }),
     ),
-    startDate: t.String({
-      description: "The start date for the hero banner in ISO 8601 format",
-    }),
-    endDate: t.String({
-      description: "The end date for the hero banner in ISO 8601 format",
-    }),
+    startDate: t.Date({ description: "The start date for the hero banner in ISO 8601 format" }),
+    endDate: t.Date({ description: "The end date for the hero banner in ISO 8601 format" }),
   }),
   detail: {
     summary: "Create a new hero banner",
@@ -64,17 +37,16 @@ export const createHeroBannerSchema = {
                     "The created hero banner object. This field is returned only if the environment is running in development mode.",
                   properties: {
                     id: { type: "string", description: "The ID of the created hero banner" },
-                    isClickable: { type: "boolean", description: "Indicates whether the hero banner is clickable" },
-                    title: { type: "string", description: "The title of the hero banner" },
-                    tags: {
-                      type: "array",
-                      items: { type: "string" },
-                      description: "An array of tags associated with the hero banner",
+                    orderPriority: {
+                      type: "number",
+                      description: "The priority order of the hero banner. Lower numbers indicate higher priority.",
                     },
-                    description: { type: "string", description: "A brief description of the hero banner" },
-                    buttonContent: { type: "string", description: "The text content of the button on the hero banner" },
-                    buttonLink: { type: "string", description: "The URL that the button on the hero banner links to" },
-                    imageUrl: { type: "string", description: "The URL of the image used in the hero banner" },
+                    mediaId: { type: "string", description: "The ID of the media associated with the hero banner" },
+                    imageUrl: {
+                      type: "string",
+                      description:
+                        "The URL of the image used in the hero banner. If not provided, a thumbnail image of the media will be used.",
+                    },
                     startDate: {
                       type: "string",
                       format: "date-time",
