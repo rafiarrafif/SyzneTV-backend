@@ -20,6 +20,25 @@ export const findAllActiveHeroBannerRepository = async () => {
           startDate: "asc",
         },
       ],
+      select: {
+        orderPriority: true,
+        imageUrl: true,
+        media: {
+          select: {
+            id: true,
+            title: true,
+            slug: true,
+            pictureLarge: true,
+            synopsis: true,
+            genres: {
+              select: {
+                slug: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
     });
   } catch (error) {
     throw new AppError(500, "Failed to fetch active hero banners", error);
