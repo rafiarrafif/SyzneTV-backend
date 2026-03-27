@@ -418,7 +418,8 @@ model UserLog {
 
 model Collection {
   id              String        @id @db.Uuid
-  name            String        @db.VarChar(255)
+  name            String        @db.VarChar(115)
+  slug            String        @db.VarChar(115)
   medias          Media[]       @relation("MediaCollections")
   owner           User          @relation("UserCollections", fields: [ownerId], references: [id])
   ownerId         String        @db.Uuid
@@ -429,6 +430,8 @@ model Collection {
   deletedAt       DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @default(now()) @updatedAt
+
+  @@unique([slug, ownerId])
   @@map("collections")
 }
 
