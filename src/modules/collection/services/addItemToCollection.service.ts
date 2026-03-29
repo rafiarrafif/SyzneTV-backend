@@ -1,7 +1,7 @@
 import { parse } from "cookie";
-import { jwtDecode } from "../../../helpers/http/jwt/decode";
 import { tokenValidationService } from "../../auth/services/http/tokenValidation.service";
-import slugify from "slugify";
+import { ErrorForwarder } from "../../../helpers/error/instances/forwarder";
+import { upsertUserCollectionBySystemRepository } from "../repositories/upsertUserCollectionBySystem.repository";
 
 export type AddItemToCollectionPayload = {
   cookie: string;
@@ -10,6 +10,17 @@ export type AddItemToCollectionPayload = {
 };
 
 export const addItemToCollectionService = async (payload: AddItemToCollectionPayload) => {
-  const { auth_token } = parse(payload.cookie);
-  return (await tokenValidationService(auth_token as string)).user.id;
+  try {
+    const { auth_token } = parse(payload.cookie);
+    const userData = await tokenValidationService(auth_token as string);
+    const saveMediaToCollection = await upsertUserCollectionBySystemRepository({
+      userId: userData.user.id,
+      collectionName: payload.collectionName,
+      mediaConnectId: payload.mediaId,
+    });
+
+    return saveMediaToCollection;
+  } catch (error) {
+    ErrorForwarder(error);
+  }
 };
