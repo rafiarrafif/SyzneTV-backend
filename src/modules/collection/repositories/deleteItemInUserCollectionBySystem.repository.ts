@@ -1,7 +1,6 @@
 import slugify from "slugify";
 import { AppError } from "../../../helpers/error/instances/app";
 import { prisma } from "../../../utils/databases/prisma/connection";
-import { Prisma } from "@prisma/client";
 
 export type DeleteUserCollectionBySystemPayload = {
   userId: string;
@@ -27,6 +26,6 @@ export const deleteItemInUserCollectionBySystemRepository = async (payload: Dele
       },
     });
   } catch (error) {
-    throw new AppError(500, "Failed to remove item from collection");
+    throw new AppError(500, "Failed to remove item from collection", error);
   }
 };
