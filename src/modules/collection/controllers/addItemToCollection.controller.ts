@@ -7,13 +7,12 @@ import { mainErrorHandler } from "../../../helpers/error/handler";
 export const addItemToCollectionController = async (ctx: {
   set: Context["set"];
   headers: Static<typeof addItemToCollectionSchema.headers>;
-  params: Static<typeof addItemToCollectionSchema.params>;
   body: Static<typeof addItemToCollectionSchema.body>;
 }) => {
   try {
     const savedItem = await addItemToCollectionService({
       cookie: ctx.headers.cookie,
-      collectionName: ctx.params.name,
+      collectionName: ctx.body.name,
       mediaId: ctx.body.itemId,
     });
     return returnWriteResponse(ctx.set, 200, "Item added to collection successfully", savedItem);

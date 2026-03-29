@@ -3,7 +3,7 @@ import { addItemToCollectionController } from "./controllers/addItemToCollection
 import { addItemToCollectionSchema } from "./schemas/addItemToCollection.schema";
 
 export const collectionModule = new Elysia({ prefix: "/collections", tags: ["Collections"] }).post(
-  "/:name",
+  "/sys",
   addItemToCollectionController,
   addItemToCollectionSchema,
 );

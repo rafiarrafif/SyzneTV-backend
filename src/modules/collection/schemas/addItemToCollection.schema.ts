@@ -5,10 +5,8 @@ export const addItemToCollectionSchema = {
   headers: t.Object({
     cookie: t.String({ description: "Authentication token in cookie format, e.g., auth_token=your_jwt_token;" }),
   }),
-  params: t.Object({
-    name: t.String({ description: "Name of the collection to which the item will be added" }),
-  }),
   body: t.Object({
+    name: t.String({ description: "Name of the collection to which the item will be added" }),
     itemId: t.String({ description: "ID of the item to be added to the collection", examples: ["12345"] }),
   }),
   detail: {
