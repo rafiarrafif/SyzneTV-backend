@@ -49,11 +49,11 @@ model Media {
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @default(now()) @updatedAt
 
-  bannerPromotion   HeroBanner[]  @relation("MediaBannerPromotion")
-  logs              MediaLog[]    @relation("MediaLogs")
-  episodes          Episode[]     @relation("MediaEpisodes")
-  collections       Collection[]  @relation("MediaCollections")
-  reviews           MediaReview[] @relation("MediaReviews")
+  bannerPromotion   HeroBanner[]       @relation("MediaBannerPromotion")
+  logs              MediaLog[]         @relation("MediaLogs")
+  episodes          Episode[]          @relation("MediaEpisodes")
+  reviews           MediaReview[]      @relation("MediaReviews")
+  inCollections     CollectionMedia[]  @relation("CollectionMedia")
 
   @@index([status, onDraft, deletedAt])
   @@index([mediaType])
@@ -418,8 +418,8 @@ model UserLog {
 
 model Collection {
   id              String        @id @db.Uuid
-  name            String        @db.VarChar(255)
-  medias          Media[]       @relation("MediaCollections")
+  name            String        @db.VarChar(115)
+  slug            String        @db.VarChar(115)
   owner           User          @relation("UserCollections", fields: [ownerId], references: [id])
   ownerId         String        @db.Uuid
   accessStatus    AccessStatus  @default(private)
@@ -429,7 +429,20 @@ model Collection {
   deletedAt       DateTime?
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @default(now()) @updatedAt
+
+  media_saved     CollectionMedia[] @relation("CollectionMedia")
+  @@unique([slug, ownerId])
   @@map("collections")
+}
+
+model CollectionMedia {
+  id            String      @id @db.Uuid
+  collection    Collection  @relation("CollectionMedia", fields: [collectionId], references: [id])
+  collectionId  String      @db.Uuid
+  media         Media       @relation("CollectionMedia", fields: [mediaId], references: [id])
+  mediaId       String      @db.Uuid
+  savedAt       DateTime    @default(now())
+  @@unique([collectionId, mediaId])
 }
 
 model WatchHistory {
