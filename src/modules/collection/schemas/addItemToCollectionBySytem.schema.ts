@@ -1,7 +1,7 @@
 import { t } from "elysia";
 import { AppRouteSchema } from "../../../helpers/types/AppRouteSchema";
 
-export const addItemToCollectionSchema = {
+export const addItemToCollectionBySytemSchema = {
   headers: t.Object({
     cookie: t.String({ description: "Authentication token in cookie format, e.g., auth_token=your_jwt_token;" }),
   }),

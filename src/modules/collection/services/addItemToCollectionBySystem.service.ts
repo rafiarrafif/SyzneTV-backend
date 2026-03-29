@@ -9,17 +9,15 @@ export type AddItemToCollectionPayload = {
   mediaId: string;
 };
 
-export const addItemToCollectionService = async (payload: AddItemToCollectionPayload) => {
+export const addItemToCollectionBySystemService = async (payload: AddItemToCollectionPayload) => {
   try {
     const { auth_token } = parse(payload.cookie);
     const userData = await tokenValidationService(auth_token as string);
-    const saveMediaToCollection = await upsertUserCollectionBySystemRepository({
+    return await upsertUserCollectionBySystemRepository({
       userId: userData.user.id,
       collectionName: payload.collectionName,
       mediaConnectId: payload.mediaId,
     });
-
-    return saveMediaToCollection;
   } catch (error) {
     ErrorForwarder(error);
   }

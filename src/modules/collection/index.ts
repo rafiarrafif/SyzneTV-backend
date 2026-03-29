@@ -1,9 +1,9 @@
 import Elysia from "elysia";
-import { addItemToCollectionController } from "./controllers/addItemToCollection.controller";
-import { addItemToCollectionSchema } from "./schemas/addItemToCollection.schema";
+import { addItemToCollectionBySytemController } from "./controllers/addItemToCollectionBySytem.controller";
+import { addItemToCollectionBySytemSchema } from "./schemas/addItemToCollectionBySytem.schema";
+import { removeItemFromCollectionBySytemController } from "./controllers/removeItemFromCollectionBySytem.controller";
+import { removeItemFromCollectionBySytemSchema } from "./schemas/removeItemFromCollectionBySytem.schema";
 
-export const collectionModule = new Elysia({ prefix: "/collections", tags: ["Collections"] }).post(
-  "/sys",
-  addItemToCollectionController,
-  addItemToCollectionSchema,
-);
+export const collectionModule = new Elysia({ prefix: "/collections", tags: ["Collections"] })
+  .post("/sys", addItemToCollectionBySytemController, addItemToCollectionBySytemSchema)
+  .delete("/sys", removeItemFromCollectionBySytemController, removeItemFromCollectionBySytemSchema);

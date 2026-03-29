@@ -1,16 +1,16 @@
 import { Context, Static } from "elysia";
 import { returnWriteResponse } from "../../../helpers/callback/httpResponse";
-import { addItemToCollectionSchema } from "../schemas/addItemToCollection.schema";
-import { addItemToCollectionService } from "../services/addItemToCollection.service";
+import { addItemToCollectionBySytemSchema } from "../schemas/addItemToCollectionBySytem.schema";
+import { addItemToCollectionBySystemService } from "../services/addItemToCollectionBySystem.service";
 import { mainErrorHandler } from "../../../helpers/error/handler";
 
-export const addItemToCollectionController = async (ctx: {
+export const addItemToCollectionBySytemController = async (ctx: {
   set: Context["set"];
-  headers: Static<typeof addItemToCollectionSchema.headers>;
-  body: Static<typeof addItemToCollectionSchema.body>;
+  headers: Static<typeof addItemToCollectionBySytemSchema.headers>;
+  body: Static<typeof addItemToCollectionBySytemSchema.body>;
 }) => {
   try {
-    const savedItem = await addItemToCollectionService({
+    const savedItem = await addItemToCollectionBySystemService({
       cookie: ctx.headers.cookie,
       collectionName: ctx.body.name,
       mediaId: ctx.body.itemId,
