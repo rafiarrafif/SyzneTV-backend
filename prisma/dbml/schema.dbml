@@ -31,8 +31,8 @@ Table medias {
   bannerPromotion hero_banner [not null]
   logs media_logs [not null]
   episodes episodes [not null]
-  collections collections [not null]
   reviews movie_reviews [not null]
+  inCollections CollectionMedia [not null]
 }
 
 Table media_logs {
@@ -369,7 +369,7 @@ Table user_logs {
 Table collections {
   id String [pk]
   name String [not null]
-  medias medias [not null]
+  slug String [not null]
   owner users [not null]
   ownerId String [not null]
   accessStatus AccessStatus [not null, default: 'private']
@@ -379,6 +379,24 @@ Table collections {
   deletedAt DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [default: `now()`, not null]
+  media_saved CollectionMedia [not null]
+
+  indexes {
+    (slug, ownerId) [unique]
+  }
+}
+
+Table CollectionMedia {
+  id String [pk]
+  collection collections [not null]
+  collectionId String [not null]
+  media medias [not null]
+  mediaId String [not null]
+  savedAt DateTime [default: `now()`, not null]
+
+  indexes {
+    (collectionId, mediaId) [unique]
+  }
 }
 
 Table watch_histories {
@@ -557,9 +575,9 @@ Table MediaCharacters {
   mediasId String [ref: > medias.id]
 }
 
-Table MediaCollections {
-  collectionsId String [ref: > collections.id]
-  mediasId String [ref: > medias.id]
+Table CollectionMedia {
+  incollectionsId String [ref: > CollectionMedia.id]
+  media_savedId String [ref: > CollectionMedia.id]
 }
 
 Table UserFavoriteGenres {
@@ -746,6 +764,10 @@ Ref: user_logs.userId > users.id
 Ref: user_logs.sessionId > user_sessions.id
 
 Ref: collections.ownerId > users.id
+
+Ref: CollectionMedia.collectionId > collections.id
+
+Ref: CollectionMedia.mediaId > medias.id
 
 Ref: watch_histories.id > episodes.id
 
