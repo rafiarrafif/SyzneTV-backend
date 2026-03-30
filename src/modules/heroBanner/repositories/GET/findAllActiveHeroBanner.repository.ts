@@ -1,7 +1,7 @@
 import { AppError } from "../../../../helpers/error/instances/app";
 import { prisma } from "../../../../utils/databases/prisma/connection";
 
-export const findAllActiveHeroBannerRepository = async () => {
+export const findAllActiveHeroBannerRepository = async (userId?: string) => {
   try {
     return await prisma.heroBanner.findMany({
       where: {
@@ -34,6 +34,17 @@ export const findAllActiveHeroBannerRepository = async () => {
               select: {
                 slug: true,
                 name: true,
+              },
+            },
+            _count: {
+              select: {
+                inCollections: {
+                  where: {
+                    collection: {
+                      ownerId: userId,
+                    },
+                  },
+                },
               },
             },
           },
