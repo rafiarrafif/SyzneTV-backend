@@ -1,7 +1,7 @@
 import { AppError } from "../../../../helpers/error/instances/app";
 import { mediaModel } from "../../model";
 
-export const getMediaByMalIdRepository = async (mal_id: number) => {
+export const selectMediaByMalIdRepository = async (mal_id: number) => {
   try {
     return await mediaModel.findUnique({
       where: { malId: mal_id },

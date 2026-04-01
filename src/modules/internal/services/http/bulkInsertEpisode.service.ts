@@ -1,27 +1,20 @@
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { MediaEpisodeInfoResponse } from "../../types/mediaEpisodeInfo.type";
-import { getMediaByMalIdRepository } from "../../../media/repositories/GET/getMediaByMalId.repository";
 import { AppError } from "../../../../helpers/error/instances/app";
 import { SystemAccountId } from "../../../../config/account/system";
 import { bulkInsertEpisodesRepository } from "../../repositories/bulkInsertEpisodes.repository";
 import { getEpisodeReferenceAPI } from "../../../../config/apis/jikan/episode.reference";
+import { selectMediaByMalIdRepository } from "../../../media/repositories/SELECT/selectMediaByMalId.repository";
 
-export const bulkInsertEpisodeService = async (
-  mal_id: number,
-  page: number = 1,
-) => {
+export const bulkInsertEpisodeService = async (mal_id: number, page: number = 1) => {
   try {
     const episodeAPI = getEpisodeReferenceAPI(mal_id);
     const episodeData: MediaEpisodeInfoResponse = await fetch(
       `${episodeAPI.baseURL}${episodeAPI.getEpisodeList}?page=${page}`,
     ).then((res) => res.json());
 
-    const mediaData = await getMediaByMalIdRepository(mal_id);
-    if (!mediaData)
-      throw new AppError(
-        404,
-        `Media with Mal ID ${mal_id} not found in database`,
-      );
+    const mediaData = await selectMediaByMalIdRepository(mal_id);
+    if (!mediaData) throw new AppError(404, `Media with Mal ID ${mal_id} not found in database`);
 
     const insertedEpisodeData = [];
     episodeData.data.forEach(async (episode) => {

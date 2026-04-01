@@ -1,17 +1,14 @@
 import { AppError } from "../../../../helpers/error/instances/app";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
-import { getMediaIdFromSlugRepository } from "../../../media/repositories/GET/getMediaIdFromSlug.repository";
+import { selectMediaIdFromSlugRepository } from "../../../media/repositories/SELECT/selectMediaIdFromSlug.repository";
 import { GetEpisodeDetailsParams } from "../../controllers/getEpisodeDetails.controller";
 import { getEpisodeDetailsRepository } from "../../repositories/GET/getEpisodeDetails.repository";
 
-export const getEpisodeDetailsService = async (
-  params: GetEpisodeDetailsParams,
-) => {
+export const getEpisodeDetailsService = async (params: GetEpisodeDetailsParams) => {
   try {
-    if (!params.mediaSlug || !params.episode)
-      throw new AppError(400, "Media slug and episode are required.");
+    if (!params.mediaSlug || !params.episode) throw new AppError(400, "Media slug and episode are required.");
 
-    const mediaId = await getMediaIdFromSlugRepository(params.mediaSlug);
+    const mediaId = await selectMediaIdFromSlugRepository(params.mediaSlug);
     if (!mediaId?.id) throw new AppError(404, "Media not found.");
 
     const result = await getEpisodeDetailsRepository({

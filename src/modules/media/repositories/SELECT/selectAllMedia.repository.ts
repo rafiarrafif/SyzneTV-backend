@@ -1,7 +1,7 @@
 import { AppError } from "../../../../helpers/error/instances/app";
 import { mediaModel } from "../../model";
 
-export const getAllMediaRepository = async (page: number) => {
+export const selectAllMediaRepository = async (page: number) => {
   try {
     const limit = 10;
     return await mediaModel.findMany({
