@@ -9,7 +9,7 @@ export const getMediaBySlugController = async (ctx: {
   params: Static<typeof getMediaBySlugSchema.params>;
 }) => {
   try {
-    const mediaData = getMediaBySlugService(ctx.params.slug);
+    const mediaData = await getMediaBySlugService(ctx.params.slug);
     return returnReadResponse(ctx.set, 200, "Media fetched successfully", mediaData);
   } catch (error) {
     return mainErrorHandler(ctx.set, error);
