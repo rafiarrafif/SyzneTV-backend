@@ -36,6 +36,8 @@ model Media {
   status            String
   startAiring       DateTime?
   endAiring         DateTime?
+  season            Season?
+  yearReleased      Int?        @db.SmallInt
   synopsis          String      @db.Text
   ageRating         String
   mediaType         MediaType 
@@ -640,6 +642,12 @@ enum Country {
   EN @map("English")
   ID @map("Indonesia")
   KR @map("Korea")
+}
+enum Season {
+  Winter
+  Spring
+  Summer
+  Fall
 }
 
 // Character Enum
