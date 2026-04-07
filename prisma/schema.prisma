@@ -36,8 +36,8 @@ model Media {
   status            String
   startAiring       DateTime?
   endAiring         DateTime?
-  season            Season?
-  yearReleased      Int?        @db.SmallInt
+  season            Season
+  yearReleased      Int         @db.SmallInt
   synopsis          String      @db.Text
   ageRating         String
   mediaType         MediaType 
