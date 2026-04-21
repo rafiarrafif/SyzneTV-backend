@@ -1,14 +1,11 @@
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
-import { getAllMediaRepository } from "../../repositories/GET/getAllMedia.repository";
+import { selectAllMediaRepository } from "../../repositories/SELECT/selectAllMedia.repository";
 
 export const getAllMediaService = async (pagination: string) => {
   try {
-    const page =
-      /^\d+$/.test(pagination) && Number(pagination) > 0
-        ? Number(pagination)
-        : 1;
+    const page = /^\d+$/.test(pagination) && Number(pagination) > 0 ? Number(pagination) : 1;
 
-    return getAllMediaRepository(page);
+    return selectAllMediaRepository(page);
   } catch (error) {
     ErrorForwarder(error);
   }
