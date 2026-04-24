@@ -8,6 +8,9 @@ CREATE TYPE "MediaType" AS ENUM ('TV', 'ONA', 'OVA', 'Movie', 'Special', 'Music'
 CREATE TYPE "Country" AS ENUM ('Japanese', 'English', 'Indonesia', 'Korea');
 
 -- CreateEnum
+CREATE TYPE "Season" AS ENUM ('Winter', 'Spring', 'Summer', 'Fall');
+
+-- CreateEnum
 CREATE TYPE "CharacterRole" AS ENUM ('Main', 'Supporting');
 
 -- CreateEnum
@@ -72,6 +75,8 @@ CREATE TABLE "medias" (
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "season" "Season",
+    "yearReleased" SMALLINT NOT NULL,
 
     CONSTRAINT "medias_pkey" PRIMARY KEY ("id")
 );
@@ -367,7 +372,7 @@ CREATE TABLE "user_logs" (
 -- CreateTable
 CREATE TABLE "collections" (
     "id" UUID NOT NULL,
-    "name" VARCHAR(255) NOT NULL,
+    "name" VARCHAR(115) NOT NULL,
     "ownerId" UUID NOT NULL,
     "accessStatus" "AccessStatus" NOT NULL DEFAULT 'private',
     "password" VARCHAR(255),
@@ -375,8 +380,19 @@ CREATE TABLE "collections" (
     "deletedAt" TIMESTAMP(3),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "slug" VARCHAR(115) NOT NULL,
 
     CONSTRAINT "collections_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "CollectionMedia" (
+    "id" UUID NOT NULL,
+    "collectionId" UUID NOT NULL,
+    "mediaId" UUID NOT NULL,
+    "savedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "CollectionMedia_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -502,18 +518,13 @@ CREATE TABLE "email_system_histories" (
 CREATE TABLE "hero_banner" (
     "id" UUID NOT NULL,
     "orderPriority" INTEGER,
-    "isClickable" BOOLEAN NOT NULL DEFAULT false,
-    "title" VARCHAR(225),
-    "tags" TEXT[],
-    "description" TEXT,
-    "buttonContent" VARCHAR(100),
-    "buttonLink" TEXT,
     "imageUrl" TEXT,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "creatorId" UUID NOT NULL,
+    "mediaId" UUID NOT NULL,
 
     CONSTRAINT "hero_banner_pkey" PRIMARY KEY ("id")
 );
@@ -592,14 +603,6 @@ CREATE TABLE "_MediaCharacters" (
 );
 
 -- CreateTable
-CREATE TABLE "_MediaCollections" (
-    "A" UUID NOT NULL,
-    "B" UUID NOT NULL,
-
-    CONSTRAINT "_MediaCollections_AB_pkey" PRIMARY KEY ("A","B")
-);
-
--- CreateTable
 CREATE TABLE "_UserSelectedSharingCollention" (
     "A" UUID NOT NULL,
     "B" UUID NOT NULL,
@@ -674,6 +677,12 @@ CREATE UNIQUE INDEX "user_roles_name_key" ON "user_roles"("name");
 CREATE INDEX "user_sessions_userId_isAuthenticated_deletedAt_idx" ON "user_sessions"("userId", "isAuthenticated", "deletedAt");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "collections_slug_ownerId_key" ON "collections"("slug", "ownerId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "CollectionMedia_collectionId_mediaId_key" ON "CollectionMedia"("collectionId", "mediaId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "languages_code_key" ON "languages"("code");
 
 -- CreateIndex
@@ -704,22 +713,19 @@ CREATE INDEX "_UserFavoriteGenres_B_index" ON "_UserFavoriteGenres"("B");
 CREATE INDEX "_MediaCharacters_B_index" ON "_MediaCharacters"("B");
 
 -- CreateIndex
-CREATE INDEX "_MediaCollections_B_index" ON "_MediaCollections"("B");
-
--- CreateIndex
 CREATE INDEX "_UserSelectedSharingCollention_B_index" ON "_UserSelectedSharingCollention"("B");
 
 -- AddForeignKey
 ALTER TABLE "medias" ADD CONSTRAINT "medias_uploadedBy_fkey" FOREIGN KEY ("uploadedBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "media_logs" ADD CONSTRAINT "media_logs_proposedBy_fkey" FOREIGN KEY ("proposedBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "media_logs" ADD CONSTRAINT "media_logs_approvedBy_fkey" FOREIGN KEY ("approvedBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "media_logs" ADD CONSTRAINT "media_logs_mediaId_fkey" FOREIGN KEY ("mediaId") REFERENCES "medias"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "media_logs" ADD CONSTRAINT "media_logs_proposedBy_fkey" FOREIGN KEY ("proposedBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "genres" ADD CONSTRAINT "genres_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -734,13 +740,13 @@ ALTER TABLE "characters" ADD CONSTRAINT "characters_creatorId_fkey" FOREIGN KEY 
 ALTER TABLE "voice_actors" ADD CONSTRAINT "voice_actors_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "lang_va_char" ADD CONSTRAINT "lang_va_char_vaId_fkey" FOREIGN KEY ("vaId") REFERENCES "voice_actors"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "lang_va_char" ADD CONSTRAINT "lang_va_char_charId_fkey" FOREIGN KEY ("charId") REFERENCES "characters"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "lang_va_char" ADD CONSTRAINT "lang_va_char_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "lang_va_char" ADD CONSTRAINT "lang_va_char_vaId_fkey" FOREIGN KEY ("vaId") REFERENCES "voice_actors"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "episodes" ADD CONSTRAINT "episodes_mediaId_fkey" FOREIGN KEY ("mediaId") REFERENCES "medias"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -749,13 +755,13 @@ ALTER TABLE "episodes" ADD CONSTRAINT "episodes_mediaId_fkey" FOREIGN KEY ("medi
 ALTER TABLE "episodes" ADD CONSTRAINT "episodes_uploadedBy_fkey" FOREIGN KEY ("uploadedBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "episode_likes" ADD CONSTRAINT "episode_likes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "episode_likes" ADD CONSTRAINT "episode_likes_episodeId_fkey" FOREIGN KEY ("episodeId") REFERENCES "episodes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "episode_likes" ADD CONSTRAINT "episode_likes_sessionId_fkey" FOREIGN KEY ("sessionId") REFERENCES "user_sessions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "episode_likes" ADD CONSTRAINT "episode_likes_episodeId_fkey" FOREIGN KEY ("episodeId") REFERENCES "episodes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "episode_likes" ADD CONSTRAINT "episode_likes_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "videos" ADD CONSTRAINT "videos_episodeId_fkey" FOREIGN KEY ("episodeId") REFERENCES "episodes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -770,22 +776,22 @@ ALTER TABLE "videos" ADD CONSTRAINT "videos_uploadedBy_fkey" FOREIGN KEY ("uploa
 ALTER TABLE "video_services" ADD CONSTRAINT "video_services_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "user_preferences" ADD CONSTRAINT "user_preferences_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "user_preferences" ADD CONSTRAINT "user_preferences_langPreference_fkey" FOREIGN KEY ("langPreference") REFERENCES "languages"("code") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "user_preferences" ADD CONSTRAINT "user_preferences_serviceDefaultId_fkey" FOREIGN KEY ("serviceDefaultId") REFERENCES "video_services"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "user_preferences" ADD CONSTRAINT "user_preferences_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "user_roles" ADD CONSTRAINT "user_roles_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "user_role_assignments" ADD CONSTRAINT "user_role_assignments_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "user_role_assignments" ADD CONSTRAINT "user_role_assignments_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "user_roles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "user_role_assignments" ADD CONSTRAINT "user_role_assignments_roleId_fkey" FOREIGN KEY ("roleId") REFERENCES "user_roles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "user_role_assignments" ADD CONSTRAINT "user_role_assignments_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "user_notifications" ADD CONSTRAINT "user_notifications_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -794,28 +800,34 @@ ALTER TABLE "user_notifications" ADD CONSTRAINT "user_notifications_userId_fkey"
 ALTER TABLE "user_sessions" ADD CONSTRAINT "user_sessions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "user_logs" ADD CONSTRAINT "user_logs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "user_logs" ADD CONSTRAINT "user_logs_sessionId_fkey" FOREIGN KEY ("sessionId") REFERENCES "user_sessions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "user_logs" ADD CONSTRAINT "user_logs_sessionId_fkey" FOREIGN KEY ("sessionId") REFERENCES "user_sessions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "user_logs" ADD CONSTRAINT "user_logs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "collections" ADD CONSTRAINT "collections_ownerId_fkey" FOREIGN KEY ("ownerId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "watch_histories" ADD CONSTRAINT "watch_histories_id_fkey" FOREIGN KEY ("id") REFERENCES "episodes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "CollectionMedia" ADD CONSTRAINT "CollectionMedia_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "collections"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "watch_histories" ADD CONSTRAINT "watch_histories_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "CollectionMedia" ADD CONSTRAINT "CollectionMedia_mediaId_fkey" FOREIGN KEY ("mediaId") REFERENCES "medias"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "watch_histories" ADD CONSTRAINT "watch_histories_id_fkey" FOREIGN KEY ("id") REFERENCES "episodes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "watch_histories" ADD CONSTRAINT "watch_histories_sessionId_fkey" FOREIGN KEY ("sessionId") REFERENCES "user_sessions"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "movie_reviews" ADD CONSTRAINT "movie_reviews_mediaId_fkey" FOREIGN KEY ("mediaId") REFERENCES "medias"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "watch_histories" ADD CONSTRAINT "watch_histories_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "movie_reviews" ADD CONSTRAINT "movie_reviews_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "movie_reviews" ADD CONSTRAINT "movie_reviews_mediaId_fkey" FOREIGN KEY ("mediaId") REFERENCES "medias"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "comments" ADD CONSTRAINT "comments_episodeId_fkey" FOREIGN KEY ("episodeId") REFERENCES "episodes"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -833,10 +845,10 @@ ALTER TABLE "comment_likes" ADD CONSTRAINT "comment_likes_commentId_fkey" FOREIG
 ALTER TABLE "comment_likes" ADD CONSTRAINT "comment_likes_userLiked_fkey" FOREIGN KEY ("userLiked") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "comment_reports" ADD CONSTRAINT "comment_reports_userReporter_fkey" FOREIGN KEY ("userReporter") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "comment_reports" ADD CONSTRAINT "comment_reports_approvedBy_fkey" FOREIGN KEY ("approvedBy") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "comment_reports" ADD CONSTRAINT "comment_reports_approvedBy_fkey" FOREIGN KEY ("approvedBy") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "comment_reports" ADD CONSTRAINT "comment_reports_userReporter_fkey" FOREIGN KEY ("userReporter") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "languages" ADD CONSTRAINT "languages_craetedBy_fkey" FOREIGN KEY ("craetedBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -849,6 +861,9 @@ ALTER TABLE "email_system_histories" ADD CONSTRAINT "email_system_histories_user
 
 -- AddForeignKey
 ALTER TABLE "hero_banner" ADD CONSTRAINT "hero_banner_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "hero_banner" ADD CONSTRAINT "hero_banner_mediaId_fkey" FOREIGN KEY ("mediaId") REFERENCES "medias"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "system_notifications" ADD CONSTRAINT "system_notifications_createdBy_fkey" FOREIGN KEY ("createdBy") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -879,12 +894,6 @@ ALTER TABLE "_MediaCharacters" ADD CONSTRAINT "_MediaCharacters_A_fkey" FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE "_MediaCharacters" ADD CONSTRAINT "_MediaCharacters_B_fkey" FOREIGN KEY ("B") REFERENCES "medias"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_MediaCollections" ADD CONSTRAINT "_MediaCollections_A_fkey" FOREIGN KEY ("A") REFERENCES "collections"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_MediaCollections" ADD CONSTRAINT "_MediaCollections_B_fkey" FOREIGN KEY ("B") REFERENCES "medias"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_UserSelectedSharingCollention" ADD CONSTRAINT "_UserSelectedSharingCollention_A_fkey" FOREIGN KEY ("A") REFERENCES "collections"("id") ON DELETE CASCADE ON UPDATE CASCADE;
