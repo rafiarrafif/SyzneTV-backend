@@ -2,14 +2,14 @@
   "id": "0",
   "name": "Main Diagram",
   "createdAt": "2026-05-10T04:32:47.067Z",
-  "updatedAt": "2026-05-14T14:55:39.260Z",
+  "updatedAt": "2026-05-14T17:00:12.757Z",
   "databaseType": "postgresql",
   "tables": [
     {
       "id": "1",
       "name": "user_rating_preferences",
-      "x": -1033.838122457197,
-      "y": -1219.5448311992495,
+      "x": -1036.138591583759,
+      "y": -1328.817114710954,
       "fields": [
         {
           "id": "2",
@@ -298,8 +298,8 @@
       "id": "24",
       "name": "characters",
       "schema": "public",
-      "x": -1034.1161796853148,
-      "y": 612.1533274157626,
+      "x": -1038.1914354197875,
+      "y": 695.016860683375,
       "fields": [
         {
           "id": "25",
@@ -1314,8 +1314,8 @@
     {
       "id": "105",
       "name": "user_country_preferences",
-      "x": -1036.5202494047592,
-      "y": -1037.213119188802,
+      "x": -1035.3700148414782,
+      "y": -1151.086340953631,
       "fields": [
         {
           "id": "106",
@@ -1554,8 +1554,8 @@
     {
       "id": "124",
       "name": "provisioned_users",
-      "x": 211.8005289227215,
-      "y": -1690.5407344162234,
+      "x": 204.8991215430349,
+      "y": -1369.625291260797,
       "fields": [
         {
           "id": "125",
@@ -2267,8 +2267,8 @@
     {
       "id": "180",
       "name": "user_genre_preferences",
-      "x": -1032.4206141800141,
-      "y": -1409.2323402083748,
+      "x": -1033.5708487432953,
+      "y": -1502.401339834144,
       "fields": [
         {
           "id": "181",
@@ -2741,18 +2741,30 @@
         },
         {
           "id": "219",
+          "name": "role",
+          "type": {
+            "id": "user_role",
+            "name": "user_role"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778771211530
+        },
+        {
+          "id": "220",
           "name": "sex",
           "type": {
             "id": "user_sex",
             "name": "user_sex"
           },
           "unique": false,
-          "nullable": true,
+          "nullable": false,
           "primaryKey": false,
           "createdAt": 1778391031530
         },
         {
-          "id": "220",
+          "id": "221",
           "name": "phone_number",
           "type": {
             "id": "varchar",
@@ -2765,7 +2777,7 @@
           "characterMaximumLength": "15"
         },
         {
-          "id": "221",
+          "id": "222",
           "name": "address",
           "type": {
             "id": "address",
@@ -2777,7 +2789,7 @@
           "createdAt": 1778401066100
         },
         {
-          "id": "222",
+          "id": "223",
           "name": "country",
           "type": {
             "id": "uuid",
@@ -2789,7 +2801,7 @@
           "createdAt": 1778401621258
         },
         {
-          "id": "223",
+          "id": "224",
           "name": "auth_provider",
           "type": {
             "id": "varchar",
@@ -2802,7 +2814,7 @@
           "characterMaximumLength": "64"
         },
         {
-          "id": "224",
+          "id": "225",
           "name": "provider_token",
           "type": {
             "id": "varchar",
@@ -2815,7 +2827,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "225",
+          "id": "226",
           "name": "created_at",
           "type": {
             "id": "timestamp",
@@ -2828,7 +2840,7 @@
           "default": "now()"
         },
         {
-          "id": "226",
+          "id": "227",
           "name": "updated_at",
           "type": {
             "id": "timestamp",
@@ -2840,7 +2852,7 @@
           "createdAt": 1778517127447
         },
         {
-          "id": "227",
+          "id": "228",
           "name": "deleted_at",
           "type": {
             "id": "timestamp",
@@ -2854,7 +2866,7 @@
       ],
       "indexes": [
         {
-          "id": "228",
+          "id": "229",
           "name": "",
           "fieldIds": [
             "211"
@@ -2864,7 +2876,7 @@
           "createdAt": 1778390635628
         },
         {
-          "id": "229",
+          "id": "230",
           "name": "index_2",
           "fieldIds": [
             "214"
@@ -2873,7 +2885,7 @@
           "createdAt": 1778401234711
         },
         {
-          "id": "230",
+          "id": "231",
           "name": "index_3",
           "fieldIds": [
             "212"
@@ -2893,14 +2905,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "231",
+      "id": "232",
       "name": "media_studios",
       "schema": "public",
       "x": 199.29817359050787,
       "y": 347.7468004324893,
       "fields": [
         {
-          "id": "232",
+          "id": "233",
           "name": "media_id",
           "type": {
             "id": "uuid",
@@ -2912,7 +2924,7 @@
           "createdAt": 1777360514222
         },
         {
-          "id": "233",
+          "id": "234",
           "name": "producer_id",
           "type": {
             "id": "uuid",
@@ -2926,12 +2938,12 @@
       ],
       "indexes": [
         {
-          "id": "234",
+          "id": "235",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "232",
-            "233"
+            "233",
+            "234"
           ],
           "createdAt": 1777360514222,
           "isPrimaryKey": true
@@ -2944,14 +2956,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "235",
+      "id": "236",
       "name": "media_licencors",
       "schema": "public",
       "x": 196.51843134292955,
       "y": 207.07984381762645,
       "fields": [
         {
-          "id": "236",
+          "id": "237",
           "name": "media_id",
           "type": {
             "id": "uuid",
@@ -2963,7 +2975,7 @@
           "createdAt": 1777360331507
         },
         {
-          "id": "237",
+          "id": "238",
           "name": "producer_id",
           "type": {
             "id": "uuid",
@@ -2977,12 +2989,12 @@
       ],
       "indexes": [
         {
-          "id": "238",
+          "id": "239",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "236",
-            "237"
+            "237",
+            "238"
           ],
           "createdAt": 1777360331507,
           "isPrimaryKey": true
@@ -2995,14 +3007,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "239",
+      "id": "240",
       "name": "genres",
       "schema": "public",
-      "x": -1029.312729060423,
-      "y": 207.074167755134,
+      "x": -1033.3879847948956,
+      "y": 289.93770102274635,
       "fields": [
         {
-          "id": "240",
+          "id": "241",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -3014,7 +3026,7 @@
           "createdAt": 1777282589094
         },
         {
-          "id": "241",
+          "id": "242",
           "name": "mal_id",
           "type": {
             "id": "smallint",
@@ -3026,7 +3038,7 @@
           "createdAt": 1777282589094
         },
         {
-          "id": "242",
+          "id": "243",
           "name": "type",
           "type": {
             "id": "varchar",
@@ -3039,7 +3051,7 @@
           "characterMaximumLength": "16"
         },
         {
-          "id": "243",
+          "id": "244",
           "name": "name",
           "type": {
             "id": "varchar",
@@ -3052,7 +3064,7 @@
           "characterMaximumLength": "32"
         },
         {
-          "id": "244",
+          "id": "245",
           "name": "url",
           "type": {
             "id": "varchar",
@@ -3067,11 +3079,11 @@
       ],
       "indexes": [
         {
-          "id": "245",
+          "id": "246",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "240"
+            "241"
           ],
           "createdAt": 1777282589094,
           "isPrimaryKey": true
@@ -3084,13 +3096,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "246",
+      "id": "247",
       "name": "collections",
-      "x": 213.04848949308825,
-      "y": -1958.3852400070284,
+      "x": 206.14708211340167,
+      "y": -1637.469796851602,
       "fields": [
         {
-          "id": "247",
+          "id": "248",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -3102,7 +3114,7 @@
           "createdAt": 1778733394970
         },
         {
-          "id": "248",
+          "id": "249",
           "name": "name",
           "type": {
             "id": "varchar",
@@ -3116,7 +3128,7 @@
           "default": null
         },
         {
-          "id": "249",
+          "id": "250",
           "name": "cover_url",
           "type": {
             "id": "varchar",
@@ -3129,7 +3141,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "250",
+          "id": "251",
           "name": "privacy_level",
           "type": {
             "id": "privacy_level",
@@ -3141,7 +3153,7 @@
           "createdAt": 1778766528943
         },
         {
-          "id": "251",
+          "id": "252",
           "name": "created_at",
           "type": {
             "id": "timestamp",
@@ -3153,7 +3165,7 @@
           "createdAt": 1778733453130
         },
         {
-          "id": "252",
+          "id": "253",
           "name": "updated_at",
           "type": {
             "id": "timestamp",
@@ -3167,10 +3179,10 @@
       ],
       "indexes": [
         {
-          "id": "253",
+          "id": "254",
           "name": "",
           "fieldIds": [
-            "247"
+            "248"
           ],
           "unique": true,
           "isPrimaryKey": true,
@@ -3185,14 +3197,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "254",
+      "id": "255",
       "name": "voice_actors",
       "schema": "public",
-      "x": -1034.2719335611268,
-      "y": 442.32720385328116,
+      "x": -1038.3471892955995,
+      "y": 525.1907371208936,
       "fields": [
         {
-          "id": "255",
+          "id": "256",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -3204,7 +3216,7 @@
           "createdAt": 1777282589093
         },
         {
-          "id": "256",
+          "id": "257",
           "name": "language",
           "type": {
             "id": "varchar",
@@ -3217,7 +3229,7 @@
           "characterMaximumLength": "115"
         },
         {
-          "id": "257",
+          "id": "258",
           "name": "actor_staff",
           "type": {
             "id": "uuid",
@@ -3231,11 +3243,11 @@
       ],
       "indexes": [
         {
-          "id": "258",
+          "id": "259",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "255"
+            "256"
           ],
           "createdAt": 1777282589093,
           "isPrimaryKey": true
@@ -3248,13 +3260,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "259",
+      "id": "260",
       "name": "video_submissions",
       "x": 1034.3413138628948,
       "y": 376.2391754093071,
       "fields": [
         {
-          "id": "260",
+          "id": "261",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -3266,7 +3278,7 @@
           "createdAt": 1777362610195
         },
         {
-          "id": "261",
+          "id": "262",
           "name": "video_id",
           "type": {
             "id": "uuid",
@@ -3278,7 +3290,7 @@
           "createdAt": 1777362624424
         },
         {
-          "id": "262",
+          "id": "263",
           "name": "created_by",
           "type": {
             "id": "uuid",
@@ -3291,7 +3303,7 @@
           "comments": ""
         },
         {
-          "id": "263",
+          "id": "264",
           "name": "reviewed_by",
           "type": {
             "id": "uuid",
@@ -3303,7 +3315,7 @@
           "createdAt": 1777362758238
         },
         {
-          "id": "264",
+          "id": "265",
           "name": "status",
           "type": {
             "id": "status_submission",
@@ -3317,7 +3329,7 @@
           "comments": ""
         },
         {
-          "id": "265",
+          "id": "266",
           "name": "reviewed_at",
           "type": {
             "id": "timestamp",
@@ -3329,7 +3341,7 @@
           "createdAt": 1777363627973
         },
         {
-          "id": "266",
+          "id": "267",
           "name": "reason",
           "type": {
             "id": "text",
@@ -3341,7 +3353,7 @@
           "createdAt": 1777363674757
         },
         {
-          "id": "267",
+          "id": "268",
           "name": "created_at",
           "type": {
             "id": "timestamp",
@@ -3356,11 +3368,11 @@
       ],
       "indexes": [
         {
-          "id": "268",
+          "id": "269",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "260"
+            "261"
           ],
           "createdAt": 1777362610195,
           "isPrimaryKey": true
@@ -3375,14 +3387,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "269",
+      "id": "270",
       "name": "media_genres",
       "schema": "public",
       "x": -680.2926238134676,
       "y": 498.7845736528544,
       "fields": [
         {
-          "id": "270",
+          "id": "271",
           "name": "media_id",
           "type": {
             "id": "uuid",
@@ -3394,7 +3406,7 @@
           "createdAt": 1777283473368
         },
         {
-          "id": "271",
+          "id": "272",
           "name": "genre_id",
           "type": {
             "id": "uuid",
@@ -3408,21 +3420,21 @@
       ],
       "indexes": [
         {
-          "id": "272",
+          "id": "273",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "271"
+            "272"
           ],
           "createdAt": 1777283473368,
           "isPrimaryKey": true
         },
         {
-          "id": "273",
+          "id": "274",
           "name": "index_1",
           "fieldIds": [
-            "270",
-            "271"
+            "271",
+            "272"
           ],
           "unique": true,
           "createdAt": 1778570545534
@@ -3437,14 +3449,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "274",
+      "id": "275",
       "name": "video_services",
       "schema": "public",
       "x": 76.84794405482987,
       "y": 1174.3220047083446,
       "fields": [
         {
-          "id": "275",
+          "id": "276",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -3456,7 +3468,7 @@
           "createdAt": 1777282589094
         },
         {
-          "id": "276",
+          "id": "277",
           "name": "name",
           "type": {
             "id": "varchar",
@@ -3469,7 +3481,7 @@
           "characterMaximumLength": "155"
         },
         {
-          "id": "277",
+          "id": "278",
           "name": "resolution",
           "type": {
             "id": "smallint",
@@ -3481,7 +3493,7 @@
           "createdAt": 1777282589094
         },
         {
-          "id": "278",
+          "id": "279",
           "name": "domain",
           "type": {
             "id": "varchar",
@@ -3494,7 +3506,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "279",
+          "id": "280",
           "name": "image_url",
           "type": {
             "id": "varchar",
@@ -3507,7 +3519,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "280",
+          "id": "281",
           "name": "hex_color",
           "type": {
             "id": "varchar",
@@ -3520,7 +3532,7 @@
           "characterMaximumLength": "10"
         },
         {
-          "id": "281",
+          "id": "282",
           "name": "endpoint_video",
           "type": {
             "id": "varchar",
@@ -3533,7 +3545,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "282",
+          "id": "283",
           "name": "endpoint_short",
           "type": {
             "id": "varchar",
@@ -3546,7 +3558,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "283",
+          "id": "284",
           "name": "endpoint_image",
           "type": {
             "id": "varchar",
@@ -3559,7 +3571,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "284",
+          "id": "285",
           "name": "endpoint_download",
           "type": {
             "id": "varchar",
@@ -3572,7 +3584,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "285",
+          "id": "286",
           "name": "created_by",
           "type": {
             "id": "uuid",
@@ -3584,7 +3596,7 @@
           "createdAt": 1777282589094
         },
         {
-          "id": "286",
+          "id": "287",
           "name": "deleted_at",
           "type": {
             "id": "timestamp",
@@ -3596,7 +3608,7 @@
           "createdAt": 1777282589094
         },
         {
-          "id": "287",
+          "id": "288",
           "name": "updated_at",
           "type": {
             "id": "timestamp",
@@ -3608,7 +3620,7 @@
           "createdAt": 1777282589094
         },
         {
-          "id": "288",
+          "id": "289",
           "name": "created_at",
           "type": {
             "id": "timestamp",
@@ -3622,22 +3634,22 @@
       ],
       "indexes": [
         {
-          "id": "289",
+          "id": "290",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "275"
+            "276"
           ],
           "createdAt": 1777282589094,
           "isPrimaryKey": true
         },
         {
-          "id": "290",
+          "id": "291",
           "name": "idx_video_services_name_resolution",
           "unique": true,
           "fieldIds": [
-            "276",
-            "277"
+            "277",
+            "278"
           ],
           "createdAt": 1777282589094
         }
@@ -3651,14 +3663,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "291",
+      "id": "292",
       "name": "media_submissions",
       "schema": "public",
       "x": -677.2819917810897,
       "y": -656.6674640748546,
       "fields": [
         {
-          "id": "292",
+          "id": "293",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -3670,7 +3682,7 @@
           "createdAt": 1777362610195
         },
         {
-          "id": "293",
+          "id": "294",
           "name": "media_id",
           "type": {
             "id": "uuid",
@@ -3682,7 +3694,7 @@
           "createdAt": 1777362624424
         },
         {
-          "id": "294",
+          "id": "295",
           "name": "created_by",
           "type": {
             "id": "uuid",
@@ -3695,7 +3707,7 @@
           "comments": ""
         },
         {
-          "id": "295",
+          "id": "296",
           "name": "status",
           "type": {
             "id": "status_submission",
@@ -3708,7 +3720,7 @@
           "comments": ""
         },
         {
-          "id": "296",
+          "id": "297",
           "name": "reviewed_by",
           "type": {
             "id": "uuid",
@@ -3720,7 +3732,7 @@
           "createdAt": 1777362758238
         },
         {
-          "id": "297",
+          "id": "298",
           "name": "reviewed_at",
           "type": {
             "id": "timestamp",
@@ -3732,7 +3744,7 @@
           "createdAt": 1777363627973
         },
         {
-          "id": "298",
+          "id": "299",
           "name": "reason",
           "type": {
             "id": "text",
@@ -3744,7 +3756,7 @@
           "createdAt": 1777363674757
         },
         {
-          "id": "299",
+          "id": "300",
           "name": "created_at",
           "type": {
             "id": "timestamp",
@@ -3759,11 +3771,11 @@
       ],
       "indexes": [
         {
-          "id": "300",
+          "id": "301",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "292"
+            "293"
           ],
           "createdAt": 1777362610195,
           "isPrimaryKey": true
@@ -3776,14 +3788,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "301",
+      "id": "302",
       "name": "video_service_submissions",
       "schema": "public",
       "x": -384.3622441138489,
       "y": 1244.8737470115275,
       "fields": [
         {
-          "id": "302",
+          "id": "303",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -3795,7 +3807,7 @@
           "createdAt": 1777362610195
         },
         {
-          "id": "303",
+          "id": "304",
           "name": "video_service_id",
           "type": {
             "id": "uuid",
@@ -3807,7 +3819,7 @@
           "createdAt": 1777362624424
         },
         {
-          "id": "304",
+          "id": "305",
           "name": "created_by",
           "type": {
             "id": "uuid",
@@ -3820,7 +3832,7 @@
           "comments": ""
         },
         {
-          "id": "305",
+          "id": "306",
           "name": "status",
           "type": {
             "id": "status_submission",
@@ -3834,7 +3846,7 @@
           "comments": ""
         },
         {
-          "id": "306",
+          "id": "307",
           "name": "reviewed_by",
           "type": {
             "id": "uuid",
@@ -3846,7 +3858,7 @@
           "createdAt": 1777362758238
         },
         {
-          "id": "307",
+          "id": "308",
           "name": "reviewed_at",
           "type": {
             "id": "timestamp",
@@ -3858,7 +3870,7 @@
           "createdAt": 1777363627973
         },
         {
-          "id": "308",
+          "id": "309",
           "name": "reason",
           "type": {
             "id": "text",
@@ -3870,7 +3882,7 @@
           "createdAt": 1777363674757
         },
         {
-          "id": "309",
+          "id": "310",
           "name": "created_at",
           "type": {
             "id": "timestamp",
@@ -3885,11 +3897,11 @@
       ],
       "indexes": [
         {
-          "id": "310",
+          "id": "311",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "302"
+            "303"
           ],
           "createdAt": 1777362610195,
           "isPrimaryKey": true
@@ -3903,14 +3915,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "311",
+      "id": "312",
       "name": "media_trailers",
       "schema": "public",
       "x": -679.0151464808563,
       "y": -319.10973511128714,
       "fields": [
         {
-          "id": "312",
+          "id": "313",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -3922,7 +3934,7 @@
           "createdAt": 1777282589092
         },
         {
-          "id": "313",
+          "id": "314",
           "name": "url",
           "type": {
             "id": "varchar",
@@ -3935,7 +3947,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "314",
+          "id": "315",
           "name": "embed_url",
           "type": {
             "id": "varchar",
@@ -3948,7 +3960,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "315",
+          "id": "316",
           "name": "small_image_url",
           "type": {
             "id": "varchar",
@@ -3961,7 +3973,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "316",
+          "id": "317",
           "name": "medium_image_url",
           "type": {
             "id": "varchar",
@@ -3974,7 +3986,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "317",
+          "id": "318",
           "name": "large_image_url",
           "type": {
             "id": "varchar",
@@ -3987,7 +3999,7 @@
           "characterMaximumLength": "255"
         },
         {
-          "id": "318",
+          "id": "319",
           "name": "maximum_image_url",
           "type": {
             "id": "varchar",
@@ -4002,11 +4014,11 @@
       ],
       "indexes": [
         {
-          "id": "319",
+          "id": "320",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "312"
+            "313"
           ],
           "createdAt": 1777282589093,
           "isPrimaryKey": true
@@ -4019,14 +4031,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "320",
+      "id": "321",
       "name": "media_types",
       "schema": "public",
       "x": -678.8247906473255,
       "y": -28.0163584990978,
       "fields": [
         {
-          "id": "321",
+          "id": "322",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -4038,7 +4050,7 @@
           "createdAt": 1777282589093
         },
         {
-          "id": "322",
+          "id": "323",
           "name": "name",
           "type": {
             "id": "varchar",
@@ -4053,11 +4065,11 @@
       ],
       "indexes": [
         {
-          "id": "323",
+          "id": "324",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "321"
+            "322"
           ],
           "createdAt": 1777282589093,
           "isPrimaryKey": true
@@ -4070,13 +4082,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "324",
+      "id": "325",
       "name": "user_follows",
-      "x": 207.54423838276006,
-      "y": -1462.1501775948122,
+      "x": 200.64283100307347,
+      "y": -1141.2347344393859,
       "fields": [
         {
-          "id": "325",
+          "id": "326",
           "name": "follower_id",
           "type": {
             "id": "uuid",
@@ -4088,7 +4100,7 @@
           "createdAt": 1778401701334
         },
         {
-          "id": "326",
+          "id": "327",
           "name": "following_id",
           "type": {
             "id": "uuid",
@@ -4100,7 +4112,7 @@
           "createdAt": 1778401722682
         },
         {
-          "id": "327",
+          "id": "328",
           "name": "followed_at",
           "type": {
             "id": "timestamp",
@@ -4114,11 +4126,11 @@
       ],
       "indexes": [
         {
-          "id": "328",
+          "id": "329",
           "name": "index_1",
           "fieldIds": [
-            "326",
-            "325"
+            "327",
+            "326"
           ],
           "unique": true,
           "createdAt": 1778401874053
@@ -4140,14 +4152,14 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "329",
+      "id": "330",
       "name": "media_themes",
       "schema": "public",
       "x": -681.5109900103016,
       "y": 752.8680228454149,
       "fields": [
         {
-          "id": "330",
+          "id": "331",
           "name": "media_id",
           "type": {
             "id": "uuid",
@@ -4159,7 +4171,7 @@
           "createdAt": 1777295294621
         },
         {
-          "id": "331",
+          "id": "332",
           "name": "genre_id",
           "type": {
             "id": "uuid",
@@ -4173,12 +4185,12 @@
       ],
       "indexes": [
         {
-          "id": "332",
+          "id": "333",
           "name": "",
           "unique": true,
           "fieldIds": [
-            "330",
-            "331"
+            "331",
+            "332"
           ],
           "createdAt": 1777295294621,
           "isPrimaryKey": true
@@ -4192,13 +4204,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "333",
+      "id": "334",
       "name": "collection_members",
       "x": -338.05774312036385,
       "y": -1466.6668409654785,
       "fields": [
         {
-          "id": "334",
+          "id": "335",
           "name": "id",
           "type": {
             "id": "uuid",
@@ -4210,7 +4222,7 @@
           "createdAt": 1778766471107
         },
         {
-          "id": "335",
+          "id": "336",
           "name": "collection_id",
           "type": {
             "id": "uuid",
@@ -4222,7 +4234,7 @@
           "createdAt": 1778766493931
         },
         {
-          "id": "336",
+          "id": "337",
           "name": "user_id",
           "type": {
             "id": "uuid",
@@ -4234,7 +4246,7 @@
           "createdAt": 1778766580515
         },
         {
-          "id": "337",
+          "id": "338",
           "name": "access_level",
           "type": {
             "id": "collection_access_level",
@@ -4246,7 +4258,7 @@
           "createdAt": 1778766832324
         },
         {
-          "id": "338",
+          "id": "339",
           "name": "invited_by",
           "type": {
             "id": "uuid",
@@ -4258,7 +4270,7 @@
           "createdAt": 1778766846050
         },
         {
-          "id": "339",
+          "id": "340",
           "name": "joined_at",
           "type": {
             "id": "timestamp",
@@ -4272,10 +4284,10 @@
       ],
       "indexes": [
         {
-          "id": "340",
+          "id": "341",
           "name": "",
           "fieldIds": [
-            "334"
+            "335"
           ],
           "unique": true,
           "isPrimaryKey": true,
@@ -4288,11 +4300,426 @@
       "order": 38,
       "schema": "public",
       "width": 337
+    },
+    {
+      "id": "342",
+      "name": "home_media_banner",
+      "x": -1034.714934672103,
+      "y": -969.0938770634809,
+      "fields": [
+        {
+          "id": "343",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": true,
+          "nullable": false,
+          "primaryKey": true,
+          "createdAt": 1778771594518
+        },
+        {
+          "id": "344",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778771625245
+        },
+        {
+          "id": "345",
+          "name": "created_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778771632111
+        },
+        {
+          "id": "346",
+          "name": "priority",
+          "type": {
+            "id": "smallint",
+            "name": "smallint"
+          },
+          "unique": true,
+          "nullable": true,
+          "primaryKey": false,
+          "createdAt": 1778771638786
+        },
+        {
+          "id": "347",
+          "name": "start_show",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778771679920
+        },
+        {
+          "id": "348",
+          "name": "end_show",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "unique": false,
+          "nullable": true,
+          "primaryKey": false,
+          "createdAt": 1778771687135
+        },
+        {
+          "id": "349",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778771693471
+        }
+      ],
+      "indexes": [
+        {
+          "id": "350",
+          "name": "",
+          "fieldIds": [
+            "343"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1778771594518
+        }
+      ],
+      "color": "#b067e9",
+      "createdAt": 1778771594518,
+      "isView": false,
+      "order": 39,
+      "schema": "public"
+    },
+    {
+      "id": "351",
+      "name": "comment_audit_logs",
+      "x": -1031.768269593756,
+      "y": -322.47738647771854,
+      "fields": [
+        {
+          "id": "352",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": true,
+          "nullable": false,
+          "primaryKey": true,
+          "createdAt": 1778772275091
+        },
+        {
+          "id": "353",
+          "name": "comment_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778772293834
+        },
+        {
+          "id": "354",
+          "name": "performed_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778772315274
+        },
+        {
+          "id": "355",
+          "name": "action",
+          "type": {
+            "id": "audit_action",
+            "name": "audit_action"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778772326253
+        },
+        {
+          "id": "356",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778772335038
+        }
+      ],
+      "indexes": [
+        {
+          "id": "357",
+          "name": "",
+          "fieldIds": [
+            "352"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1778772275091
+        }
+      ],
+      "color": "#b067e9",
+      "createdAt": 1778772275091,
+      "isView": false,
+      "order": 40,
+      "schema": "public"
+    },
+    {
+      "id": "358",
+      "name": "comments",
+      "x": -1035.4972528190797,
+      "y": -21.831519473281823,
+      "fields": [
+        {
+          "id": "359",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": true,
+          "nullable": false,
+          "primaryKey": true,
+          "createdAt": 1778772484798
+        },
+        {
+          "id": "360",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778772536237
+        },
+        {
+          "id": "361",
+          "name": "episode_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778772542751
+        },
+        {
+          "id": "362",
+          "name": "content",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778772548786,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "363",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778777149915
+        },
+        {
+          "id": "364",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778777198204
+        },
+        {
+          "id": "365",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "unique": false,
+          "nullable": true,
+          "primaryKey": false,
+          "createdAt": 1778777213469
+        }
+      ],
+      "indexes": [
+        {
+          "id": "366",
+          "name": "",
+          "fieldIds": [
+            "359"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1778772484798
+        }
+      ],
+      "color": "#ff9f74",
+      "createdAt": 1778772484798,
+      "isView": false,
+      "order": 41,
+      "schema": "public"
+    },
+    {
+      "id": "367",
+      "name": "comment_reports",
+      "x": -1032.5934799775514,
+      "y": -655.2659179217417,
+      "fields": [
+        {
+          "id": "368",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": true,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778777460892
+        },
+        {
+          "id": "369",
+          "name": "reporter_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778777475869
+        },
+        {
+          "id": "370",
+          "name": "comment_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778777483534
+        },
+        {
+          "id": "371",
+          "name": "title",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778777515056,
+          "characterMaximumLength": "115"
+        },
+        {
+          "id": "372",
+          "name": "status",
+          "type": {
+            "id": "status_submission",
+            "name": "status_submission"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778777836090
+        },
+        {
+          "id": "373",
+          "name": "description",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "unique": false,
+          "nullable": true,
+          "primaryKey": false,
+          "createdAt": 1778777519944
+        },
+        {
+          "id": "374",
+          "name": "reported_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1778777537682
+        },
+        {
+          "id": "375",
+          "name": "closed_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "unique": false,
+          "nullable": true,
+          "primaryKey": false,
+          "createdAt": 1778777545373
+        }
+      ],
+      "indexes": [],
+      "color": "#b067e9",
+      "createdAt": 1778777460892,
+      "isView": false,
+      "order": 42,
+      "schema": "public"
     }
   ],
   "relationships": [
     {
-      "id": "342",
+      "id": "377",
       "name": "episodes_media_id_medias_id",
       "sourceSchema": "public",
       "sourceTableId": "5",
@@ -4306,7 +4733,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "343",
+      "id": "378",
       "name": "episodes_videos_videos_id",
       "sourceSchema": "public",
       "sourceTableId": "5",
@@ -4320,13 +4747,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "344",
+      "id": "379",
       "name": "genre_selected_genre_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "239",
+      "sourceTableId": "240",
       "targetSchema": "public",
       "targetTableId": "180",
-      "sourceFieldId": "240",
+      "sourceFieldId": "241",
       "targetFieldId": "182",
       "sourceCardinality": "one",
       "targetCardinality": "many",
@@ -4334,7 +4761,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "345",
+      "id": "380",
       "name": "genre_selected_user_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "167",
@@ -4348,21 +4775,21 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "346",
+      "id": "381",
       "name": "genres_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "239",
+      "sourceTableId": "240",
       "targetSchema": "public",
-      "targetTableId": "329",
-      "sourceFieldId": "240",
-      "targetFieldId": "331",
+      "targetTableId": "330",
+      "sourceFieldId": "241",
+      "targetFieldId": "332",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1777295361546,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "347",
+      "id": "382",
       "name": "media_characters_characters_characters_id",
       "sourceSchema": "public",
       "sourceTableId": "118",
@@ -4376,21 +4803,21 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "348",
+      "id": "383",
       "name": "media_characters_voice_actor_voice_actors_id",
       "sourceSchema": "public",
       "sourceTableId": "118",
       "targetSchema": "public",
-      "targetTableId": "254",
+      "targetTableId": "255",
       "sourceFieldId": "122",
-      "targetFieldId": "255",
+      "targetFieldId": "256",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1777282589095,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "349",
+      "id": "384",
       "name": "media_collections_added_by_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
@@ -4404,13 +4831,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "350",
+      "id": "385",
       "name": "media_collections_collection_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "246",
+      "sourceTableId": "247",
       "targetSchema": "public",
       "targetTableId": "185",
-      "sourceFieldId": "247",
+      "sourceFieldId": "248",
       "targetFieldId": "186",
       "sourceCardinality": "one",
       "targetCardinality": "many",
@@ -4418,13 +4845,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "351",
+      "id": "386",
       "name": "media_explicit_genres_genre_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "239",
+      "sourceTableId": "240",
       "targetSchema": "public",
       "targetTableId": "137",
-      "sourceFieldId": "240",
+      "sourceFieldId": "241",
       "targetFieldId": "139",
       "sourceCardinality": "one",
       "targetCardinality": "many",
@@ -4432,7 +4859,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "352",
+      "id": "387",
       "name": "media_explicit_genres_media_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4446,7 +4873,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "353",
+      "id": "388",
       "name": "media_external_links_media_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4460,7 +4887,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "354",
+      "id": "389",
       "name": "media_external_links_media_id_medias_id",
       "sourceSchema": "public",
       "sourceTableId": "141",
@@ -4474,35 +4901,35 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "355",
+      "id": "390",
       "name": "media_genres_genre_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "239",
+      "sourceTableId": "240",
       "targetSchema": "public",
-      "targetTableId": "269",
-      "sourceFieldId": "240",
-      "targetFieldId": "271",
+      "targetTableId": "270",
+      "sourceFieldId": "241",
+      "targetFieldId": "272",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1777283616203,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "356",
+      "id": "391",
       "name": "media_genres_media_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "37",
       "targetSchema": "public",
-      "targetTableId": "269",
+      "targetTableId": "270",
       "sourceFieldId": "68",
-      "targetFieldId": "270",
+      "targetFieldId": "271",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1777283611719,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "357",
+      "id": "392",
       "name": "media_producers_producer_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "151",
@@ -4516,7 +4943,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "358",
+      "id": "393",
       "name": "media_relations_target_media_fk",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4530,7 +4957,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "359",
+      "id": "394",
       "name": "media_relations_target_media_fk",
       "sourceSchema": "public",
       "sourceTableId": "83",
@@ -4544,7 +4971,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "360",
+      "id": "395",
       "name": "media_relations_target_media_fk",
       "sourceSchema": "public",
       "sourceTableId": "83",
@@ -4558,7 +4985,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "361",
+      "id": "396",
       "name": "media_relations_target_media_medias_id",
       "sourceSchema": "public",
       "sourceTableId": "83",
@@ -4572,13 +4999,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "362",
+      "id": "397",
       "name": "media_submissions_media_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "291",
+      "sourceTableId": "292",
       "targetSchema": "public",
       "targetTableId": "37",
-      "sourceFieldId": "293",
+      "sourceFieldId": "294",
       "targetFieldId": "38",
       "sourceCardinality": "one",
       "targetCardinality": "many",
@@ -4586,13 +5013,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "363",
+      "id": "398",
       "name": "media_submissions_media_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "291",
+      "sourceTableId": "292",
       "targetSchema": "public",
       "targetTableId": "37",
-      "sourceFieldId": "293",
+      "sourceFieldId": "294",
       "targetFieldId": "38",
       "sourceCardinality": "one",
       "targetCardinality": "one",
@@ -4600,13 +5027,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "364",
+      "id": "399",
       "name": "media_types_id_medias_type",
       "sourceSchema": "public",
-      "sourceTableId": "320",
+      "sourceTableId": "321",
       "targetSchema": "public",
       "targetTableId": "37",
-      "sourceFieldId": "321",
+      "sourceFieldId": "322",
       "targetFieldId": "49",
       "sourceCardinality": "one",
       "targetCardinality": "many",
@@ -4614,7 +5041,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "365",
+      "id": "400",
       "name": "medias_age_rating_media_age_ratings_id",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4628,7 +5055,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "366",
+      "id": "401",
       "name": "medias_characters_media_characters_id",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4642,7 +5069,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "367",
+      "id": "402",
       "name": "medias_country_fk",
       "sourceSchema": "public",
       "sourceTableId": "129",
@@ -4656,7 +5083,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "368",
+      "id": "403",
       "name": "medias_episodes_episodes_id",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4670,7 +5097,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "369",
+      "id": "404",
       "name": "medias_external_links_media_external_links_id",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4684,7 +5111,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "370",
+      "id": "405",
       "name": "medias_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4698,21 +5125,21 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "371",
+      "id": "406",
       "name": "medias_licensors_fk",
       "sourceSchema": "public",
       "sourceTableId": "37",
       "targetSchema": "public",
-      "targetTableId": "235",
+      "targetTableId": "236",
       "sourceFieldId": "66",
-      "targetFieldId": "236",
+      "targetFieldId": "237",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1777360403880,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "372",
+      "id": "407",
       "name": "medias_producers_fk",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4726,7 +5153,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "373",
+      "id": "408",
       "name": "medias_relations_media_relations_id",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4740,7 +5167,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "374",
+      "id": "409",
       "name": "medias_source_media_sources_id",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4754,7 +5181,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "375",
+      "id": "410",
       "name": "medias_status_media_statuses_id",
       "sourceSchema": "public",
       "sourceTableId": "37",
@@ -4768,77 +5195,77 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "376",
+      "id": "411",
       "name": "medias_studios_fk",
       "sourceSchema": "public",
       "sourceTableId": "37",
       "targetSchema": "public",
-      "targetTableId": "231",
+      "targetTableId": "232",
       "sourceFieldId": "67",
-      "targetFieldId": "232",
+      "targetFieldId": "233",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1777360574406,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "377",
+      "id": "412",
       "name": "medias_themes_fk",
       "sourceSchema": "public",
       "sourceTableId": "37",
       "targetSchema": "public",
-      "targetTableId": "329",
+      "targetTableId": "330",
       "sourceFieldId": "71",
-      "targetFieldId": "330",
+      "targetFieldId": "331",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1777295350412,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "378",
+      "id": "413",
       "name": "medias_trailers_media_trailers_id",
       "sourceSchema": "public",
       "sourceTableId": "37",
       "targetSchema": "public",
-      "targetTableId": "311",
+      "targetTableId": "312",
       "sourceFieldId": "44",
-      "targetFieldId": "312",
+      "targetFieldId": "313",
       "sourceCardinality": "one",
       "targetCardinality": "one",
       "createdAt": 1777282589094,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "379",
+      "id": "414",
       "name": "producers_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "151",
       "targetSchema": "public",
-      "targetTableId": "235",
+      "targetTableId": "236",
       "sourceFieldId": "152",
-      "targetFieldId": "237",
+      "targetFieldId": "238",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1777360416280,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "380",
+      "id": "415",
       "name": "producers_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "151",
       "targetSchema": "public",
-      "targetTableId": "231",
+      "targetTableId": "232",
       "sourceFieldId": "152",
-      "targetFieldId": "233",
+      "targetFieldId": "234",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1777360597827,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "381",
+      "id": "416",
       "name": "provisioned_users_provisioned_by_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
@@ -4852,7 +5279,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "382",
+      "id": "417",
       "name": "provisioned_users_provisioned_to_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
@@ -4866,7 +5293,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "383",
+      "id": "418",
       "name": "rating_selected_rating_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "113",
@@ -4880,7 +5307,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "384",
+      "id": "419",
       "name": "rating_selected_user_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "167",
@@ -4894,7 +5321,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "387",
+      "id": "422",
       "name": "user_country_preferences_country_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "129",
@@ -4908,7 +5335,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "388",
+      "id": "423",
       "name": "user_country_preferences_user_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "167",
@@ -4922,35 +5349,35 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "389",
+      "id": "424",
       "name": "user_follows_follower_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
       "targetSchema": "public",
-      "targetTableId": "324",
+      "targetTableId": "325",
       "sourceFieldId": "211",
-      "targetFieldId": "325",
+      "targetFieldId": "326",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1778402073659,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "390",
+      "id": "425",
       "name": "user_follows_following_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
       "targetSchema": "public",
-      "targetTableId": "324",
+      "targetTableId": "325",
       "sourceFieldId": "211",
-      "targetFieldId": "326",
+      "targetFieldId": "327",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1778402077836,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "391",
+      "id": "426",
       "name": "user_oauth_credentials_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
@@ -4964,7 +5391,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "392",
+      "id": "427",
       "name": "user_preferences_character_as_partner_fk",
       "sourceSchema": "public",
       "sourceTableId": "24",
@@ -4978,7 +5405,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "395",
+      "id": "430",
       "name": "user_preferences_user_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "167",
@@ -4992,7 +5419,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "396",
+      "id": "431",
       "name": "user_watch_histories_episode_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "5",
@@ -5006,7 +5433,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "397",
+      "id": "432",
       "name": "user_watch_histories_user_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
@@ -5020,13 +5447,13 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "398",
+      "id": "433",
       "name": "users_country_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
       "targetSchema": "public",
       "targetTableId": "129",
-      "sourceFieldId": "222",
+      "sourceFieldId": "223",
       "targetFieldId": "130",
       "sourceCardinality": "one",
       "targetCardinality": "one",
@@ -5034,55 +5461,55 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "399",
+      "id": "434",
       "name": "video_service_submissions_video_service_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "301",
+      "sourceTableId": "302",
       "targetSchema": "public",
-      "targetTableId": "274",
-      "sourceFieldId": "303",
-      "targetFieldId": "275",
+      "targetTableId": "275",
+      "sourceFieldId": "304",
+      "targetFieldId": "276",
       "sourceCardinality": "one",
       "targetCardinality": "one",
       "createdAt": 1777364068966,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "400",
+      "id": "435",
       "name": "video_submissions_created_by_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
       "targetSchema": "public",
-      "targetTableId": "259",
+      "targetTableId": "260",
       "sourceFieldId": "211",
-      "targetFieldId": "262",
+      "targetFieldId": "263",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1778732667055,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "401",
+      "id": "436",
       "name": "video_submissions_reviewed_by_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
       "targetSchema": "public",
-      "targetTableId": "259",
+      "targetTableId": "260",
       "sourceFieldId": "211",
-      "targetFieldId": "263",
+      "targetFieldId": "264",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1778732708490,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "402",
+      "id": "437",
       "name": "video_submissions_video_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "259",
+      "sourceTableId": "260",
       "targetSchema": "public",
       "targetTableId": "92",
-      "sourceFieldId": "261",
+      "sourceFieldId": "262",
       "targetFieldId": "93",
       "sourceCardinality": "one",
       "targetCardinality": "one",
@@ -5090,27 +5517,27 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "403",
+      "id": "438",
       "name": "videos_service_id_video_services_id",
       "sourceSchema": "public",
       "sourceTableId": "92",
       "targetSchema": "public",
-      "targetTableId": "274",
+      "targetTableId": "275",
       "sourceFieldId": "94",
-      "targetFieldId": "275",
+      "targetFieldId": "276",
       "sourceCardinality": "many",
       "targetCardinality": "one",
       "createdAt": 1777282589095,
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "404",
+      "id": "439",
       "name": "voice_actors_actor_staff_staff_id",
       "sourceSchema": "public",
-      "sourceTableId": "254",
+      "sourceTableId": "255",
       "targetSchema": "public",
       "targetTableId": "200",
-      "sourceFieldId": "257",
+      "sourceFieldId": "258",
       "targetFieldId": "201",
       "sourceCardinality": "many",
       "targetCardinality": "one",
@@ -5118,50 +5545,154 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "405",
+      "id": "440",
       "name": "collection_members_collection_id_fk",
       "sourceSchema": "public",
-      "sourceTableId": "246",
+      "sourceTableId": "247",
       "targetSchema": "public",
-      "targetTableId": "333",
-      "sourceFieldId": "247",
-      "targetFieldId": "335",
+      "targetTableId": "334",
+      "sourceFieldId": "248",
+      "targetFieldId": "336",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1778766565819
     },
     {
-      "id": "406",
+      "id": "441",
       "name": "collection_members_user_id_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
       "targetSchema": "public",
-      "targetTableId": "333",
+      "targetTableId": "334",
       "sourceFieldId": "211",
-      "targetFieldId": "336",
+      "targetFieldId": "337",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1778766807732
     },
     {
-      "id": "407",
+      "id": "442",
       "name": "collection_members_invited_by_fk",
       "sourceSchema": "public",
       "sourceTableId": "210",
       "targetSchema": "public",
-      "targetTableId": "333",
+      "targetTableId": "334",
       "sourceFieldId": "211",
-      "targetFieldId": "338",
+      "targetFieldId": "339",
       "sourceCardinality": "one",
       "targetCardinality": "many",
       "createdAt": 1778766863110
+    },
+    {
+      "id": "443",
+      "name": "home_media_banner_media_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "37",
+      "targetSchema": "public",
+      "targetTableId": "342",
+      "sourceFieldId": "38",
+      "targetFieldId": "344",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778771781222
+    },
+    {
+      "id": "444",
+      "name": "home_media_banner_created_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "210",
+      "targetSchema": "public",
+      "targetTableId": "342",
+      "sourceFieldId": "211",
+      "targetFieldId": "345",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778771806907
+    },
+    {
+      "id": "445",
+      "name": "comments_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "210",
+      "targetSchema": "public",
+      "targetTableId": "358",
+      "sourceFieldId": "211",
+      "targetFieldId": "360",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777252269
+    },
+    {
+      "id": "446",
+      "name": "comments_episode_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "5",
+      "targetSchema": "public",
+      "targetTableId": "358",
+      "sourceFieldId": "6",
+      "targetFieldId": "361",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777292243
+    },
+    {
+      "id": "447",
+      "name": "comment_audit_logs_comment_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "358",
+      "targetSchema": "public",
+      "targetTableId": "351",
+      "sourceFieldId": "359",
+      "targetFieldId": "353",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777327740
+    },
+    {
+      "id": "448",
+      "name": "comment_audit_logs_performed_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "210",
+      "targetSchema": "public",
+      "targetTableId": "351",
+      "sourceFieldId": "211",
+      "targetFieldId": "354",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777342519
+    },
+    {
+      "id": "449",
+      "name": "comment_reports_reporter_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "210",
+      "targetSchema": "public",
+      "targetTableId": "367",
+      "sourceFieldId": "211",
+      "targetFieldId": "369",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777570446
+    },
+    {
+      "id": "450",
+      "name": "comment_reports_comment_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "358",
+      "targetSchema": "public",
+      "targetTableId": "367",
+      "sourceFieldId": "359",
+      "targetFieldId": "370",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777586444
     }
   ],
   "dependencies": [],
   "areas": [],
   "customTypes": [
     {
-      "id": "408",
+      "id": "452",
       "name": "collection_access_level",
       "kind": "enum",
       "values": [
@@ -5174,7 +5705,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "409",
+      "id": "453",
       "name": "address",
       "kind": "composite",
       "values": [],
@@ -5207,7 +5738,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "410",
+      "id": "454",
       "name": "privacy_level",
       "kind": "enum",
       "values": [
@@ -5219,7 +5750,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "411",
+      "id": "455",
       "name": "status_submission",
       "kind": "enum",
       "values": [
@@ -5231,7 +5762,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "412",
+      "id": "456",
       "name": "user_preference_state",
       "kind": "enum",
       "values": [
@@ -5242,7 +5773,7 @@
       "diagramId": "yqwsqwccoj6v"
     },
     {
-      "id": "413",
+      "id": "457",
       "name": "user_sex",
       "kind": "enum",
       "values": [
@@ -5251,6 +5782,30 @@
       ],
       "fields": [],
       "diagramId": "yqwsqwccoj6v"
+    },
+    {
+      "id": "458",
+      "name": "user_role",
+      "kind": "enum",
+      "values": [
+        "user",
+        "contributor",
+        "curator",
+        "administrator"
+      ],
+      "fields": []
+    },
+    {
+      "id": "459",
+      "name": "audit_action",
+      "kind": "enum",
+      "values": [
+        "delete",
+        "restore",
+        "edit",
+        "flag"
+      ],
+      "fields": []
     }
   ],
   "notes": []
