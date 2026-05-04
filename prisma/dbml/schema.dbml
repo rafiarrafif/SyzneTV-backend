@@ -1,808 +1,538 @@
-//// ------------------------------------------------------
-//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
-//// ------------------------------------------------------
-
-Table medias {
-  id String [pk]
-  title String [not null]
-  titleAlternative Json [not null]
-  slug String [unique, not null]
-  malId Int [unique]
-  pictureMedium String [not null]
-  pictureLarge String [not null]
-  genres genres [not null]
-  country Country [not null, default: 'JP']
-  score Decimal [not null, default: 0]
-  status String [not null]
-  startAiring DateTime
-  endAiring DateTime
-  synopsis String [not null]
-  ageRating String [not null]
-  mediaType MediaType [not null]
-  source String
-  studios studios [not null]
-  characters characters [not null]
-  onDraft Boolean [not null, default: true]
-  uploader users [not null]
-  uploadedBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  bannerPromotion hero_banner [not null]
-  logs media_logs [not null]
-  episodes episodes [not null]
-  reviews movie_reviews [not null]
-  inCollections CollectionMedia [not null]
+Enum "audit_action" {
+    "delete"
+    "restore"
+    "edit"
+    "flag"
 }
 
-Table media_logs {
-  id String [pk]
-  status MediaOperation [not null]
-  approval Boolean [not null, default: false]
-  proposer users [not null]
-  proposedBy String [not null]
-  approver users [not null]
-  approvedBy String [not null]
-  media medias [not null]
-  mediaId String [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Enum "collection_access_level" {
+    "viewer"
+    "contributor"
+    "moderator"
+    "owner"
 }
 
-Table genres {
-  id String [pk]
-  name String [not null]
-  slug String [unique, not null]
-  malId Int [unique, not null]
-  malUrl String [not null]
-  creator users [not null]
-  createdBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  medias medias [not null]
-  user_favourite_genres user_preferences [not null]
+Enum "privacy_level" {
+    "private"
+    "unlisted"
+    "public"
 }
 
-Table studios {
-  id String [pk]
-  name String [not null]
-  slug String [unique, not null]
-  linkAbout String [not null]
-  malId Int [unique, not null]
-  logoUrl String
-  creator users [not null]
-  createdBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  medias medias [not null]
+Enum "status_submission" {
+    "pending"
+    "approved"
+    "rejected"
 }
 
-Table characters {
-  id String [pk]
-  malId Int [unique, not null]
-  name String [not null]
-  role CharacterRole [not null]
-  favorites Int [not null, default: 0]
-  imageUrl String
-  smallImageUrl String
-  createdBy users [not null]
-  creatorId String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  medias medias [not null]
-  voice_actors lang_va_char [not null]
+Enum "user_preference_state" {
+    "exclude"
+    "include"
 }
 
-Table voice_actors {
-  id String [pk]
-  malId Int [unique, not null]
-  name String [not null]
-  birthday DateTime
-  description String
-  aboutUrl String
-  imageUrl String
-  websiteUrl String
-  createdBy users [not null]
-  creatorId String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  characters lang_va_char [not null]
+Enum "user_role" {
+    "user"
+    "contributor"
+    "curator"
+    "administrator"
 }
 
-Table lang_va_char {
-  id String [pk]
-  language String [not null]
-  voiceActor voice_actors [not null]
-  vaId String [not null]
-  character characters [not null]
-  charId String [not null]
-  createdBy users [not null]
-  creatorId String [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Enum "user_sex" {
+    "female"
+    "male"
+}
 
-  indexes {
-    (language, vaId, charId) [unique]
+Enum "like_type" {
+    "like"
+    "dislike"
+}
+
+Table "public"."user_rating_preferences" {
+  "user_id" uuid [unique, not null, ref: > "public"."user_preferences"."user_id"]
+  "rating_id" uuid [not null, ref: > "public"."media_age_ratings"."id"]
+  "state" user_preference_state [not null]
+}
+
+Table "public"."episodes" {
+  "id" uuid [pk, not null, ref: > "public"."medias"."episodes"]
+  "media_id" uuid [not null, ref: > "public"."medias"."id"]
+  "episode" smallint
+  "mal_url" varchar(255)
+  "mal_forum_url" varchar(255)
+  "title" varchar(155) [not null]
+  "title_origin" varchar(155)
+  "title_romanji" varchar(155)
+  "aired" date
+  "filler" boolean [not null, default: false]
+  "recap" boolean [not null, default: false]
+  "total_score" int [not null]
+  "scored_by" int [not null]
+  "videos" uuid
+  "deleted_at" timestamp
+  "updated_at" timestamp [not null]
+  "created_at" timestamp [not null]
+}
+
+Table "public"."characters" {
+  "id" uuid [pk, not null]
+  "name" varchar(255) [not null]
+  "image" varchar(255)
+  "small_image" varchar(255)
+  "mal_id" int
+  "mal_url" varchar(255)
+  "liked" int [not null, default: 0]
+  "connections" int [default: 0]
+  "deleted_at" timestamp
+  "updated_at" timestamp [not null]
+  "created_at" timestamp [not null]
+}
+
+Table "public"."medias" {
+  "id" uuid [pk, not null, ref: > "public"."media_submissions"."media_id"]
+  "mal_id" int [not null]
+  "title" varchar(255) [not null]
+  "title_secondary" varchar(255)
+  "title_original" varchar(255)
+  "title_synonyms" varchar(255) [note: 'This is Array']
+  "trailers" uuid
+  "synopsis" text [not null]
+  "small_image_url" varchar(255)
+  "medium_image_url" varchar(255) [not null]
+  "large_image_url" varchar(255)
+  "type" uuid [not null, ref: > "public"."media_types"."id"]
+  "source" uuid [not null, ref: > "public"."media_sources"."id"]
+  "status" uuid [not null, ref: > "public"."media_statuses"."id"]
+  "airing" boolean [not null, default: false]
+  "start_airing" date
+  "end_airing" date
+  "age_rating" uuid [ref: > "public"."media_age_ratings"."id"]
+  "score" numeric(2,2) [not null, default: 0]
+  "score_total" int [not null, default: 0]
+  "scored_by" int [not null, default: 0]
+  "favourites" int [not null, default: 0]
+  "background" text
+  "season" varchar(15) [not null, note: 'enum(winter, spring, summer, fall)']
+  "year" smallint [not null]
+  "country" uuid [not null, ref: > "public"."system_country"."id"]
+  "broadcast_date" varchar(64)
+  "producers" uuid [not null]
+  "licensors" uuid [not null]
+  "studios" uuid [not null]
+  "genres" uuid
+  "episodes" uuid
+  "explicit_genres" uuid
+  "themes" uuid
+  "demographics" uuid
+  "relations" uuid
+  "external_links" uuid
+  "characters" uuid
+  "approved" boolean [default: false]
+  "approved_by" uuid
+  "created_by" uuid [not null]
+  "deleted_at" timestamp
+  "updated_at" timestamp [not null]
+  "created_at" timestamp [not null]
+}
+
+Table "public"."media_relations" {
+  "id" uuid [pk, not null, ref: > "public"."medias"."relations"]
+  "relation" varchar(16)
+  "target_media" uuid [ref: > "public"."medias"."id"]
+}
+
+Table "public"."media_sources" {
+  "id" uuid [pk, not null]
+  "name" varchar(18) [not null]
+}
+
+Table "public"."videos" {
+  "id" uuid [pk, not null, ref: > "public"."episodes"."videos", ref: - "public"."video_submissions"."video_id"]
+  "service_id" uuid [not null, ref: > "public"."video_services"."id"]
+  "video_code" varchar(255) [not null]
+  "short_code" varchar(255)
+  "thumbnail_code" varchar(255)
+  "download_code" varchar(255)
+  "pending_upload" boolean [default: true]
+  "created_by" uuid [not null]
+  "deleted_at" timestamp
+  "updated_at" timestamp [not null]
+  "created_at" timestamp [not null]
+}
+
+Table "public"."user_country_preferences" {
+  "user_id" uuid [not null, ref: > "public"."user_preferences"."user_id"]
+  "country_id" uuid [unique, not null, ref: > "public"."system_country"."id"]
+  "state" user_preference_state [not null]
+}
+
+Table "public"."media_producers" {
+  "media_id" uuid [not null, ref: > "public"."medias"."producers"]
+  "producer_id" uuid [not null, ref: > "public"."producers"."id"]
+
+  Indexes {
+    (media_id, producer_id) [pk]
   }
 }
 
-Table episodes {
-  id String [pk]
-  media medias [not null]
-  mediaId String [not null]
-  episode Int [not null]
-  name String [not null]
-  score Decimal [not null, default: 0]
-  pictureThumbnail String
-  viewed BigInt [not null, default: 0]
-  likes BigInt [not null, default: 0]
-  dislikes BigInt [not null, default: 0]
-  pendingUpload Boolean [not null, default: true]
-  uploader users [not null]
-  uploadedBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  user_likes episode_likes [not null]
-  videos videos [not null]
-  user_histories watch_histories [not null]
-  comments comments [not null]
+Table "public"."media_age_ratings" {
+  "id" uuid [pk, not null]
+  "name" varchar(64) [not null]
+  "min_age" smallint [not null]
+}
 
-  indexes {
-    (mediaId, episode) [unique]
+Table "public"."comment_audit_logs" {
+  "id" uuid [pk, not null]
+  "comment_id" uuid [not null, ref: > "public"."comments"."id"]
+  "performed_by" uuid [not null, ref: > "public"."users"."id"]
+  "action" audit_action [not null]
+  "created_at" timestamp [not null]
+}
+
+Table "public"."media_characters" {
+  "id" uuid [pk, not null, ref: > "public"."medias"."characters"]
+  "role" text [not null, note: 'main, supporting']
+  "characters" uuid [not null, ref: > "public"."characters"."id"]
+  "voice_actor" uuid [not null]
+}
+
+Table "public"."provisioned_users" {
+  "provisioned_by" uuid [unique, not null, ref: > "public"."users"."id"]
+  "provisioned_to" uuid [not null, ref: > "public"."users"."id"]
+  "provisioned_at" timestamp [not null]
+  "reason" bigint
+}
+
+Table "public"."collection_members" {
+  "id" uuid [pk, not null]
+  "collection_id" uuid [not null, ref: > "public"."collections"."id"]
+  "user_id" uuid [not null, ref: > "public"."users"."id"]
+  "access_level" collection_access_level [not null]
+  "invited_by" uuid [ref: > "public"."users"."id"]
+  "joined_at" timestamp [not null]
+}
+
+Table "public"."system_country" {
+  "id" uuid [pk, not null, ref: - "public"."users"."country"]
+  "name" varchar(155) [not null]
+  "slug" varchar(165) [not null]
+  "code" varchar(3) [not null]
+  "flag" varchar(255)
+  "banner" varchar(255)
+}
+
+Table "public"."media_explicit_genres" {
+  "media_id" uuid [not null, ref: > "public"."medias"."explicit_genres"]
+  "genre_id" uuid [not null, ref: > "public"."genres"."id"]
+
+  Indexes {
+    (media_id, genre_id) [pk]
+  }
+
+  Note: 'composite primary key = media_id + genre_id'
+}
+
+Table "public"."media_external_links" {
+  "id" uuid [pk, not null, ref: > "public"."medias"."external_links"]
+  "media_id" uuid [ref: > "public"."medias"."id"]
+  "name" varchar(64)
+  "url" varchar(255)
+}
+
+Table "public"."media_statuses" {
+  "id" uuid [pk, not null]
+  "name" varchar(64) [unique, not null]
+}
+
+Table "public"."producers" {
+  "id" uuid [pk, not null]
+  "mal_id" int [not null]
+  "type" varchar(24) [not null]
+  "name" varchar(155) [not null]
+  "url" varchar(255)
+  "created_by" uuid [not null]
+  "deleted_at" timestamp
+  "updated_at" timestamp [not null]
+  "created_at" timestamp [not null]
+}
+
+Table "public"."user_watch_histories" {
+  "user_id" uuid [not null, ref: > "public"."users"."id"]
+  "episode_id" uuid [not null, ref: > "public"."episodes"."id"]
+  "updated_at" timestamp [not null]
+
+  Indexes {
+    (episode_id, user_id) [unique, name: "index_1"]
   }
 }
 
-Table episode_likes {
-  id String [pk]
-  user users [not null]
-  userId String [not null]
-  session user_sessions [not null]
-  sessionId String [not null]
-  episode episodes [not null]
-  episodeId String [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."user_preferences" {
+  "user_id" uuid [pk, not null]
+  "character_as_partner" uuid [ref: > "public"."characters"."id"]
+  "comment_picture" varchar(255)
+  "watch_history" boolean [not null, default: true]
+  "search_history" boolean [not null, default: false]
+  "private_account" boolean [not null, default: false]
+  "message_open" boolean [not null, default: true]
+  "birthday_open" boolean [not null, default: false]
+  "email_open" boolean [not null, default: false]
+  "number_open" boolean [not null, default: false]
+  "partner_open" boolean [not null, default: true]
+  "subscribe_newsletter" boolean [not null, default: true]
+  "security_notification" boolean [not null, default: true]
 }
 
-Table videos {
-  id String [pk]
-  episode episodes [not null]
-  episodeId String [not null]
-  service video_services [not null]
-  serviceId String [not null]
-  videoCode String [not null]
-  thumbnailCode String
-  pendingUpload Boolean [not null, default: true]
-  uploader users [not null]
-  uploadedBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."user_genre_preferences" {
+  "user_id" uuid [unique, not null, ref: > "public"."user_preferences"."user_id"]
+  "genre_id" uuid [not null, ref: > "public"."genres"."id"]
+  "state" user_preference_state [not null]
 
-  indexes {
-    (serviceId, videoCode) [unique]
+  Indexes {
+    (user_id, genre_id) [unique, name: "index_1_1"]
   }
 }
 
-Table video_services {
-  id String [pk]
-  name String [unique, not null]
-  domain String [not null]
-  logo String
-  hexColor String [not null]
-  endpointVideo String [not null]
-  endpointThumbnail String
-  endpointDownload String
-  creator users [not null]
-  createdBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  videos videos [not null]
-  user_preferences user_preferences [not null]
-}
+Table "public"."media_collections" {
+  "collection_id" uuid [unique, not null, ref: > "public"."collections"."id"]
+  "media_id" uuid [not null, ref: > "public"."medias"."id"]
+  "added_by" uuid [not null, ref: > "public"."users"."id"]
+  "added_at" bigint [not null]
 
-Table users {
-  id String [pk]
-  name String [not null]
-  username String [unique, not null]
-  email String [unique, not null]
-  password String [not null]
-  birthDate DateTime
-  gender UserGender
-  phoneCC Int
-  phoneNumber Int
-  assignedRoles user_role_assignments [not null]
-  bioProfile String
-  avatar String
-  commentBackground String
-  provider String
-  providerId String [unique]
-  providerToken String
-  providerPayload Json
-  preference user_preferences
-  verifiedAt DateTime
-  disabledAt DateTime
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  medias medias [not null]
-  media_proposeds media_logs [not null]
-  media_approveds media_logs [not null]
-  genres genres [not null]
-  studios studios [not null]
-  characters characters [not null]
-  voice_actor voice_actors [not null]
-  lang_va_char lang_va_char [not null]
-  episodes episodes [not null]
-  episode_likes episode_likes [not null]
-  videos videos [not null]
-  video_services video_services [not null]
-  create_roles user_roles [not null]
-  notifications user_notifications [not null]
-  sessions user_sessions [not null]
-  logs user_logs [not null]
-  collections collections [not null]
-  allowed_collections collections [not null]
-  watch_histories watch_histories [not null]
-  media_reviews movie_reviews [not null]
-  comments comments [not null]
-  liked_comments comment_likes [not null]
-  reported_comments comment_reports [not null]
-  approved_comments comment_reports [not null]
-  create_languages languages [not null]
-  user_create_email email_system_accounts [not null]
-  user_emails email_system_histories [not null]
-  user_hero_banner hero_banner [not null]
-  sys_notifications system_notifications [not null]
-  sys_logs system_logs [not null]
-}
-
-Table user_preferences {
-  id String [pk]
-  user users [not null]
-  userId String [unique, not null]
-  lang languages
-  langPreference String
-  adultFiltering AdultFiltering [not null, default: 'hide']
-  adultAlert AdultAlert [not null, default: 'show']
-  videoQuality VideoQuality [not null, default: 'Q1080']
-  serviceDefault video_services
-  serviceDefaultId String
-  hideContries Country[] [not null]
-  favoriteGenres genres [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-}
-
-Table user_roles {
-  id String [pk]
-  name String [unique, not null]
-  description String
-  primaryColor String
-  secondaryColor String
-  pictureImage String
-  badgeImage String
-  isSuperadmin Boolean [not null, default: false]
-  canEditMedia Boolean [not null, default: false]
-  canManageMedia Boolean [not null, default: false]
-  canEditEpisodes Boolean [not null, default: false]
-  canManageEpisodes Boolean [not null, default: false]
-  canEditComment Boolean [not null, default: false]
-  canManageComment Boolean [not null, default: false]
-  canEditUser Boolean [not null, default: false]
-  canManageUser Boolean [not null, default: false]
-  canEditSystem Boolean [not null, default: false]
-  canManageSystem Boolean [not null, default: false]
-  creator users [not null]
-  createdBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  assignedUser user_role_assignments [not null]
-}
-
-Table user_role_assignments {
-  user users [not null]
-  userId String [not null]
-  role user_roles [not null]
-  roleId String [not null]
-  assignmentAt DateTime [default: `now()`, not null]
-
-  indexes {
-    (userId, roleId) [pk]
+  Indexes {
+    (collection_id, media_id) [unique, name: "index_1_2"]
   }
 }
 
-Table user_notifications {
-  id String [pk]
-  title String [not null]
-  content String [not null]
-  picture String [not null]
-  state UserNotificationState [not null]
-  ctaLink String [not null]
-  user users [not null]
-  userId String [not null]
-  isReaded Boolean [not null, default: false]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."comments" {
+  "id" uuid [pk, not null]
+  "user_id" uuid [not null, ref: > "public"."users"."id"]
+  "episode_id" uuid [not null, ref: > "public"."episodes"."id"]
+  "content" varchar(255) [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp [not null]
+  "deleted_at" timestamp
 }
 
-Table user_sessions {
-  id String [pk]
-  isAuthenticated Boolean [not null, default: false]
-  user users [not null]
-  userId String [not null]
-  deviceType String [not null]
-  deviceOs String [not null]
-  deviceIp String [not null]
-  browser String [not null]
-  isOnline Boolean [not null, default: false]
-  lastOnline DateTime [default: `now()`, not null]
-  validUntil DateTime [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  logs user_logs [not null]
-  episode_likes episode_likes [not null]
-  watch_histories watch_histories [not null]
-}
+Table "public"."user_oauth_credentials" {
+  "id" uuid [pk, not null, ref: > "public"."users"."id"]
+  "user_id" uuid [not null]
+  "oauth_id" uuid [not null]
+  "provider_token" varchar(500)
+  "provider_sub" varchar(500)
+  "last_action" timestamp [not null]
 
-Table user_logs {
-  id String [pk]
-  title String [not null]
-  notes String [not null]
-  user users [not null]
-  userId String [not null]
-  session user_sessions [not null]
-  sessionId String [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-}
-
-Table collections {
-  id String [pk]
-  name String [not null]
-  slug String [not null]
-  owner users [not null]
-  ownerId String [not null]
-  accessStatus AccessStatus [not null, default: 'private']
-  password String
-  usersAllowed users [not null]
-  accessScope AccessScope [not null, default: 'viewer']
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  media_saved CollectionMedia [not null]
-
-  indexes {
-    (slug, ownerId) [unique]
+  Indexes {
+    (oauth_id, user_id) [unique, name: "index_2"]
   }
 }
 
-Table CollectionMedia {
-  id String [pk]
-  collection collections [not null]
-  collectionId String [not null]
-  media medias [not null]
-  mediaId String [not null]
-  savedAt DateTime [default: `now()`, not null]
+Table "public"."staff" {
+  "id" uuid [pk, not null]
+  "name" varchar(255) [not null]
+  "image" varchar(255)
+  "mal_id" int
+  "mal_url" varchar(255)
+  "deleted_at" timestamp
+  "updated_at" timestamp [not null]
+  "created_at" timestamp [not null]
+}
 
-  indexes {
-    (collectionId, mediaId) [unique]
+Table "public"."home_media_banner" {
+  "id" uuid [pk, not null]
+  "media_id" uuid [not null, ref: > "public"."medias"."id"]
+  "created_by" uuid [not null, ref: > "public"."users"."id"]
+  "priority" smallint [unique]
+  "start_show" timestamp [not null]
+  "end_show" timestamp
+  "created_at" timestamp [not null]
+}
+
+Table "public"."users" {
+  "id" uuid [pk, not null, ref: - "public"."user_preferences"."user_id"]
+  "email" varchar(500) [unique, not null]
+  "password" varchar(255)
+  "username" varchar(28) [unique, not null]
+  "fullname" varchar(32) [not null]
+  "avatar" varchar(255)
+  "bio" text
+  "datebirth" date
+  "role" user_role [not null]
+  "sex" user_sex [not null]
+  "phone_number" varchar(15)
+  "address" address
+  "country" uuid
+  "auth_provider" varchar(64)
+  "provider_token" varchar(255)
+  "created_at" timestamp [not null, default: `now()`]
+  "updated_at" timestamp [not null]
+  "deleted_at" timestamp
+
+  Indexes {
+    username [unique, name: "index_2_3"]
+    email [unique, name: "index_3"]
   }
 }
 
-Table watch_histories {
-  id String [pk]
-  episode episodes [not null]
-  episodeId String [not null]
-  user users [not null]
-  userId String [not null]
-  session user_sessions [not null]
-  sessionId String [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."media_studios" {
+  "media_id" uuid [not null, ref: > "public"."medias"."studios"]
+  "producer_id" uuid [not null, ref: > "public"."producers"."id"]
+
+  Indexes {
+    (media_id, producer_id) [pk]
+  }
 }
 
-Table movie_reviews {
-  id String [pk]
-  media medias [not null]
-  mediaId String [not null]
-  rating Int [not null]
-  title String [not null]
-  text String [not null]
-  reaction MediaReviewReaction [not null]
-  creator users [not null]
-  createdBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."media_licencors" {
+  "media_id" uuid [not null, ref: > "public"."medias"."licensors"]
+  "producer_id" uuid [not null, ref: > "public"."producers"."id"]
+
+  Indexes {
+    (media_id, producer_id) [pk]
+  }
 }
 
-Table comments {
-  id String [pk]
-  episode episodes [not null]
-  episodeId String [not null]
-  text String [not null]
-  isParent Boolean [not null, default: false]
-  parent comments
-  parentId String
-  user users [not null]
-  userId String [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  replies comments [not null]
-  likes comment_likes [not null]
+Table "public"."comment_reports" {
+  "id" uuid [unique, not null]
+  "reporter_id" uuid [not null, ref: > "public"."users"."id"]
+  "comment_id" uuid [not null, ref: > "public"."comments"."id"]
+  "title" varchar(115) [not null]
+  "status" status_submission [not null]
+  "description" text
+  "reported_at" timestamp [not null]
+  "closed_at" timestamp
 }
 
-Table comment_likes {
-  id String [pk]
-  comment comments [not null]
-  commentId String [not null]
-  user users [not null]
-  userLiked String [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."genres" {
+  "id" uuid [pk, not null]
+  "mal_id" smallint
+  "type" varchar(16) [not null]
+  "name" varchar(32) [not null]
+  "url" varchar(155)
 }
 
-Table comment_reports {
-  id String [pk]
-  reporter users [not null]
-  userReporter String [not null]
-  commentReported String [not null]
-  isSupervisorReport Boolean [not null, default: false]
-  reason ReportReason [not null]
-  status ReportStatus [not null]
-  description String [not null]
-  approver users
-  approvedBy String
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."collections" {
+  "id" uuid [pk, not null]
+  "name" varchar(64) [not null]
+  "cover_url" varchar(255) [not null]
+  "privacy_level" privacy_level [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp [not null]
 }
 
-Table languages {
-  id String [pk]
-  name String [not null]
-  code String [unique, not null]
-  countryFlag String [not null]
-  fileLocation String [not null]
-  creator users [not null]
-  craetedBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  user_used user_preferences [not null]
+Table "public"."voice_actors" {
+  "id" uuid [pk, not null, ref: > "public"."media_characters"."voice_actor"]
+  "language" varchar(115)
+  "actor_staff" uuid [ref: > "public"."staff"."id"]
 }
 
-Table email_system_accounts {
-  id String [pk]
-  name String [unique, not null]
-  host String [not null]
-  port Int [not null]
-  secure Boolean [not null]
-  email String [unique, not null]
-  username String [unique, not null]
-  password String [not null]
-  purpose EmailPorpose [not null]
-  creator users [not null]
-  createdBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."video_submissions" {
+  "id" uuid [pk, not null]
+  "video_id" uuid [not null]
+  "created_by" uuid [not null, ref: > "public"."users"."id"]
+  "reviewed_by" uuid [ref: > "public"."users"."id"]
+  "status" status_submission [not null, default: 'pending']
+  "reviewed_at" timestamp
+  "reason" text
+  "created_at" timestamp [not null, default: `now()`]
 }
 
-Table email_system_histories {
-  id String [pk]
-  purpose EmailPorpose [not null]
-  fromEmail String [not null]
-  toEmail String [not null]
-  user users [not null]
-  userRelated String [not null]
-  title String [not null]
-  htmlContent String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."media_genres" {
+  "media_id" uuid [unique, not null, ref: > "public"."medias"."genres"]
+  "genre_id" uuid [pk, not null, ref: > "public"."genres"."id"]
+
+  Indexes {
+    (media_id, genre_id) [unique, name: "index_1_4"]
+  }
+
+  Note: 'composite primary key = media_id + genre_id'
 }
 
-Table hero_banner {
-  id String [pk]
-  orderPriority Int [unique]
-  mediaId String [not null]
-  media medias [not null]
-  imageUrl String
-  startDate DateTime [not null]
-  endDate DateTime [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
-  creatorId String [not null]
-  createdBy users [not null]
+Table "public"."video_services" {
+  "id" uuid [pk, not null, ref: - "public"."video_service_submissions"."video_service_id"]
+  "name" varchar(155) [not null]
+  "resolution" smallint [not null]
+  "domain" varchar(255) [not null]
+  "image_url" varchar(255)
+  "hex_color" varchar(10)
+  "endpoint_video" varchar(255) [not null]
+  "endpoint_short" varchar(255)
+  "endpoint_image" varchar(255)
+  "endpoint_download" varchar(255)
+  "created_by" uuid [not null]
+  "deleted_at" timestamp
+  "updated_at" timestamp [not null]
+  "created_at" timestamp [not null]
+
+  Indexes {
+    (name, resolution) [unique, name: "idx_video_services_name_resolution"]
+  }
 }
 
-Table system_preferences {
-  id String [pk]
-  key String [unique, not null]
-  value String [not null]
-  description String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."media_submissions" {
+  "id" uuid [pk, not null]
+  "media_id" uuid [not null]
+  "created_by" uuid [not null]
+  "status" status_submission [not null]
+  "reviewed_by" uuid
+  "reviewed_at" timestamp
+  "reason" text
+  "created_at" timestamp [not null, default: `now()`]
 }
 
-Table system_notifications {
-  id String [pk]
-  type TypeSystemNotification [not null]
-  componentName String
-  popupImage String
-  titleToast String
-  contentToast String
-  creator users [not null]
-  createdBy String [not null]
-  deletedAt DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."video_service_submissions" {
+  "id" uuid [pk, not null]
+  "video_service_id" uuid [not null]
+  "created_by" uuid [not null]
+  "status" status_submission [not null, default: 'pending']
+  "reviewed_by" uuid
+  "reviewed_at" timestamp
+  "reason" text
+  "created_at" timestamp [not null, default: `now()`]
 }
 
-Table system_logs {
-  id String [pk]
-  title String [not null]
-  notes String [not null]
-  user users
-  relatedUser String
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [default: `now()`, not null]
+Table "public"."media_trailers" {
+  "id" uuid [pk, not null, ref: - "public"."medias"."trailers"]
+  "url" varchar(255)
+  "embed_url" varchar(255)
+  "small_image_url" varchar(255)
+  "medium_image_url" varchar(255)
+  "large_image_url" varchar(255)
+  "maximum_image_url" varchar(255)
 }
 
-Table MediaGenres {
-  genresId String [ref: > genres.id]
-  mediasId String [ref: > medias.id]
+Table "public"."media_types" {
+  "id" uuid [pk, not null]
+  "name" varchar(18) [not null]
 }
 
-Table MediaStudios {
-  studiosId String [ref: > studios.id]
-  mediasId String [ref: > medias.id]
+Table "public"."user_follows" {
+  "follower_id" uuid [unique, not null, ref: > "public"."users"."id"]
+  "following_id" uuid [not null, ref: > "public"."users"."id"]
+  "followed_at" timestamp [not null]
+
+  Indexes {
+    (following_id, follower_id) [unique, name: "index_1_5"]
+  }
+
+  checks {
+    `follower_id <> following_id`
+  }
 }
 
-Table MediaCharacters {
-  charactersId String [ref: > characters.id]
-  mediasId String [ref: > medias.id]
+Table "public"."media_themes" {
+  "media_id" uuid [not null, ref: > "public"."medias"."themes"]
+  "genre_id" uuid [not null, ref: > "public"."genres"."id"]
+
+  Indexes {
+    (media_id, genre_id) [pk]
+  }
 }
 
-Table CollectionMedia {
-  incollectionsId String [ref: > CollectionMedia.id]
-  media_savedId String [ref: > CollectionMedia.id]
+Table "public"."comment_likes" {
+  "user_id" uuid [unique, not null, ref: > "public"."medias"."id"]
+  "comment_id" uuid [not null, ref: > "public"."comments"."id"]
+  "type" like_type [not null]
+  "created_at" timestamp [not null]
+
+  Indexes {
+    (comment_id, user_id) [unique, name: "index_1_6"]
+  }
 }
-
-Table UserFavoriteGenres {
-  user_favourite_genresId String [ref: > user_preferences.id]
-  favoritegenresId String [ref: > genres.id]
-}
-
-Table UserSelectedSharingCollention {
-  allowed_collectionsId String [ref: > collections.id]
-  usersallowedId String [ref: > users.id]
-}
-
-Enum MediaType {
-  TV
-  ONA
-  OVA
-  Movie
-  Special
-  Music
-}
-
-Enum Country {
-  JP
-  EN
-  ID
-  KR
-}
-
-Enum CharacterRole {
-  Main
-  Supporting
-}
-
-Enum MediaOperation {
-  create
-  update
-  delete
-}
-
-Enum UserGender {
-  male
-  female
-}
-
-Enum AdultFiltering {
-  hide
-  show
-  explicit
-}
-
-Enum AdultAlert {
-  hide
-  show
-}
-
-Enum VideoQuality {
-  Q2160
-  Q1440
-  Q1080
-  Q720
-  Q480
-  Q360
-  Q240
-  Q144
-}
-
-Enum UserNotificationState {
-  info
-  warning
-  danger
-}
-
-Enum ReportStatus {
-  pending
-  resolved
-  rejected
-}
-
-Enum ReportReason {
-  sexualize
-  violent
-  explicit
-  hateful
-  political
-  racist
-  spam
-  other
-}
-
-Enum AccessStatus {
-  private
-  selected
-  protected
-  public
-}
-
-Enum AccessScope {
-  viewer
-  editor
-}
-
-Enum MediaReviewReaction {
-  angry
-  sad
-  awesome
-  happy
-  sleepy
-  annoyed
-  disgusting
-  disappointed
-}
-
-Enum EmailPorpose {
-  forgot_password
-  account_activation
-  account_notification
-  subscribtion
-}
-
-Enum TypeSystemNotification {
-  component
-  popup
-  toast
-}
-
-Ref: medias.uploadedBy > users.id
-
-Ref: media_logs.proposedBy > users.id
-
-Ref: media_logs.approvedBy > users.id
-
-Ref: media_logs.mediaId > medias.id
-
-Ref: genres.createdBy > users.id
-
-Ref: studios.createdBy > users.id
-
-Ref: characters.creatorId > users.id
-
-Ref: voice_actors.creatorId > users.id
-
-Ref: lang_va_char.vaId > voice_actors.id
-
-Ref: lang_va_char.charId > characters.id
-
-Ref: lang_va_char.creatorId > users.id
-
-Ref: episodes.mediaId > medias.id
-
-Ref: episodes.uploadedBy > users.id
-
-Ref: episode_likes.userId > users.id
-
-Ref: episode_likes.sessionId > user_sessions.id
-
-Ref: episode_likes.episodeId > episodes.id
-
-Ref: videos.episodeId > episodes.id
-
-Ref: videos.serviceId > video_services.id
-
-Ref: videos.uploadedBy > users.id
-
-Ref: video_services.createdBy > users.id
-
-Ref: user_preferences.userId - users.id
-
-Ref: user_preferences.langPreference > languages.code
-
-Ref: user_preferences.serviceDefaultId > video_services.id
-
-Ref: user_roles.createdBy > users.id
-
-Ref: user_role_assignments.userId > users.id
-
-Ref: user_role_assignments.roleId > user_roles.id
-
-Ref: user_notifications.userId > users.id
-
-Ref: user_sessions.userId > users.id
-
-Ref: user_logs.userId > users.id
-
-Ref: user_logs.sessionId > user_sessions.id
-
-Ref: collections.ownerId > users.id
-
-Ref: CollectionMedia.collectionId > collections.id
-
-Ref: CollectionMedia.mediaId > medias.id
-
-Ref: watch_histories.id > episodes.id
-
-Ref: watch_histories.userId > users.id
-
-Ref: watch_histories.sessionId > user_sessions.id
-
-Ref: movie_reviews.mediaId > medias.id
-
-Ref: movie_reviews.createdBy > users.id
-
-Ref: comments.episodeId > episodes.id
-
-Ref: comments.parentId - comments.id
-
-Ref: comments.userId > users.id
-
-Ref: comment_likes.commentId > comments.id
-
-Ref: comment_likes.userLiked > users.id
-
-Ref: comment_reports.userReporter > users.id
-
-Ref: comment_reports.approvedBy > users.id
-
-Ref: languages.craetedBy > users.id
-
-Ref: email_system_accounts.createdBy > users.id
-
-Ref: email_system_histories.userRelated > users.id
-
-Ref: hero_banner.mediaId > medias.id
-
-Ref: hero_banner.creatorId > users.id
-
-Ref: system_notifications.createdBy > users.id
-
-Ref: system_logs.relatedUser > users.id
