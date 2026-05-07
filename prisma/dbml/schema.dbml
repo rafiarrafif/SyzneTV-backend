@@ -46,6 +46,13 @@ Enum "like_type" {
     "dislike"
 }
 
+Enum "device_type" {
+    "mobile"
+    "tablet"
+    "desktop"
+    "unknown"
+}
+
 Table "public"."user_rating_preferences" {
   "user_id" uuid [unique, not null, ref: > "public"."user_preferences"."user_id"]
   "rating_id" uuid [not null, ref: > "public"."media_age_ratings"."id"]
@@ -362,6 +369,7 @@ Table "public"."users" {
   "auth_provider" varchar(64)
   "provider_token" varchar(255)
   "created_at" timestamp [not null, default: `now()`]
+  "verified_at" timestamp
   "updated_at" timestamp [not null]
   "deleted_at" timestamp
 
@@ -535,4 +543,18 @@ Table "public"."comment_likes" {
   Indexes {
     (comment_id, user_id) [unique, name: "index_1_6"]
   }
+}
+
+Table "public"."user_sessions" {
+  "id" uuid [pk, not null]
+  "user_id" uuid [not null, ref: > "public"."users"."id"]
+  "device_type" device_type [not null]
+  "os_type" varchar(500)
+  "os_version" varchar(500)
+  "browser_name" varchar(500)
+  "browser_version" varchar(500)
+  "ip_login" inet [not null]
+  "last_activity_at" timestamp
+  "login_at" timestamp [not null]
+  "logout_at" timestamp
 }
