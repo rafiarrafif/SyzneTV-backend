@@ -9,3 +9,69 @@ generator dbml {
 datasource db {
   provider = "postgresql"
 }
+
+enum user_role {
+  user
+  contributor
+  curator
+  admin
+}
+enum user_sex {
+  male
+  female
+}
+
+
+
+model User {
+  id              String    @id @db.Uuid @default(uuid(7))
+  email           String    @unique
+  password        String?   @db.VarChar(255)
+  username        String    @unique @db.VarChar(28)
+  fullname        String    @db.VarChar(32)
+  avatar          String?   @db.VarChar(255)
+  bio             String?   @db.Text
+  datebirth       DateTime? @db.Date
+  role            user_role @default(user)
+  sex             user_sex?
+  phone_number    String?   @db.VarChar(20)
+  country         Country?  @relation(fields: [countryId], references: [id], name: "UserCountry")
+  auth_provider   String?   @db.VarChar(64)
+  provider_token  String?   @db.VarChar(255)
+  created_at      DateTime  @default(now()) @db.Timestamptz()
+  updated_at      DateTime  @updatedAt @db.Timestamptz()
+  deleted_at      DateTime? @db.Timestamptz()
+
+  countryId     String?   @db.Uuid
+  @@map("users")
+}
+
+model UserPreference {
+  user_id String @id @db.Uuid
+  // char_as_partner
+  comment_picture         String? @db.VarChar(255)
+  enable_watch_history    Boolean @default(true)
+  enable_search_history   Boolean @default(false)
+  is_private_account      Boolean @default(false)
+  can_message_me          Boolean @default(true)
+  publish_birthday        Boolean @default(false)
+  publish_email           Boolean @default(false)
+  publish_phone_number    Boolean @default(false)
+  publish_country         Boolean @default(false)
+  publish_partner         Boolean @default(true)
+  subscribe_to_newsletter Boolean @default(true)
+  enable_security_alerts  Boolean @default(true)
+  @@map("user_preferences")
+}
+
+model Country {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(155)
+  slug    String  @db.VarChar(165)
+  code    String  @db.VarChar(3)
+  flag    String? @db.VarChar(255)
+  banner  String? @db.VarChar(255)
+
+  UserCountry User[] @relation("UserCountry")
+  @@map("countries")
+}
