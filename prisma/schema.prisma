@@ -38,10 +38,12 @@ model User {
   country         Country?  @relation(fields: [countryId], references: [id], name: "UserCountry")
   auth_provider   String?   @db.VarChar(64)
   provider_token  String?   @db.VarChar(255)
+  address         UserAddress?
+  preferences     UserPreference?
   created_at      DateTime  @default(now()) @db.Timestamptz()
   updated_at      DateTime  @updatedAt @db.Timestamptz()
   deleted_at      DateTime? @db.Timestamptz()
-
+  
   countryId     String?   @db.Uuid
   @@map("users")
 }
@@ -61,7 +63,23 @@ model UserPreference {
   publish_partner         Boolean @default(true)
   subscribe_to_newsletter Boolean @default(true)
   enable_security_alerts  Boolean @default(true)
+
+  user User @relation(fields: [user_id], references: [id])
   @@map("user_preferences")
+}
+
+model UserAddress {
+  user_id     String  @id @db.Uuid
+  address     String  @db.VarChar(255)
+  district    String  @db.VarChar(100)
+  city        String  @db.VarChar(100)
+  province    String  @db.VarChar(100)
+  postal_code String  @db.VarChar(20)
+  coordinate  String? @db.VarChar(50)
+  updated_at  DateTime @updatedAt @db.Timestamptz()
+
+  user User @relation(fields: [user_id], references: [id])
+  @@map("user_addresses")
 }
 
 model Country {
