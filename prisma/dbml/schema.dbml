@@ -119,7 +119,7 @@ Table "public"."medias" {
   "background" text
   "season" varchar(15) [not null, note: 'enum(winter, spring, summer, fall)']
   "year" smallint [not null]
-  "country" uuid [not null, ref: > "public"."system_country"."id"]
+  "country" uuid [not null, ref: > "public"."countries"."id"]
   "broadcast_date" varchar(64)
   "producers" uuid [not null]
   "licensors" uuid [not null]
@@ -167,7 +167,7 @@ Table "public"."videos" {
 
 Table "public"."user_country_preferences" {
   "user_id" uuid [not null, ref: > "public"."user_preferences"."user_id"]
-  "country_id" uuid [unique, not null, ref: > "public"."system_country"."id"]
+  "country_id" uuid [unique, not null, ref: > "public"."countries"."id"]
   "state" user_preference_state [not null]
 }
 
@@ -217,11 +217,11 @@ Table "public"."collection_members" {
   "joined_at" timestamp [not null]
 }
 
-Table "public"."system_country" {
+Table "public"."countries" {
   "id" uuid [pk, not null, ref: - "public"."users"."country"]
   "name" varchar(155) [not null]
-  "slug" varchar(165) [not null]
-  "code" varchar(3) [not null]
+  "slug" varchar(165) [unique, not null]
+  "code" varchar(3) [unique, not null]
   "flag" varchar(255)
   "banner" varchar(255)
 }
@@ -275,16 +275,17 @@ Table "public"."user_preferences" {
   "user_id" uuid [pk, not null]
   "character_as_partner" uuid [ref: > "public"."characters"."id"]
   "comment_picture" varchar(255)
-  "watch_history" boolean [not null, default: true]
-  "search_history" boolean [not null, default: false]
-  "private_account" boolean [not null, default: false]
-  "message_open" boolean [not null, default: true]
-  "birthday_open" boolean [not null, default: false]
-  "email_open" boolean [not null, default: false]
-  "number_open" boolean [not null, default: false]
-  "partner_open" boolean [not null, default: true]
-  "subscribe_newsletter" boolean [not null, default: true]
-  "security_notification" boolean [not null, default: true]
+  "enable_watch_history" boolean [not null, default: true]
+  "enable_search_history" boolean [not null, default: false]
+  "is_private_account" boolean [not null, default: false]
+  "can_message_me" boolean [not null, default: true]
+  "publish_birthday" boolean [not null, default: false]
+  "publish_email" boolean [not null, default: false]
+  "publish_phone_number" boolean [not null, default: false]
+  "publish_country" boolean [not null, default: false]
+  "publish_partner" boolean [not null, default: true]
+  "subscribe_to_newsletter" boolean [not null, default: true]
+  "enable_security_alerts" boolean [not null, default: true]
 }
 
 Table "public"."user_genre_preferences" {
@@ -353,7 +354,7 @@ Table "public"."home_media_banner" {
 }
 
 Table "public"."users" {
-  "id" uuid [pk, not null, ref: - "public"."user_preferences"."user_id"]
+  "id" uuid [pk, not null, ref: - "public"."user_preferences"."user_id", ref: - "public"."user_addresses"."user_id"]
   "email" varchar(500) [unique, not null]
   "password" varchar(255)
   "username" varchar(28) [unique, not null]
@@ -364,7 +365,6 @@ Table "public"."users" {
   "role" user_role [not null]
   "sex" user_sex [not null]
   "phone_number" varchar(15)
-  "address" address
   "country" uuid
   "auth_provider" varchar(64)
   "provider_token" varchar(255)
@@ -557,4 +557,15 @@ Table "public"."user_sessions" {
   "last_activity_at" timestamp
   "login_at" timestamp [not null]
   "logout_at" timestamp
+}
+
+Table "public"."user_addresses" {
+  "user_id" uuid [pk, not null]
+  "street_address" varchar(500) [not null]
+  "district" varchar(500) [not null]
+  "city" varchar(500) [not null]
+  "province" varchar(500) [not null]
+  "postal_code" varchar(500) [not null]
+  "coordinate" varchar(500)
+  "updated_at" timestamp [not null]
 }
