@@ -20,8 +20,20 @@ enum user_sex {
   male
   female
 }
-
-
+enum auth_provider {
+  google
+  github
+}
+enum device_type {
+  mobile
+  tablet
+  desktop
+  unknown
+}
+enum user_preference_state {
+  exclude
+  include
+}
 
 model User {
   id              String    @id @db.Uuid @default(uuid(7))
@@ -44,8 +56,57 @@ model User {
   updated_at      DateTime  @updatedAt @db.Timestamptz()
   deleted_at      DateTime? @db.Timestamptz()
   
-  countryId     String?   @db.Uuid
+  countryId       String?   @db.Uuid
+  oauth_accounts  UserOauthAccounts[]
+  sessions        UserSession[]
   @@map("users")
+}
+
+model UserAddress {
+  user_id     String  @id @db.Uuid
+  address     String  @db.VarChar(255)
+  district    String  @db.VarChar(100)
+  city        String  @db.VarChar(100)
+  province    String  @db.VarChar(100)
+  postal_code String  @db.VarChar(20)
+  coordinate  String? @db.VarChar(50)
+  updated_at  DateTime @updatedAt @db.Timestamptz()
+
+  user User @relation(fields: [user_id], references: [id])
+  @@map("user_addresses")
+}
+
+model UserOauthAccounts {
+  id              String @id @db.Uuid @default(uuid(7))
+  user            User   @relation(fields: [user_id], references: [id])
+  provider_name   auth_provider
+  provider_sub    String? @db.VarChar(255)
+  provider_email  String? @db.VarChar(255)
+  provider_token  String? @db.VarChar(255)
+  refresh_token   String? @db.VarChar(255)
+  expires_at      DateTime? @db.Timestamptz()
+  last_login      DateTime @default(now()) @db.Timestamptz()
+  created_at      DateTime @default(now()) @db.Timestamptz()
+  updated_at      DateTime @updatedAt @db.Timestamptz()
+
+  user_id         String @db.Uuid
+  @@map("user_oauth_accounts")
+}
+
+model UserSession {
+  id              String   @id @db.Uuid @default(uuid(7))
+  user            User     @relation(fields: [user_id], references: [id])
+  device_type     device_type
+  os_type         String?  @db.VarChar(50)
+  os_version      String?  @db.VarChar(50)
+  browser_name    String?  @db.VarChar(50)
+  browser_version String?  @db.VarChar(50)
+  ip_login        String?  @db.Inet()
+  login_at        DateTime  @default(now()) @db.Timestamptz()
+  logout_at       DateTime? @db.Timestamptz()
+
+  user_id     String   @db.Uuid
+  @@map("user_sessions")
 }
 
 model UserPreference {
@@ -65,21 +126,43 @@ model UserPreference {
   enable_security_alerts  Boolean @default(true)
 
   user User @relation(fields: [user_id], references: [id])
+  genre_preferences UserGenrePreference[]
+  rating_preferences UserRatingPreference[]
+  country_preferences UserCountryPreference[]
   @@map("user_preferences")
 }
 
-model UserAddress {
-  user_id     String  @id @db.Uuid
-  address     String  @db.VarChar(255)
-  district    String  @db.VarChar(100)
-  city        String  @db.VarChar(100)
-  province    String  @db.VarChar(100)
-  postal_code String  @db.VarChar(20)
-  coordinate  String? @db.VarChar(50)
-  updated_at  DateTime @updatedAt @db.Timestamptz()
+model UserGenrePreference {
+  user    UserPreference    @relation(fields: [user_id], references: [user_id])
+  // genre   Genre             @relation(fields: [genre_id], references: [id])
+  state   user_preference_state
 
-  user User @relation(fields: [user_id], references: [id])
-  @@map("user_addresses")
+  user_id String @db.Uuid
+  genre_id String @db.Uuid
+  @@id([user_id, genre_id])
+  @@map("user_genre_preferences")
+}
+
+model UserRatingPreference {
+  user    UserPreference    @relation(fields: [user_id], references: [user_id])
+  // rating  Rating            @relation(fields: [rating_id], references: [id])
+  state   user_preference_state
+
+  user_id String @db.Uuid
+  rating_id String @db.Uuid
+  @@id([user_id, rating_id])
+  @@map("user_rating_preferences")
+}
+
+model UserCountryPreference {
+  user    UserPreference    @relation(fields: [user_id], references: [user_id])
+  country Country           @relation(fields: [country_id], references: [id])
+  state   user_preference_state
+
+  user_id String @db.Uuid
+  country_id String @db.Uuid
+  @@id([user_id, country_id])
+  @@map("user_country_preferences")
 }
 
 model Country {
@@ -91,5 +174,6 @@ model Country {
   banner  String? @db.VarChar(255)
 
   UserCountry User[] @relation("UserCountry")
+  UserCountryPreference UserCountryPreference[]
   @@map("countries")
 }
