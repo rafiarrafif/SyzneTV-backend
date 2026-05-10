@@ -56,9 +56,13 @@ model User {
   updated_at      DateTime  @updatedAt @db.Timestamptz()
   deleted_at      DateTime? @db.Timestamptz()
   
-  countryId       String?   @db.Uuid
-  oauth_accounts  UserOauthAccounts[]
-  sessions        UserSession[]
+  countryId             String?   @db.Uuid
+  oauth_accounts        UserOauthAccounts[]
+  sessions              UserSession[]
+  followers             UserFollow[] @relation("UserFollowFollowing")
+  following             UserFollow[] @relation("UserFollowFollower")
+  provisioned_as_admin  ProvisionedUser[] @relation("ProvisionedUserAdmin")
+  provisioned_as_user   ProvisionedUser[] @relation("ProvisionedUserUser")
   @@map("users")
 }
 
@@ -163,6 +167,29 @@ model UserCountryPreference {
   country_id String @db.Uuid
   @@id([user_id, country_id])
   @@map("user_country_preferences")
+}
+
+model UserFollow {
+  follower    User    @relation("UserFollowFollower", fields: [follower_id], references: [id])
+  following   User    @relation("UserFollowFollowing", fields: [following_id], references: [id])
+  created_at  DateTime @default(now()) @db.Timestamptz()
+
+  follower_id String @db.Uuid
+  following_id String @db.Uuid
+  @@id([follower_id, following_id])
+  @@map("user_follows")
+}
+
+model ProvisionedUser {
+  provisioned_by  User   @relation(fields: [admin_id], references: [id], name: "ProvisionedUserAdmin")
+  provisioned_to  User   @relation(fields: [user_id], references: [id], name: "ProvisionedUserUser")
+  provisioned_at  DateTime @default(now()) @db.Timestamptz()
+  reason          String? @db.VarChar(255)
+
+  admin_id  String @db.Uuid
+  user_id   String @db.Uuid
+  @@id([admin_id, user_id])
+  @@map("provisioned_users")
 }
 
 model Country {
