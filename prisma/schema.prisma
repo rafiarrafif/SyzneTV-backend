@@ -1,40 +1,73 @@
+/**
+ * This is the Prisma schema file for the application. It defines the data models, their relationships, and the database configuration.
+ * The schema is used by Prisma to generate the database migrations and the Prisma Client for querying the database.
+ */
+
+/**
+ * ----------------------------------
+ * Prisma Schema Configuration
+ * ----------------------------------
+ */
 generator client {
   provider = "prisma-client-js"
 }
-
 generator dbml {
   provider = "prisma-dbml-generator"
 }
-
 datasource db {
   provider = "postgresql"
 }
 
+
+
+/**
+ * ----------------------------------
+ * Enum Definitions
+ * ----------------------------------
+ */
 enum user_role {
   user
   contributor
   curator
   admin
 }
+
 enum user_sex {
   male
   female
 }
+
 enum auth_provider {
   google
   github
 }
+
 enum device_type {
   mobile
   tablet
   desktop
   unknown
 }
+
 enum user_preference_state {
   exclude
   include
 }
 
+enum media_season {
+  winter
+  spring
+  summer
+  fall
+}
+
+
+
+/**
+ * ----------------------------------
+ * Model for User and related entities
+ * ----------------------------------
+ */
 model User {
   id              String    @id @db.Uuid @default(uuid(7))
   email           String    @unique
@@ -180,6 +213,117 @@ model UserFollow {
   @@map("user_follows")
 }
 
+
+
+/**
+ * ----------------------------------
+ * Model for Media and related entities
+ * ----------------------------------
+ */
+model Media {
+  id                String        @id @db.Uuid @default(uuid(7))
+  mal_id            Int           @unique
+  title             String        @db.VarChar(255)
+  title_secondary   String?       @db.VarChar(255)
+  title_original    String?       @db.VarChar(255)
+  title_synonyms    String[]      @db.VarChar(255)
+  trailer           MediaTrailer?
+  synopsis          String?       @db.Text
+  small_image_url   String?       @db.VarChar(255)
+  medium_image_url  String        @db.VarChar(255)
+  large_image_url   String?       @db.VarChar(255)
+  type              MediaType     @relation(fields: [type_id], references: [id])
+  source            MediaSource?  @relation(fields: [source_id], references: [id])
+  status            MediaStatus?  @relation(fields: [status_id], references: [id])
+  airing            Boolean
+  start_airing      DateTime?     @db.Date
+  end_airing        DateTime?     @db.Date
+  age_rating        MediaAgeRating? @relation(fields: [age_rating_id], references: [id])
+  score             Decimal?      @db.Decimal(2, 2)
+  score_total       Int           @default(0)
+  score_count       Int           @default(0)
+  background        String?       @db.Text
+  season            media_season
+  year              Int?          @db.SmallInt
+  country           Country?      @relation(fields: [country_id], references: [id])
+  broadcast_day     String?       @db.VarChar(20)
+  // producers         MediaProducer[]
+  // licensors         MediaLicensor[]
+  // studios           MediaStudio[]
+  // genres MediaGenre[]
+  // explicit_genres MediaExplicitGenre[]
+  // themes MediaTheme[]
+  // demographics MediaDemographic[]
+  // relations MediaRelation[]
+  // external_links MediaExternalLink[]
+  // characters MediaCharacter[]
+  // approved_by User? @relation(fields: [approver_id], references: [id])
+  // approved_at          Boolean       @default(false)
+  // created_by        User?         @relation(fields: [created_by_id], references: [id])
+  // created_at        DateTime       @default(now()) @db.Timestamptz()
+  // updated_by        User?         @relation(fields: [updated_by_id], references: [id])
+  // deleted_at        DateTime?      @db.Timestamptz()
+
+
+  type_id           String  @db.Uuid
+  source_id         String  @db.Uuid
+  status_id         String  @db.Uuid
+  age_rating_id     String? @db.Uuid
+  country_id        String? @db.Uuid
+  @@map("medias")
+}
+
+model MediaTrailer {
+  media_id        String    @id @db.Uuid
+  url             String?   @db.VarChar(255)
+  embed_url       String?   @db.VarChar(255)
+  small_image_url String?   @db.VarChar(255)
+  large_image_url String?   @db.VarChar(255)
+  maximum_image_url String? @db.VarChar(255)
+
+  media Media @relation(fields: [media_id], references: [id])
+  @@map("media_trailers")
+}
+
+model MediaType {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(100) @unique
+
+  Media Media[]
+  @@map("media_types")
+}
+
+model MediaSource {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(100) @unique
+
+  media Media[]
+  @@map("media_sources")
+}
+
+model MediaStatus {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(100) @unique
+
+  media Media[]
+  @@map("media_statuses")
+}
+
+model MediaAgeRating {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(100) @unique
+
+  media Media[]
+  @@map("media_age_ratings")
+}
+
+
+
+/**
+ * ----------------------------------
+ * Model for System Apps and related entities
+ * ----------------------------------
+ */
 model ProvisionedUser {
   provisioned_by  User   @relation(fields: [admin_id], references: [id], name: "ProvisionedUserAdmin")
   provisioned_to  User   @relation(fields: [user_id], references: [id], name: "ProvisionedUserUser")
@@ -202,5 +346,6 @@ model Country {
 
   UserCountry User[] @relation("UserCountry")
   UserCountryPreference UserCountryPreference[]
+  Media Media[]
   @@map("countries")
 }

@@ -53,6 +53,11 @@ Enum "device_type" {
     "unknown"
 }
 
+Enum "oauth_provider" {
+    "google"
+    "github"
+}
+
 Table "public"."user_rating_preferences" {
   "user_id" uuid [unique, not null, ref: > "public"."user_preferences"."user_id"]
   "rating_id" uuid [not null, ref: > "public"."media_age_ratings"."id"]
@@ -99,7 +104,7 @@ Table "public"."medias" {
   "title" varchar(255) [not null]
   "title_secondary" varchar(255)
   "title_original" varchar(255)
-  "title_synonyms" varchar(255) [note: 'This is Array']
+  "title_synonyms" varchar(255)[]
   "trailers" uuid
   "synopsis" text [not null]
   "small_image_url" varchar(255)
@@ -205,7 +210,7 @@ Table "public"."provisioned_users" {
   "provisioned_by" uuid [unique, not null, ref: > "public"."users"."id"]
   "provisioned_to" uuid [not null, ref: > "public"."users"."id"]
   "provisioned_at" timestamp [not null]
-  "reason" bigint
+  "reason" varchar(255)
 }
 
 Table "public"."collection_members" {
@@ -319,16 +324,21 @@ Table "public"."comments" {
   "deleted_at" timestamp
 }
 
-Table "public"."user_oauth_credentials" {
-  "id" uuid [pk, not null, ref: > "public"."users"."id"]
-  "user_id" uuid [not null]
-  "oauth_id" uuid [not null]
-  "provider_token" varchar(500)
-  "provider_sub" varchar(500)
-  "last_action" timestamp [not null]
+Table "public"."user_oauth_accounts" {
+  "id" uuid [pk, not null]
+  "user_id" uuid [not null, ref: > "public"."users"."id"]
+  "provider_name" oauth_provider [not null]
+  "provider_sub" varchar(255)
+  "provider_email" varchar(255)
+  "access_token" varchar(255)
+  "refresh_token" varchar(255)
+  "last_login" timestamptz [not null]
+  "expires_at" timestamptz
+  "created_at" timestamptz [not null]
+  "updated_at" timestamptz [not null]
 
   Indexes {
-    (oauth_id, user_id) [unique, name: "index_2"]
+    (user_id, provider_name) [unique, name: "index_2"]
   }
 }
 
@@ -549,23 +559,22 @@ Table "public"."user_sessions" {
   "id" uuid [pk, not null]
   "user_id" uuid [not null, ref: > "public"."users"."id"]
   "device_type" device_type [not null]
-  "os_type" varchar(500)
-  "os_version" varchar(500)
-  "browser_name" varchar(500)
-  "browser_version" varchar(500)
+  "os_type" varchar(50)
+  "os_version" varchar(50)
+  "browser_name" varchar(50)
+  "browser_version" varchar(50)
   "ip_login" inet [not null]
-  "last_activity_at" timestamp
-  "login_at" timestamp [not null]
-  "logout_at" timestamp
+  "login_at" timestamptz [not null]
+  "logout_at" timestamptz
 }
 
 Table "public"."user_addresses" {
   "user_id" uuid [pk, not null]
-  "street_address" varchar(500) [not null]
-  "district" varchar(500) [not null]
-  "city" varchar(500) [not null]
-  "province" varchar(500) [not null]
-  "postal_code" varchar(500) [not null]
-  "coordinate" varchar(500)
+  "street_address" varchar(255) [not null]
+  "district" varchar(100) [not null]
+  "city" varchar(100) [not null]
+  "province" varchar(100) [not null]
+  "postal_code" varchar(20) [not null]
+  "coordinate" varchar(50)
   "updated_at" timestamp [not null]
 }
