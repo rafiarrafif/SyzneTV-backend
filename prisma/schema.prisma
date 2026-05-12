@@ -96,6 +96,7 @@ model User {
   following             UserFollow[] @relation("UserFollowFollower")
   provisioned_as_admin  ProvisionedUser[] @relation("ProvisionedUserAdmin")
   provisioned_as_user   ProvisionedUser[] @relation("ProvisionedUserUser")
+  created_producers     Producer[]
   @@map("users")
 }
 
@@ -247,14 +248,14 @@ model Media {
   year              Int?          @db.SmallInt
   country           Country?      @relation(fields: [country_id], references: [id])
   broadcast_day     String?       @db.VarChar(20)
-  // producers         MediaProducer[]
-  // licensors         MediaLicensor[]
-  // studios           MediaStudio[]
+  producers         MediaProducer[]
+  licensors         MediaLicensor[]
+  studios           MediaStudio[]
   // genres MediaGenre[]
   // explicit_genres MediaExplicitGenre[]
   // themes MediaTheme[]
   // demographics MediaDemographic[]
-  // relations MediaRelation[]
+  // relations         MediaRelation[]
   // external_links MediaExternalLink[]
   // characters MediaCharacter[]
   // approved_by User? @relation(fields: [approver_id], references: [id])
@@ -315,6 +316,54 @@ model MediaAgeRating {
 
   media Media[]
   @@map("media_age_ratings")
+}
+
+model MediaProducer {
+  media     Media    @relation(fields: [media_id], references: [id])
+  producer  Producer @relation(fields: [producer_id], references: [id])
+
+  media_id    String @db.Uuid
+  producer_id String @db.Uuid
+  @@id([media_id, producer_id])
+  @@map("media_producers")
+}
+
+model MediaLicensor {
+  media     Media    @relation(fields: [media_id], references: [id])
+  licensor  Producer @relation(fields: [licensor_id], references: [id])
+
+  media_id    String @db.Uuid
+  licensor_id String @db.Uuid
+  @@id([media_id, licensor_id])
+  @@map("media_licensors")
+}
+
+model MediaStudio {
+  media     Media    @relation(fields: [media_id], references: [id])
+  studio    Producer @relation(fields: [studio_id], references: [id])
+
+  media_id    String @db.Uuid
+  studio_id   String @db.Uuid
+  @@id([media_id, studio_id])
+  @@map("media_studios")
+}
+
+model Producer {
+  id                String    @id @db.Uuid @default(uuid(7))
+  mal_id            Int       @unique
+  type              String    @db.VarChar(24)
+  name              String    @db.VarChar(255)
+  url               String?   @db.VarChar(255)
+  created_by        User      @relation(fields: [created_by_id], references: [id])
+  created_at        DateTime  @default(now()) @db.Timestamptz()
+  updated_at        DateTime  @updatedAt @db.Timestamptz()
+  deleted_at        DateTime? @db.Timestamptz()
+  created_by_id     String    @db.Uuid
+
+  media_producers MediaProducer[]
+  media_licensors MediaLicensor[]
+  media_studios   MediaStudio[]
+  @@map("producers")
 }
 
 
