@@ -251,10 +251,10 @@ model Media {
   producers         MediaProducer[]
   licensors         MediaLicensor[]
   studios           MediaStudio[]
-  // genres MediaGenre[]
-  // explicit_genres MediaExplicitGenre[]
-  // themes MediaTheme[]
-  // demographics MediaDemographic[]
+  genres            MediaGenre[]
+  explicit_genres   MediaExplicitGenre[]
+  themes            MediaTheme[]
+  demographics      MediaDemographic[]
   // relations         MediaRelation[]
   // external_links MediaExternalLink[]
   // characters MediaCharacter[]
@@ -364,6 +364,60 @@ model Producer {
   media_licensors MediaLicensor[]
   media_studios   MediaStudio[]
   @@map("producers")
+}
+
+model MediaGenre {
+  media     Media    @relation(fields: [media_id], references: [id])
+  genre     Genre    @relation(fields: [genre_id], references: [id])
+
+  media_id String @db.Uuid
+  genre_id String @db.Uuid
+  @@id([media_id, genre_id])
+  @@map("media_genres")
+}
+
+model MediaExplicitGenre {
+  media     Media    @relation(fields: [media_id], references: [id])
+  genre     Genre    @relation(fields: [genre_id], references: [id])
+
+  media_id String @db.Uuid
+  genre_id String @db.Uuid
+  @@id([media_id, genre_id])
+  @@map("media_explicit_genres")
+}
+
+model MediaTheme {
+  media     Media    @relation(fields: [media_id], references: [id])
+  theme     Genre    @relation(fields: [genre_id], references: [id])
+
+  media_id String @db.Uuid
+  genre_id String @db.Uuid
+  @@id([media_id, genre_id])
+  @@map("media_themes")
+}
+
+model MediaDemographic {
+  media         Media        @relation(fields: [media_id], references: [id])
+  demographic   Genre        @relation(fields: [demographic_id], references: [id])
+
+  media_id       String       @db.Uuid
+  demographic_id String       @db.Uuid
+  @@id([media_id, demographic_id])
+  @@map("media_demographics")
+}
+
+model Genre {
+  id            String  @id @db.Uuid @default(uuid(7))
+  mal_id        Int     @unique @db.SmallInt
+  name          String  @db.VarChar(100)
+  slug          String  @db.VarChar(115)
+  thumbnail_url String? @db.VarChar(255)
+
+  media_genres          MediaGenre[]
+  media_explicit_genres MediaExplicitGenre[]
+  media_themes          MediaTheme[]
+  media_demographics    MediaDemographic[]
+  @@map("genres")
 }
 
 
