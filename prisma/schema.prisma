@@ -255,7 +255,7 @@ model Media {
   explicit_genres   MediaExplicitGenre[]
   themes            MediaTheme[]
   demographics      MediaDemographic[]
-  // relations         MediaRelation[]
+  relations         MediaRelation[] @relation("MediaRelationMedia")
   // external_links MediaExternalLink[]
   // characters MediaCharacter[]
   // approved_by User? @relation(fields: [approver_id], references: [id])
@@ -271,6 +271,7 @@ model Media {
   status_id         String  @db.Uuid
   age_rating_id     String? @db.Uuid
   country_id        String? @db.Uuid
+  related_media     MediaRelation[] @relation("MediaRelationRelatedMedia")
   @@map("medias")
 }
 
@@ -418,6 +419,17 @@ model Genre {
   media_themes          MediaTheme[]
   media_demographics    MediaDemographic[]
   @@map("genres")
+}
+
+model MediaRelation {
+  media         Media        @relation(fields: [media_id], references: [id], name: "MediaRelationMedia")
+  related_media Media        @relation(fields: [related_media_id], references: [id], name: "MediaRelationRelatedMedia")
+  relation_type String       @db.VarChar(50)
+
+  media_id          String @db.Uuid
+  related_media_id  String @db.Uuid
+  @@id([media_id, related_media_id])
+  @@map("media_relations")
 }
 
 
