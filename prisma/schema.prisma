@@ -256,7 +256,7 @@ model Media {
   themes            MediaTheme[]
   demographics      MediaDemographic[]
   relations         MediaRelation[] @relation("MediaRelationMedia")
-  // external_links MediaExternalLink[]
+  external_links    MediaExternalLink[]
   // characters MediaCharacter[]
   // approved_by User? @relation(fields: [approver_id], references: [id])
   // approved_at          Boolean       @default(false)
@@ -430,6 +430,16 @@ model MediaRelation {
   related_media_id  String @db.Uuid
   @@id([media_id, related_media_id])
   @@map("media_relations")
+}
+
+model MediaExternalLink {
+  id        String   @id @db.Uuid @default(uuid(7))
+  media     Media    @relation(fields: [media_id], references: [id])
+  url       String   @db.VarChar(255)
+  site_name String?  @db.VarChar(100)
+
+  media_id String @db.Uuid
+  @@map("media_external_links")
 }
 
 

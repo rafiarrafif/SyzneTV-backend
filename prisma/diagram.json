@@ -2,7 +2,7 @@
   "id": "0",
   "name": "Main Diagram",
   "createdAt": "2026-05-19T16:28:02.086Z",
-  "updatedAt": "2026-05-20T01:23:06.250Z",
+  "updatedAt": "2026-05-21T15:34:35.866Z",
   "databaseType": "postgresql",
   "tables": [
     {
@@ -768,26 +768,26 @@
         },
         {
           "id": "62",
-          "name": "media_id",
+          "name": "media",
           "type": {
             "id": "uuid",
             "name": "uuid"
           },
           "primaryKey": false,
           "unique": false,
-          "nullable": true,
+          "nullable": false,
           "createdAt": 1777282589093
         },
         {
           "id": "63",
-          "name": "name",
+          "name": "site_name",
           "type": {
             "id": "varchar",
             "name": "varchar"
           },
           "primaryKey": false,
           "unique": false,
-          "nullable": true,
+          "nullable": false,
           "createdAt": 1777282589093,
           "characterMaximumLength": "64"
         },
