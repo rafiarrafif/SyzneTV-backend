@@ -61,6 +61,12 @@ enum media_season {
   fall
 }
 
+enum character_role {
+  main
+  supporting
+  background
+}
+
 
 
 /**
@@ -148,8 +154,8 @@ model UserSession {
 }
 
 model UserPreference {
-  user_id String @id @db.Uuid
-  // char_as_partner
+  user_id                 String @id @db.Uuid
+  char_as_partner         Character @relation(fields: [char_as_partner_id], references: [id])
   comment_picture         String? @db.VarChar(255)
   enable_watch_history    Boolean @default(true)
   enable_search_history   Boolean @default(false)
@@ -162,11 +168,12 @@ model UserPreference {
   publish_partner         Boolean @default(true)
   subscribe_to_newsletter Boolean @default(true)
   enable_security_alerts  Boolean @default(true)
+  genre_preferences       UserGenrePreference[]
+  rating_preferences      UserRatingPreference[]
+  country_preferences     UserCountryPreference[]
 
-  user User @relation(fields: [user_id], references: [id])
-  genre_preferences UserGenrePreference[]
-  rating_preferences UserRatingPreference[]
-  country_preferences UserCountryPreference[]
+  user                User @relation(fields: [user_id], references: [id])
+  char_as_partner_id  String @db.Uuid
   @@map("user_preferences")
 }
 
@@ -257,7 +264,7 @@ model Media {
   demographics      MediaDemographic[]
   relations         MediaRelation[] @relation("MediaRelationMedia")
   external_links    MediaExternalLink[]
-  // characters MediaCharacter[]
+  characters        MediaCharacter[]
   // approved_by User? @relation(fields: [approver_id], references: [id])
   // approved_at          Boolean       @default(false)
   // created_by        User?         @relation(fields: [created_by_id], references: [id])
@@ -440,6 +447,34 @@ model MediaExternalLink {
 
   media_id String @db.Uuid
   @@map("media_external_links")
+}
+
+model MediaCharacter {
+  media     Media     @relation(fields: [media_id], references: [id])
+  character Character @relation(fields: [character_id], references: [id])
+  role      character_role
+
+  media_id     String @db.Uuid
+  character_id String @db.Uuid
+  @@id([media_id, character_id])
+  @@map("media_characters")
+}
+
+model Character {
+  id          String   @id @db.Uuid @default(uuid(7))
+  name        String   @db.VarChar(255)
+  image       String?  @db.VarChar(255)
+  small_image String?  @db.VarChar(255)
+  mal_id      Int?     @unique
+  fanpage_url String?  @db.VarChar(255)
+  liked       Int      @default(0)
+  deleted_at  DateTime? @db.Timestamptz()
+  updated_at  DateTime  @updatedAt @db.Timestamptz()
+  created_at  DateTime  @default(now()) @db.Timestamptz()
+
+  partnered_user   UserPreference[]
+  media_characters MediaCharacter[]
+  @@map("characters")
 }
 
 
