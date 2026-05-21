@@ -450,13 +450,14 @@ model MediaExternalLink {
 }
 
 model MediaCharacter {
+  id        String   @id @db.Uuid @default(uuid(7))
   media     Media     @relation(fields: [media_id], references: [id])
   character Character @relation(fields: [character_id], references: [id])
+  voice_actors VoiceActor[]
   role      character_role
 
   media_id     String @db.Uuid
   character_id String @db.Uuid
-  @@id([media_id, character_id])
   @@map("media_characters")
 }
 
@@ -477,6 +478,17 @@ model Character {
   @@map("characters")
 }
 
+model VoiceActor {
+  id                  String  @id @db.Uuid @default(uuid(7))
+  media_character_id  String  @db.Uuid
+  language            String  @db.VarChar(115)
+  actor_staff         Staff   @relation(fields: [staff_id], references: [id])
+
+  staff_id String @db.Uuid
+  media_character MediaCharacter @relation(fields: [media_character_id], references: [id])
+  @@map("voice_actors")
+}
+
 model Staff {
   id          String   @id @db.Uuid @default(uuid(7))
   name        String   @db.VarChar(255)
@@ -486,6 +498,7 @@ model Staff {
   updated_at  DateTime  @updatedAt @db.Timestamptz()
   created_at  DateTime  @default(now()) @db.Timestamptz()
 
+  voice_actors VoiceActor[]
   @@map("staff")
 }
 
