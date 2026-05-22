@@ -103,6 +103,10 @@ model User {
   provisioned_as_admin  ProvisionedUser[] @relation("ProvisionedUserAdmin")
   provisioned_as_user   ProvisionedUser[] @relation("ProvisionedUserUser")
   created_producers     Producer[]
+  approved_media        Media[] @relation("MediaApprover")
+  created_media         Media[] @relation("MediaCreator")
+  updated_media         Media[] @relation("MediaUpdater")
+  deleted_media         Media[] @relation("MediaDeleter")
   @@map("users")
 }
 
@@ -265,13 +269,14 @@ model Media {
   relations         MediaRelation[] @relation("MediaRelationMedia")
   external_links    MediaExternalLink[]
   characters        MediaCharacter[]
-  // approved_by User? @relation(fields: [approver_id], references: [id])
-  // approved_at          Boolean       @default(false)
-  // created_by        User?         @relation(fields: [created_by_id], references: [id])
-  // created_at        DateTime       @default(now()) @db.Timestamptz()
-  // updated_by        User?         @relation(fields: [updated_by_id], references: [id])
-  // deleted_at        DateTime?      @db.Timestamptz()
-
+  approved_by       User?         @relation(fields: [approver_id], references: [id], name: "MediaApprover")
+  approved_at       DateTime?
+  created_by        User?         @relation(fields: [created_by_id], references: [id], name: "MediaCreator")
+  created_at        DateTime      @default(now()) @db.Timestamptz()
+  updated_by        User?         @relation(fields: [updated_by_id], references: [id], name: "MediaUpdater")
+  updated_at        DateTime      @updatedAt @db.Timestamptz()
+  deleted_by        User?         @relation(fields: [deleted_by_id], references: [id], name: "MediaDeleter")
+  deleted_at        DateTime?     @db.Timestamptz()
 
   type_id           String  @db.Uuid
   source_id         String  @db.Uuid
@@ -279,6 +284,10 @@ model Media {
   age_rating_id     String? @db.Uuid
   country_id        String? @db.Uuid
   related_media     MediaRelation[] @relation("MediaRelationRelatedMedia")
+  approver_id       String? @db.Uuid
+  created_by_id     String? @db.Uuid
+  updated_by_id     String? @db.Uuid
+  deleted_by_id     String? @db.Uuid
   @@map("medias")
 }
 
