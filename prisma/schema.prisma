@@ -109,7 +109,8 @@ model User {
   provisioned_as_admin  ProvisionedUser[] @relation("ProvisionedUserAdmin")
   provisioned_as_user   ProvisionedUser[] @relation("ProvisionedUserUser")
   created_producers     Producer[]
-  created_media         Media[] @relation("MediaCreator")
+  submitted_media       MediaSubmission[] @relation("MediaSubmissionSubmitter")
+  reviewed_media        MediaSubmission[] @relation("MediaSubmissionReviewer")
   updated_media         Media[] @relation("MediaUpdater")
   deleted_media         Media[] @relation("MediaDeleter")
   @@map("users")
@@ -274,7 +275,7 @@ model Media {
   relations         MediaRelation[] @relation("MediaRelationMedia")
   external_links    MediaExternalLink[]
   characters        MediaCharacter[]
-  created_by        User?         @relation(fields: [created_by_id], references: [id], name: "MediaCreator")
+  submissions       MediaSubmission?
   created_at        DateTime      @default(now()) @db.Timestamptz()
   updated_by        User?         @relation(fields: [updated_by_id], references: [id], name: "MediaUpdater")
   updated_at        DateTime      @updatedAt @db.Timestamptz()
@@ -304,7 +305,7 @@ model MediaSubmission {
   reason      String?           @db.Text
   created_at  DateTime          @default(now()) @db.Timestamptz()
 
-  media_id     String @db.Uuid
+  media_id     String @db.Uuid  @unique
   submitter_id String @db.Uuid
   reviewer_id  String? @db.Uuid
   @@map("media_submissions")
