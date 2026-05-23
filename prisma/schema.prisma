@@ -182,7 +182,7 @@ model UserPreference {
 
 model UserGenrePreference {
   user    UserPreference    @relation(fields: [user_id], references: [user_id])
-  // genre   Genre             @relation(fields: [genre_id], references: [id])
+  genre   Genre             @relation(fields: [genre_id], references: [id])
   state   user_preference_state
 
   user_id String @db.Uuid
@@ -193,10 +193,10 @@ model UserGenrePreference {
 
 model UserRatingPreference {
   user    UserPreference    @relation(fields: [user_id], references: [user_id])
-  // rating  Rating            @relation(fields: [rating_id], references: [id])
+  rating  MediaAgeRating    @relation(fields: [rating_id], references: [id])
   state   user_preference_state
 
-  user_id String @db.Uuid
+  user_id   String @db.Uuid
   rating_id String @db.Uuid
   @@id([user_id, rating_id])
   @@map("user_rating_preferences")
@@ -327,8 +327,10 @@ model MediaStatus {
 model MediaAgeRating {
   id      String  @id @db.Uuid @default(uuid(7))
   name    String  @db.VarChar(100) @unique
+  min_age Int     @db.SmallInt
 
   media Media[]
+  user_rating_preferences UserRatingPreference[]
   @@map("media_age_ratings")
 }
 
@@ -427,10 +429,11 @@ model Genre {
   slug          String  @db.VarChar(115)
   thumbnail_url String? @db.VarChar(255)
 
-  media_genres          MediaGenre[]
-  media_explicit_genres MediaExplicitGenre[]
-  media_themes          MediaTheme[]
-  media_demographics    MediaDemographic[]
+  media_genres            MediaGenre[]
+  media_explicit_genres   MediaExplicitGenre[]
+  media_themes            MediaTheme[]
+  media_demographics      MediaDemographic[]
+  user_genre_preferences  UserGenrePreference[]
   @@map("genres")
 }
 
