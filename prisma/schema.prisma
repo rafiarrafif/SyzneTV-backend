@@ -67,6 +67,12 @@ enum character_role {
   background
 }
 
+enum status_submission {
+  pending
+  approved
+  rejected
+}
+
 
 
 /**
@@ -286,6 +292,22 @@ model Media {
   updated_by_id     String? @db.Uuid
   deleted_by_id     String? @db.Uuid
   @@map("medias")
+}
+
+model MediaSubmission {
+  id          String            @id @db.Uuid @default(uuid(7))
+  media       Media             @relation(fields: [media_id], references: [id])
+  submitter   User              @relation(fields: [submitter_id], references: [id], name: "MediaSubmissionSubmitter")
+  status      status_submission @default(pending)
+  reviewer    User?             @relation(fields: [reviewer_id], references: [id], name: "MediaSubmissionReviewer")
+  reviewed_at DateTime?         @db.Timestamptz()
+  reason      String?           @db.Text
+  created_at  DateTime          @default(now()) @db.Timestamptz()
+
+  media_id     String @db.Uuid
+  submitter_id String @db.Uuid
+  reviewer_id  String? @db.Uuid
+  @@map("media_submissions")
 }
 
 model MediaTrailer {
