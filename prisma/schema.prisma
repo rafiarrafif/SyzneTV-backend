@@ -73,6 +73,11 @@ enum status_submission {
   rejected
 }
 
+enum like_type {
+  like
+  dislike
+}
+
 
 
 /**
@@ -118,6 +123,8 @@ model User {
   reviewed_videos       VideoSubmission[] @relation("VideoSubmissionReviewer")
   submitted_video_services VideoServiceSubmission[] @relation("VideoServiceSubmissionSubmitter")
   reviewed_video_services  VideoServiceSubmission[] @relation("VideoServiceSubmissionReviewer")
+  comments              Comment[]
+  comment_likes         CommentLike[]
   @@index([email])
   @@index([username])
   @@map("users")
@@ -562,13 +569,14 @@ model Episode {
 
   videos        Video[]
   created_by_id String @db.Uuid
+  comments      Comment[]
   @@index([media_id, episode])
   @@map("episodes")
 }
 
 model Video {
   id              String @id @db.Uuid @default(uuid(7))
-  // service VideoService[]
+  service         VideoService[]
   Episode         Episode @relation(fields: [episode_id], references: [id])
   video_code      String @db.VarChar(255)
   short_code      String? @db.VarChar(255)
@@ -600,20 +608,22 @@ model VideoSubmission {
 }
 
 model VideoService {
-  id          String  @id @db.Uuid @default(uuid(7))
-  name        String  @db.VarChar(155) 
-  resolution  Int     @db.SmallInt
-  domain      String  @db.VarChar(255)
-  image_url   String? @db.VarChar(255)
-  hex_color   String? @db.VarChar(10)
-  endpoint_video String  @db.VarChar(255)
-  endpoint_short String? @db.VarChar(255)
-  endpoint_image String? @db.VarChar(255)
+  id                String  @id @db.Uuid @default(uuid(7))
+  name              String  @db.VarChar(155) 
+  resolution        Int     @db.SmallInt
+  domain            String  @db.VarChar(255)
+  image_url         String? @db.VarChar(255)
+  hex_color         String? @db.VarChar(10)
+  endpoint_video    String  @db.VarChar(255)
+  endpoint_short    String? @db.VarChar(255)
+  endpoint_image    String? @db.VarChar(255)
   endpoint_download String? @db.VarChar(255)
-  deleted_at    DateTime? @db.Timestamptz()
-  updated_at    DateTime @updatedAt @db.Timestamptz()
-  created_at    DateTime @default(now()) @db.Timestamptz() 
+  deleted_at        DateTime? @db.Timestamptz()
+  updated_at        DateTime @updatedAt @db.Timestamptz()
+  created_at        DateTime @default(now()) @db.Timestamptz() 
 
+  videos Video[]
+  video_service_submissions VideoServiceSubmission?
   @@unique([name, resolution])
   @@map("video_services")
 }
@@ -627,9 +637,37 @@ model VideoServiceSubmission {
   reason           String?    @db.Text
   created_at       DateTime   @default(now()) @db.Timestamptz()
 
-  created_by_id String @db.Uuid
+  video_service VideoService @relation(fields: [video_service_id], references: [id])
+  created_by_id String  @db.Uuid
   reviewer_id   String? @db.Uuid
   @@map("video_service_submissions")
+}
+
+model Comment {
+  id          String   @id @db.Uuid @default(uuid(7))
+  user        User     @relation(fields: [user_id], references: [id])
+  episode     Episode  @relation(fields: [episode_id], references: [id])
+  content     String   @db.Text
+  created_at  DateTime @default(now()) @db.Timestamptz()
+  updated_at  DateTime @updatedAt @db.Timestamptz()
+  deleted_at  DateTime? @db.Timestamptz()
+
+  user_id    String @db.Uuid
+  episode_id String @db.Uuid
+  likes       CommentLike[]
+  @@map("comments")
+}
+
+model CommentLike {
+  user_id    String @db.Uuid
+  comment_id String @db.Uuid
+  type       like_type
+  created_at DateTime @default(now()) @db.Timestamptz()
+
+  user    User    @relation(fields: [user_id], references: [id])
+  comment Comment @relation(fields: [comment_id], references: [id])
+  @@id([user_id, comment_id])
+  @@map("comment_likes")
 }
 
 
