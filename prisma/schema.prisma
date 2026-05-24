@@ -113,6 +113,10 @@ model User {
   reviewed_media        MediaSubmission[] @relation("MediaSubmissionReviewer")
   updated_media         Media[] @relation("MediaUpdater")
   deleted_media         Media[] @relation("MediaDeleter")
+  created_episodes      Episode[]
+  created_videos        Video[]
+  @@index([email])
+  @@index([username])
   @@map("users")
 }
 
@@ -532,6 +536,50 @@ model Staff {
 
   voice_actors VoiceActor[]
   @@map("staff")
+}
+
+model Episode {
+  id String @id @db.Uuid @default(uuid(7))
+  media_id String @db.Uuid
+  episode Int @db.SmallInt
+  mal_url       String? @db.VarChar(255)
+  forum_url     String? @db.VarChar(255)
+  title         String @db.VarChar(155)
+  title_origin  String? @db.VarChar(155)
+  title_romanji String? @db.VarChar(155)
+  aired_at      DateTime? @db.Date
+  filler        Boolean
+  recap         Boolean
+  total_score   Int @default(0)
+  score_count   Int @default(0)
+  deleted_at    DateTime? @db.Timestamptz()
+  updated_at    DateTime @updatedAt @db.Timestamptz()
+  created_at    DateTime @default(now()) @db.Timestamptz()
+  created_by    User @relation(fields: [created_by_id], references: [id])
+
+  videos        Video[]
+  created_by_id String @db.Uuid
+  @@index([media_id, episode])
+  @@map("episodes")
+}
+
+model Video {
+  id              String @id @db.Uuid @default(uuid(7))
+  // service VideoService[]
+  Episode         Episode @relation(fields: [episode_id], references: [id])
+  video_code      String @db.VarChar(255)
+  short_code      String? @db.VarChar(255)
+  thumbnail_code  String? @db.VarChar(255)
+  download_code   String? @db.VarChar(255)
+  pending_upload  Boolean @default(true)
+  created_by      User @relation(fields: [created_by_id], references: [id])
+  created_at      DateTime @default(now()) @db.Timestamptz()
+  deleted_at      DateTime? @db.Timestamptz()
+  updated_at      DateTime @updatedAt @db.Timestamptz()
+
+  episode_id    String @db.Uuid
+  created_by_id String @db.Uuid
+  @@map("videos")
 }
 
 
