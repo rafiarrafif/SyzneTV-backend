@@ -114,7 +114,8 @@ model User {
   updated_media         Media[] @relation("MediaUpdater")
   deleted_media         Media[] @relation("MediaDeleter")
   created_episodes      Episode[]
-  created_videos        Video[]
+  submitted_videos      VideoSubmission[] @relation("VideoSubmissionSubmitter")
+  reviewed_videos       VideoSubmission[] @relation("VideoSubmissionReviewer")
   @@index([email])
   @@index([username])
   @@map("users")
@@ -571,15 +572,29 @@ model Video {
   short_code      String? @db.VarChar(255)
   thumbnail_code  String? @db.VarChar(255)
   download_code   String? @db.VarChar(255)
-  pending_upload  Boolean @default(true)
-  created_by      User @relation(fields: [created_by_id], references: [id])
   created_at      DateTime @default(now()) @db.Timestamptz()
   deleted_at      DateTime? @db.Timestamptz()
   updated_at      DateTime @updatedAt @db.Timestamptz()
 
   episode_id    String @db.Uuid
   created_by_id String @db.Uuid
+  video_submission VideoSubmission?
   @@map("videos")
+}
+
+model VideoSubmission {
+  video_id      String    @id @db.Uuid
+  created_by    User      @relation(fields: [created_by_id], references: [id], name: "VideoSubmissionSubmitter")
+  reviewer      User?     @relation(fields: [reviewer_id], references: [id], name: "VideoSubmissionReviewer")
+  status        status_submission @default(pending)
+  reviewed_at   DateTime? @db.Timestamptz()
+  reason        String?   @db.Text
+  created_at    DateTime  @default(now()) @db.Timestamptz()
+
+  created_by_id String @db.Uuid
+  reviewer_id   String? @db.Uuid
+  video         Video @relation(fields: [video_id], references: [id])
+  @@map("video_submissions")
 }
 
 
