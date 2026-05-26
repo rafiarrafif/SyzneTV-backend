@@ -85,6 +85,12 @@ enum audit_action {
   flag
 }
 
+enum privacy_level {
+  public
+  unlisted
+  private
+}
+
 
 
 /**
@@ -134,6 +140,8 @@ model User {
   comment_likes         CommentLike[]
   comment_audit_logs    CommentAuditLog[]
   comment_reports       CommentReport[]
+  home_media_banners    HomeMediaBanner[]
+  watch_histories       UserWatchHistory[]
   @@index([email])
   @@index([username])
   @@map("users")
@@ -187,7 +195,7 @@ model UserSession {
 }
 
 model UserPreference {
-  user_id                 String @id @db.Uuid
+  user                    User @relation(fields: [user_id], references: [id])
   char_as_partner         Character @relation(fields: [char_as_partner_id], references: [id])
   comment_picture         String? @db.VarChar(255)
   enable_watch_history    Boolean @default(true)
@@ -205,7 +213,7 @@ model UserPreference {
   rating_preferences      UserRatingPreference[]
   country_preferences     UserCountryPreference[]
 
-  user                User @relation(fields: [user_id], references: [id])
+  user_id             String @id @db.Uuid
   char_as_partner_id  String @db.Uuid
   @@map("user_preferences")
 }
@@ -248,10 +256,32 @@ model UserFollow {
   following   User    @relation("UserFollowFollowing", fields: [following_id], references: [id])
   created_at  DateTime @default(now()) @db.Timestamptz()
 
-  follower_id String @db.Uuid
-  following_id String @db.Uuid
+  follower_id   String @db.Uuid
+  following_id  String @db.Uuid
   @@id([follower_id, following_id])
   @@map("user_follows")
+}
+
+model UserWatchHistory {
+  user        User @relation(fields: [user_id], references: [id])
+  episode     Episode @relation(fields: [episode_id], references: [id])
+  updated_at  DateTime @updatedAt @db.Timestamptz()
+
+  user_id     String @db.Uuid
+  episode_id  String @db.Uuid
+  @@id([user_id, episode_id])
+  @@map("user_watch_histories")
+}
+
+model Collection {
+  id          String        @id @db.Uuid @default(uuid(7))
+  name        String        @db.VarChar(64)
+  code        String?       @db.VarChar(12)
+  cover_url   String?       @db.VarChar(255)
+  privacy     privacy_level @default(private)
+  created_at  DateTime      @default(now()) @db.Timestamptz()
+  updated_at  DateTime      @updatedAt @db.Timestamptz()
+  @@map("collections")
 }
 
 
@@ -315,6 +345,7 @@ model Media {
   created_by_id     String? @db.Uuid
   updated_by_id     String? @db.Uuid
   deleted_by_id     String? @db.Uuid
+  home_media_banners HomeMediaBanner[]
   @@map("medias")
 }
 
@@ -579,6 +610,7 @@ model Episode {
   videos        Video[]
   created_by_id String @db.Uuid
   comments      Comment[]
+  watch_histories   UserWatchHistory[]
   @@index([media_id, episode])
   @@map("episodes")
 }
@@ -739,4 +771,18 @@ model Country {
   UserCountryPreference UserCountryPreference[]
   Media Media[]
   @@map("countries")
+}
+
+model HomeMediaBanner {
+  id          String   @id @db.Uuid @default(uuid(7))
+  media       Media    @relation(fields: [media_id], references: [id])
+  created_by  User     @relation(fields: [created_by_id], references: [id])
+  priority    Int      @db.SmallInt @unique
+  start_show  DateTime @db.Date
+  end_show    DateTime @db.Date
+  created_at  DateTime @default(now()) @db.Timestamptz()
+
+  media_id      String @db.Uuid
+  created_by_id String @db.Uuid
+  @@map("home_media_banners")
 }
