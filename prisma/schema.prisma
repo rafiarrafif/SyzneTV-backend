@@ -1,741 +1,829 @@
+/**
+ * This is the Prisma schema file for the application. It defines the data models, their relationships, and the database configuration.
+ * The schema is used by Prisma to generate the database migrations and the Prisma Client for querying the database.
+ */
+
+/**
+ * ----------------------------------
+ * Prisma Schema Configuration
+ * ----------------------------------
+ */
 generator client {
   provider = "prisma-client-js"
 }
-
 generator dbml {
   provider = "prisma-dbml-generator"
 }
-
 datasource db {
   provider = "postgresql"
 }
 
-model Media {
-  id               String            @id @db.Uuid
-  title            String
-  titleAlternative Json
-  slug             String            @unique
-  malId            Int?              @unique
-  pictureMedium    String
-  pictureLarge     String
-  country          Country           @default(JP)
-  score            Decimal           @default(0.00) @db.Decimal(4, 2)
-  status           String
-  startAiring      DateTime?
-  endAiring        DateTime?
-  synopsis         String
-  ageRating        String
-  mediaType        MediaType
-  source           String?
-  onDraft          Boolean           @default(true)
-  season           Season?
-  yearReleased     Int               @db.SmallInt
-  uploadedBy       String            @db.Uuid
-  deletedAt        DateTime?
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @default(now()) @updatedAt
-  inCollections    CollectionMedia[] @relation("CollectionMedia")
-  episodes         Episode[]         @relation("MediaEpisodes")
-  bannerPromotion  HeroBanner[]      @relation("MediaBannerPromotion")
-  logs             MediaLog[]        @relation("MediaLogs")
-  uploader         User              @relation("UserUploadedMedias", fields: [uploadedBy], references: [id])
-  reviews          MediaReview[]     @relation("MediaReviews")
-  characters       Character[]       @relation("MediaCharacters")
-  genres           Genre[]           @relation("MediaGenres")
-  studios          Studio[]          @relation("MediaStudios")
 
-  @@index([status, onDraft, deletedAt])
-  @@index([mediaType])
-  @@index([uploadedBy])
-  @@index([createdAt])
-  @@map("medias")
+
+/**
+ * ----------------------------------
+ * Enum Definitions
+ * ----------------------------------
+ */
+enum user_role {
+  user
+  contributor
+  curator
+  admin
 }
 
-model MediaLog {
-  id         String         @id @db.Uuid
-  status     MediaOperation
-  approval   Boolean        @default(false)
-  proposedBy String         @db.Uuid
-  approvedBy String         @db.Uuid
-  mediaId    String         @db.Uuid
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @default(now()) @updatedAt
-  approver   User           @relation("UserApprovedMedias", fields: [approvedBy], references: [id])
-  media      Media          @relation("MediaLogs", fields: [mediaId], references: [id])
-  proposer   User           @relation("UserProposedMedias", fields: [proposedBy], references: [id])
-
-  @@map("media_logs")
+enum user_sex {
+  male
+  female
 }
 
-model Genre {
-  id                    String           @id @db.Uuid
-  name                  String           @db.VarChar(255)
-  slug                  String           @unique @db.VarChar(255)
-  malId                 Int              @unique
-  malUrl                String           @db.VarChar(255)
-  createdBy             String           @db.Uuid
-  deletedAt             DateTime?
-  createdAt             DateTime         @default(now())
-  updatedAt             DateTime         @default(now()) @updatedAt
-  creator               User             @relation("UserCreatedGenres", fields: [createdBy], references: [id])
-  medias                Media[]          @relation("MediaGenres")
-  user_favourite_genres UserPreference[] @relation("UserFavoriteGenres")
-
-  @@map("genres")
+enum auth_provider {
+  google
+  github
 }
 
-model Studio {
-  id        String    @id @db.Uuid
-  name      String    @db.VarChar(255)
-  slug      String    @unique @db.VarChar(255)
-  linkAbout String
-  malId     Int       @unique
-  logoUrl   String?
-  createdBy String    @db.Uuid
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @default(now()) @updatedAt
-  creator   User      @relation("UserCreatedStudios", fields: [createdBy], references: [id])
-  medias    Media[]   @relation("MediaStudios")
-
-  @@map("studios")
+enum device_type {
+  mobile
+  tablet
+  desktop
+  unknown
 }
 
-model Character {
-  id            String        @id @db.Uuid
-  malId         Int           @unique
-  name          String
-  role          CharacterRole
-  favorites     Int           @default(0)
-  imageUrl      String?
-  smallImageUrl String?
-  creatorId     String        @db.Uuid
-  deletedAt     DateTime?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now()) @updatedAt
-  createdBy     User          @relation("UserCreatedCharacters", fields: [creatorId], references: [id])
-  voice_actors  LangVAChar[]  @relation("CharVALanguage")
-  medias        Media[]       @relation("MediaCharacters")
-
-  @@map("characters")
+enum user_preference_state {
+  exclude
+  include
 }
 
-model VoiceActor {
-  id          String       @id @db.Uuid
-  malId       Int          @unique
-  name        String
-  birthday    DateTime?
-  description String?
-  aboutUrl    String?
-  imageUrl    String?
-  websiteUrl  String?
-  creatorId   String       @db.Uuid
-  deletedAt   DateTime?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now()) @updatedAt
-  characters  LangVAChar[] @relation("VACharLanguage")
-  createdBy   User         @relation("UserCreatedVoiceActors", fields: [creatorId], references: [id])
-
-  @@map("voice_actors")
-}
-
-model LangVAChar {
-  id         String     @id @db.Uuid
-  language   String
-  vaId       String     @db.Uuid
-  charId     String     @db.Uuid
-  creatorId  String     @db.Uuid
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @default(now()) @updatedAt
-  character  Character  @relation("CharVALanguage", fields: [charId], references: [id])
-  createdBy  User       @relation("UserCreatedLangVAChar", fields: [creatorId], references: [id])
-  voiceActor VoiceActor @relation("VACharLanguage", fields: [vaId], references: [id])
-
-  @@unique([language, vaId, charId])
-  @@map("lang_va_char")
-}
-
-model Episode {
-  id               String        @id @db.Uuid
-  mediaId          String        @db.Uuid
-  episode          Int
-  name             String        @db.VarChar(255)
-  score            Decimal       @default(0.00) @db.Decimal(4, 2)
-  pictureThumbnail String?
-  viewed           BigInt        @default(0)
-  likes            BigInt        @default(0)
-  dislikes         BigInt        @default(0)
-  pendingUpload    Boolean       @default(true)
-  uploadedBy       String        @db.Uuid
-  deletedAt        DateTime?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @default(now()) @updatedAt
-  comments         Comment[]     @relation("EpisodeComments")
-  user_likes       EpisodeLike[] @relation("EpisodeLikes")
-  media            Media         @relation("MediaEpisodes", fields: [mediaId], references: [id])
-  uploader         User          @relation("UserEpisodes", fields: [uploadedBy], references: [id])
-  videos           Video[]       @relation("EpisodeVideos")
-  user_histories   WatchHistory? @relation("EpisodeWatchHistories")
-
-  @@unique([mediaId, episode])
-  @@map("episodes")
-}
-
-model EpisodeLike {
-  id        String      @id @db.Uuid
-  userId    String      @db.Uuid
-  sessionId String      @db.Uuid
-  episodeId String      @db.Uuid
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @default(now()) @updatedAt
-  episode   Episode     @relation("EpisodeLikes", fields: [episodeId], references: [id])
-  session   UserSession @relation("SessionEpisodeLikes", fields: [sessionId], references: [id])
-  user      User        @relation("UserEpisodeLikes", fields: [userId], references: [id])
-
-  @@map("episode_likes")
-}
-
-model Video {
-  id            String       @id @db.Uuid
-  episodeId     String       @db.Uuid
-  serviceId     String       @db.Uuid
-  videoCode     String       @db.VarChar(255)
-  thumbnailCode String?
-  pendingUpload Boolean      @default(true)
-  uploadedBy    String       @db.Uuid
-  deletedAt     DateTime?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @default(now()) @updatedAt
-  episode       Episode      @relation("EpisodeVideos", fields: [episodeId], references: [id])
-  service       VideoService @relation("VideoServices", fields: [serviceId], references: [id])
-  uploader      User         @relation("UserVideos", fields: [uploadedBy], references: [id])
-
-  @@unique([serviceId, videoCode])
-  @@map("videos")
-}
-
-model VideoService {
-  id                String           @id @db.Uuid
-  name              String           @unique @db.VarChar(255)
-  domain            String           @db.VarChar(255)
-  logo              String?
-  hexColor          String           @db.VarChar(10)
-  endpointVideo     String
-  endpointThumbnail String?
-  endpointDownload  String?
-  createdBy         String           @db.Uuid
-  deletedAt         DateTime?
-  createdAt         DateTime         @default(now())
-  updatedAt         DateTime         @default(now()) @updatedAt
-  user_preferences  UserPreference[] @relation("UserServiceDefault")
-  creator           User             @relation("UserVideoServices", fields: [createdBy], references: [id])
-  videos            Video[]          @relation("VideoServices")
-
-  @@map("video_services")
-}
-
-model User {
-  id                  String               @id @db.Uuid
-  name                String               @db.VarChar(255)
-  username            String               @unique @db.VarChar(255)
-  email               String               @unique
-  password            String
-  birthDate           DateTime?            @db.Date
-  gender              UserGender?
-  phoneCC             Int?
-  phoneNumber         Int?
-  bioProfile          String?
-  avatar              String?
-  commentBackground   String?
-  provider            String?              @db.VarChar(255)
-  providerId          String?              @unique @db.VarChar(255)
-  providerToken       String?
-  providerPayload     Json?                @db.Json
-  verifiedAt          DateTime?
-  disabledAt          DateTime?
-  deletedAt           DateTime?
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @default(now()) @updatedAt
-  characters          Character[]          @relation("UserCreatedCharacters")
-  collections         Collection[]         @relation("UserCollections")
-  liked_comments      CommentLike[]        @relation("UserCommentLikes")
-  approved_comments   CommentReport[]      @relation("ApprovedReportComments")
-  reported_comments   CommentReport[]      @relation("UserReportComments")
-  comments            Comment[]            @relation("UserComments")
-  user_create_email   EmailSystemAccount[] @relation("UserCreateSystemAccount")
-  user_emails         EmailSystemHistory[] @relation("UserEmails")
-  episode_likes       EpisodeLike[]        @relation("UserEpisodeLikes")
-  episodes            Episode[]            @relation("UserEpisodes")
-  genres              Genre[]              @relation("UserCreatedGenres")
-  user_hero_banner    HeroBanner[]         @relation("UserHeroBanner")
-  lang_va_char        LangVAChar[]         @relation("UserCreatedLangVAChar")
-  create_languages    Language[]           @relation("UserCreateLanguages")
-  media_approveds     MediaLog[]           @relation("UserApprovedMedias")
-  media_proposeds     MediaLog[]           @relation("UserProposedMedias")
-  medias              Media[]              @relation("UserUploadedMedias")
-  media_reviews       MediaReview[]        @relation("UserMediaReviews")
-  studios             Studio[]             @relation("UserCreatedStudios")
-  sys_logs            SystemLog[]          @relation("UserSystemLogs")
-  sys_notifications   SystemNotification[] @relation("UserCreatorSystemNotifications")
-  logs                UserLog[]            @relation("UserLogs")
-  notifications       UserNotification[]   @relation("UserNotifications")
-  preference          UserPreference?
-  assignedRoles       UserRoleAssignment[]
-  create_roles        UserRole[]           @relation("UserCreateRoles")
-  sessions            UserSession[]        @relation("UserSession")
-  video_services      VideoService[]       @relation("UserVideoServices")
-  videos              Video[]              @relation("UserVideos")
-  voice_actor         VoiceActor[]         @relation("UserCreatedVoiceActors")
-  watch_histories     WatchHistory[]       @relation("UserWatchHistories")
-  allowed_collections Collection[]         @relation("UserSelectedSharingCollention")
-
-  @@map("users")
-}
-
-model UserPreference {
-  id               String         @id @db.Uuid
-  userId           String         @unique @db.Uuid
-  langPreference   String?
-  adultFiltering   AdultFiltering @default(hide)
-  adultAlert       AdultAlert     @default(show)
-  videoQuality     VideoQuality   @default(Q1080)
-  serviceDefaultId String?        @db.Uuid
-  hideContries     Country[]
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @default(now()) @updatedAt
-  lang             Language?      @relation("UserPreferenceLang", fields: [langPreference], references: [code])
-  serviceDefault   VideoService?  @relation("UserServiceDefault", fields: [serviceDefaultId], references: [id])
-  user             User           @relation(fields: [userId], references: [id])
-  favoriteGenres   Genre[]        @relation("UserFavoriteGenres")
-
-  @@map("user_preferences")
-}
-
-model UserRole {
-  id                String               @id @db.Uuid
-  name              String               @unique @db.VarChar(255)
-  description       String?
-  primaryColor      String?              @db.VarChar(10)
-  secondaryColor    String?              @db.VarChar(10)
-  pictureImage      String?
-  badgeImage        String?
-  isSuperadmin      Boolean              @default(false)
-  canEditMedia      Boolean              @default(false)
-  canManageMedia    Boolean              @default(false)
-  canEditEpisodes   Boolean              @default(false)
-  canManageEpisodes Boolean              @default(false)
-  canEditComment    Boolean              @default(false)
-  canManageComment  Boolean              @default(false)
-  canEditUser       Boolean              @default(false)
-  canManageUser     Boolean              @default(false)
-  canEditSystem     Boolean              @default(false)
-  canManageSystem   Boolean              @default(false)
-  createdBy         String               @db.Uuid
-  deletedAt         DateTime?
-  createdAt         DateTime             @default(now())
-  updatedAt         DateTime             @default(now()) @updatedAt
-  assignedUser      UserRoleAssignment[]
-  creator           User                 @relation("UserCreateRoles", fields: [createdBy], references: [id])
-
-  @@map("user_roles")
-}
-
-model UserRoleAssignment {
-  userId       String   @db.Uuid
-  roleId       String   @db.Uuid
-  assignmentAt DateTime @default(now())
-  role         UserRole @relation(fields: [roleId], references: [id])
-  user         User     @relation(fields: [userId], references: [id])
-
-  @@id([userId, roleId])
-  @@map("user_role_assignments")
-}
-
-model UserNotification {
-  id        String                @id @db.Uuid
-  title     String                @db.VarChar(255)
-  content   String
-  picture   String
-  state     UserNotificationState
-  ctaLink   String
-  userId    String                @db.Uuid
-  isReaded  Boolean               @default(false)
-  deletedAt DateTime?
-  createdAt DateTime              @default(now())
-  updatedAt DateTime              @default(now()) @updatedAt
-  user      User                  @relation("UserNotifications", fields: [userId], references: [id])
-
-  @@map("user_notifications")
-}
-
-model UserSession {
-  id              String         @id @db.Uuid
-  isAuthenticated Boolean        @default(false)
-  userId          String         @db.Uuid
-  deviceType      String         @db.VarChar(255)
-  deviceOs        String         @db.VarChar(255)
-  deviceIp        String         @db.VarChar(255)
-  browser         String         @db.VarChar(255)
-  isOnline        Boolean        @default(false)
-  lastOnline      DateTime       @default(now())
-  validUntil      DateTime
-  deletedAt       DateTime?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @default(now()) @updatedAt
-  episode_likes   EpisodeLike[]  @relation("SessionEpisodeLikes")
-  logs            UserLog[]      @relation("UserSessionLogs")
-  user            User           @relation("UserSession", fields: [userId], references: [id])
-  watch_histories WatchHistory[] @relation("SessionWatchHistories")
-
-  @@index([userId, isAuthenticated, deletedAt])
-  @@map("user_sessions")
-}
-
-model UserLog {
-  id        String      @id @db.Uuid
-  title     String      @db.VarChar(255)
-  notes     String
-  userId    String      @db.Uuid
-  sessionId String      @db.Uuid
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @default(now()) @updatedAt
-  session   UserSession @relation("UserSessionLogs", fields: [sessionId], references: [id])
-  user      User        @relation("UserLogs", fields: [userId], references: [id])
-
-  @@map("user_logs")
-}
-
-model Collection {
-  id           String            @id @db.Uuid
-  name         String            @db.VarChar(115)
-  ownerId      String            @db.Uuid
-  accessStatus AccessStatus      @default(private)
-  password     String?           @db.VarChar(255)
-  accessScope  AccessScope       @default(viewer)
-  deletedAt    DateTime?
-  createdAt    DateTime          @default(now())
-  updatedAt    DateTime          @default(now()) @updatedAt
-  slug         String            @db.VarChar(115)
-  media_saved  CollectionMedia[] @relation("CollectionMedia")
-  owner        User              @relation("UserCollections", fields: [ownerId], references: [id])
-  usersAllowed User[]            @relation("UserSelectedSharingCollention")
-
-  @@unique([slug, ownerId])
-  @@map("collections")
-}
-
-model CollectionMedia {
-  id           String     @id @db.Uuid
-  collectionId String     @db.Uuid
-  mediaId      String     @db.Uuid
-  savedAt      DateTime   @default(now())
-  collection   Collection @relation("CollectionMedia", fields: [collectionId], references: [id])
-  media        Media      @relation("CollectionMedia", fields: [mediaId], references: [id])
-
-  @@unique([collectionId, mediaId])
-}
-
-model WatchHistory {
-  id        String      @id @db.Uuid
-  episodeId String      @db.Uuid
-  userId    String      @db.Uuid
-  sessionId String      @db.Uuid
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @default(now()) @updatedAt
-  episode   Episode     @relation("EpisodeWatchHistories", fields: [id], references: [id])
-  session   UserSession @relation("SessionWatchHistories", fields: [sessionId], references: [id])
-  user      User        @relation("UserWatchHistories", fields: [userId], references: [id])
-
-  @@map("watch_histories")
-}
-
-model MediaReview {
-  id        String              @id @db.Uuid
-  mediaId   String              @db.Uuid
-  rating    Int
-  title     String              @db.VarChar(255)
-  text      String
-  reaction  MediaReviewReaction
-  createdBy String              @db.Uuid
-  deletedAt DateTime?
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @default(now()) @updatedAt
-  creator   User                @relation("UserMediaReviews", fields: [createdBy], references: [id])
-  media     Media               @relation("MediaReviews", fields: [mediaId], references: [id])
-
-  @@map("movie_reviews")
-}
-
-model Comment {
-  id        String        @id @db.Uuid
-  episodeId String        @db.Uuid
-  text      String
-  isParent  Boolean       @default(false)
-  parentId  String?       @db.Uuid
-  userId    String        @db.Uuid
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @default(now()) @updatedAt
-  likes     CommentLike[] @relation("CommentLikes")
-  episode   Episode       @relation("EpisodeComments", fields: [episodeId], references: [id])
-  parent    Comment?      @relation("ParentReplyComments", fields: [parentId], references: [id])
-  replies   Comment[]     @relation("ParentReplyComments")
-  user      User          @relation("UserComments", fields: [userId], references: [id])
-
-  @@map("comments")
-}
-
-model CommentLike {
-  id        String   @id @db.Uuid
-  commentId String   @db.Uuid
-  userLiked String   @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-  comment   Comment  @relation("CommentLikes", fields: [commentId], references: [id])
-  user      User     @relation("UserCommentLikes", fields: [userLiked], references: [id])
-
-  @@map("comment_likes")
-}
-
-model CommentReport {
-  id                 String       @id @db.Uuid
-  userReporter       String       @db.Uuid
-  commentReported    String       @db.Uuid
-  isSupervisorReport Boolean      @default(false)
-  reason             ReportReason
-  status             ReportStatus
-  description        String       @db.VarChar(255)
-  approvedBy         String?      @db.Uuid
-  createdAt          DateTime     @default(now())
-  updatedAt          DateTime     @default(now()) @updatedAt
-  approver           User?        @relation("ApprovedReportComments", fields: [approvedBy], references: [id])
-  reporter           User         @relation("UserReportComments", fields: [userReporter], references: [id])
-
-  @@map("comment_reports")
-}
-
-model Language {
-  id           String           @id @db.Uuid
-  name         String           @db.VarChar(255)
-  code         String           @unique @db.VarChar(5)
-  countryFlag  String           @db.VarChar(10)
-  fileLocation String
-  craetedBy    String           @db.Uuid
-  deletedAt    DateTime?
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @default(now()) @updatedAt
-  creator      User             @relation("UserCreateLanguages", fields: [craetedBy], references: [id])
-  user_used    UserPreference[] @relation("UserPreferenceLang")
-
-  @@map("languages")
-}
-
-model EmailSystemAccount {
-  id        String       @id @db.Uuid
-  name      String       @unique
-  host      String       @db.VarChar(255)
-  port      Int
-  secure    Boolean
-  email     String       @unique @db.VarChar(255)
-  username  String       @unique @db.VarChar(255)
-  password  String       @db.VarChar(255)
-  purpose   EmailPorpose
-  createdBy String       @db.Uuid
-  deletedAt DateTime?
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @default(now()) @updatedAt
-  creator   User         @relation("UserCreateSystemAccount", fields: [createdBy], references: [id])
-
-  @@map("email_system_accounts")
-}
-
-model EmailSystemHistory {
-  id          String       @id @db.Uuid
-  purpose     EmailPorpose
-  fromEmail   String
-  toEmail     String
-  userRelated String       @db.Uuid
-  title       String       @db.VarChar(255)
-  htmlContent String
-  deletedAt   DateTime?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now()) @updatedAt
-  user        User         @relation("UserEmails", fields: [userRelated], references: [id])
-
-  @@map("email_system_histories")
-}
-
-model HeroBanner {
-  id            String   @id @db.Uuid
-  orderPriority Int?     @unique
-  imageUrl      String?
-  startDate     DateTime
-  endDate       DateTime
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
-  creatorId     String   @db.Uuid
-  mediaId       String   @db.Uuid
-  createdBy     User     @relation("UserHeroBanner", fields: [creatorId], references: [id])
-  media         Media    @relation("MediaBannerPromotion", fields: [mediaId], references: [id])
-
-  @@map("hero_banner")
-}
-
-model SystemPreference {
-  id          String    @id @db.Uuid
-  key         String    @unique @db.VarChar(225)
-  value       String    @db.VarChar(225)
-  description String
-  deletedAt   DateTime?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now()) @updatedAt
-
-  @@map("system_preferences")
-}
-
-model SystemNotification {
-  id            String                 @id @db.Uuid
-  type          TypeSystemNotification
-  componentName String?                @db.VarChar(255)
-  popupImage    String?
-  titleToast    String?                @db.VarChar(255)
-  contentToast  String?
-  createdBy     String                 @db.Uuid
-  deletedAt     DateTime?
-  createdAt     DateTime               @default(now())
-  updatedAt     DateTime               @default(now()) @updatedAt
-  creator       User                   @relation("UserCreatorSystemNotifications", fields: [createdBy], references: [id])
-
-  @@map("system_notifications")
-}
-
-model SystemLog {
-  id          String   @id @db.Uuid
-  title       String   @db.VarChar(255)
-  notes       String
-  relatedUser String?  @db.Uuid
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
-  user        User?    @relation("UserSystemLogs", fields: [relatedUser], references: [id])
-
-  @@map("system_logs")
-}
-
-enum MediaType {
-  TV
-  ONA
-  OVA
-  Movie
-  Special
-  Music
-}
-
-enum Country {
-  JP @map("Japanese")
-  EN @map("English")
-  ID @map("Indonesia")
-  KR @map("Korea")
-}
-
-enum Season {
+enum media_season {
   winter
   spring
   summer
   fall
 }
 
-enum CharacterRole {
-  Main
-  Supporting
+enum character_role {
+  main
+  supporting
+  background
 }
 
-enum MediaOperation {
-  create
-  update
-  delete
-}
-
-enum UserGender {
-  male
-  female
-}
-
-enum AdultFiltering {
-  hide
-  show
-  explicit
-}
-
-enum AdultAlert {
-  hide
-  show
-}
-
-enum VideoQuality {
-  Q2160
-  Q1440
-  Q1080
-  Q720
-  Q480
-  Q360
-  Q240
-  Q144
-}
-
-enum UserNotificationState {
-  info
-  warning
-  danger
-}
-
-enum ReportStatus {
+enum status_submission {
   pending
-  resolved
+  approved
   rejected
 }
 
-enum ReportReason {
-  sexualize
-  violent
-  explicit
-  hateful
-  political
-  racist
-  spam
-  other
+enum like_type {
+  like
+  dislike
 }
 
-enum AccessStatus {
-  private
-  selected
-  protected
+enum audit_action {
+  delete
+  restore
+  edit
+  flag
+}
+
+enum privacy_level {
   public
+  unlisted
+  private
 }
 
-enum AccessScope {
+enum collection_access_level {
+  owner
+  moderator
+  contributor
   viewer
-  editor
 }
 
-enum MediaReviewReaction {
-  angry
-  sad
-  awesome
-  happy
-  sleepy
-  annoyed
-  disgusting
-  disappointed
+
+
+/**
+ * ----------------------------------
+ * Model for User and related entities
+ * ----------------------------------
+ */
+model User {
+  id              String    @id @db.Uuid @default(uuid(7))
+  email           String    @unique
+  password        String?   @db.VarChar(255)
+  username        String    @unique @db.VarChar(28)
+  fullname        String    @db.VarChar(32)
+  avatar          String?   @db.VarChar(255)
+  bio             String?   @db.Text
+  datebirth       DateTime? @db.Date
+  role            user_role @default(user)
+  sex             user_sex?
+  phone_number    String?   @db.VarChar(20)
+  country         Country?  @relation(fields: [countryId], references: [id], name: "UserCountry")
+  auth_provider   String?   @db.VarChar(64)
+  provider_token  String?   @db.VarChar(255)
+  address         UserAddress?
+  preferences     UserPreference?
+  created_at      DateTime  @default(now()) @db.Timestamptz()
+  updated_at      DateTime  @updatedAt @db.Timestamptz()
+  deleted_at      DateTime? @db.Timestamptz()
+  
+  countryId             String?   @db.Uuid
+  oauth_accounts        UserOauthAccounts[]
+  sessions              UserSession[]
+  followers             UserFollow[] @relation("UserFollowFollowing")
+  following             UserFollow[] @relation("UserFollowFollower")
+  provisioned_as_admin  ProvisionedUser[] @relation("ProvisionedUserAdmin")
+  provisioned_as_user   ProvisionedUser[] @relation("ProvisionedUserUser")
+  created_producers     Producer[]
+  submitted_media       MediaSubmission[] @relation("MediaSubmissionSubmitter")
+  reviewed_media        MediaSubmission[] @relation("MediaSubmissionReviewer")
+  updated_media         Media[] @relation("MediaUpdater")
+  deleted_media         Media[] @relation("MediaDeleter")
+  created_episodes      Episode[]
+  submitted_videos      VideoSubmission[] @relation("VideoSubmissionSubmitter")
+  reviewed_videos       VideoSubmission[] @relation("VideoSubmissionReviewer")
+  submitted_video_services VideoServiceSubmission[] @relation("VideoServiceSubmissionSubmitter")
+  reviewed_video_services  VideoServiceSubmission[] @relation("VideoServiceSubmissionReviewer")
+  comments              Comment[]
+  comment_likes         CommentLike[]
+  comment_audit_logs    CommentAuditLog[]
+  comment_reports       CommentReport[]
+  home_media_banners    HomeMediaBanner[]
+  watch_histories       UserWatchHistory[]
+  saved_collections     CollectionMember[] @relation("CollectionMemberUser")
+  invited_collections   CollectionMember[] @relation("CollectionMemberInviter")
+  contributed_collections MediaCollection[] @relation("MediaCollectionAdder")
+  @@index([email])
+  @@index([username])
+  @@map("users")
 }
 
-enum EmailPorpose {
-  forgot_password
-  account_activation
-  account_notification
-  subscribtion
+model UserAddress {
+  user_id     String  @id @db.Uuid
+  address     String  @db.VarChar(255)
+  district    String  @db.VarChar(100)
+  city        String  @db.VarChar(100)
+  province    String  @db.VarChar(100)
+  postal_code String  @db.VarChar(20)
+  coordinate  String? @db.VarChar(50)
+  updated_at  DateTime @updatedAt @db.Timestamptz()
+
+  user User @relation(fields: [user_id], references: [id])
+  @@map("user_addresses")
 }
 
-enum TypeSystemNotification {
-  component
-  popup
-  toast
+model UserOauthAccounts {
+  id              String @id @db.Uuid @default(uuid(7))
+  user            User   @relation(fields: [user_id], references: [id])
+  provider_name   auth_provider
+  provider_sub    String? @db.VarChar(255)
+  provider_email  String? @db.VarChar(255)
+  provider_token  String? @db.VarChar(255)
+  refresh_token   String? @db.VarChar(255)
+  expires_at      DateTime? @db.Timestamptz()
+  last_login      DateTime @default(now()) @db.Timestamptz()
+  created_at      DateTime @default(now()) @db.Timestamptz()
+  updated_at      DateTime @updatedAt @db.Timestamptz()
+
+  user_id         String @db.Uuid
+  @@map("user_oauth_accounts")
+}
+
+model UserSession {
+  id              String   @id @db.Uuid @default(uuid(7))
+  user            User     @relation(fields: [user_id], references: [id])
+  device_type     device_type
+  os_type         String?  @db.VarChar(50)
+  os_version      String?  @db.VarChar(50)
+  browser_name    String?  @db.VarChar(50)
+  browser_version String?  @db.VarChar(50)
+  ip_login        String?  @db.Inet()
+  login_at        DateTime  @default(now()) @db.Timestamptz()
+  logout_at       DateTime? @db.Timestamptz()
+
+  user_id     String   @db.Uuid
+  @@map("user_sessions")
+}
+
+model UserPreference {
+  user                    User @relation(fields: [user_id], references: [id])
+  char_as_partner         Character @relation(fields: [char_as_partner_id], references: [id])
+  comment_picture         String? @db.VarChar(255)
+  enable_watch_history    Boolean @default(true)
+  enable_search_history   Boolean @default(false)
+  is_private_account      Boolean @default(false)
+  can_message_me          Boolean @default(true)
+  publish_birthday        Boolean @default(false)
+  publish_email           Boolean @default(false)
+  publish_phone_number    Boolean @default(false)
+  publish_country         Boolean @default(false)
+  publish_partner         Boolean @default(true)
+  subscribe_to_newsletter Boolean @default(true)
+  enable_security_alerts  Boolean @default(true)
+  genre_preferences       UserGenrePreference[]
+  rating_preferences      UserRatingPreference[]
+  country_preferences     UserCountryPreference[]
+
+  user_id             String @id @db.Uuid
+  char_as_partner_id  String @db.Uuid
+  @@map("user_preferences")
+}
+
+model UserGenrePreference {
+  user    UserPreference    @relation(fields: [user_id], references: [user_id])
+  genre   Genre             @relation(fields: [genre_id], references: [id])
+  state   user_preference_state
+
+  user_id String @db.Uuid
+  genre_id String @db.Uuid
+  @@id([user_id, genre_id])
+  @@map("user_genre_preferences")
+}
+
+model UserRatingPreference {
+  user    UserPreference    @relation(fields: [user_id], references: [user_id])
+  rating  MediaAgeRating    @relation(fields: [rating_id], references: [id])
+  state   user_preference_state
+
+  user_id   String @db.Uuid
+  rating_id String @db.Uuid
+  @@id([user_id, rating_id])
+  @@map("user_rating_preferences")
+}
+
+model UserCountryPreference {
+  user    UserPreference    @relation(fields: [user_id], references: [user_id])
+  country Country           @relation(fields: [country_id], references: [id])
+  state   user_preference_state
+
+  user_id String @db.Uuid
+  country_id String @db.Uuid
+  @@id([user_id, country_id])
+  @@map("user_country_preferences")
+}
+
+model UserFollow {
+  follower    User    @relation("UserFollowFollower", fields: [follower_id], references: [id])
+  following   User    @relation("UserFollowFollowing", fields: [following_id], references: [id])
+  created_at  DateTime @default(now()) @db.Timestamptz()
+
+  follower_id   String @db.Uuid
+  following_id  String @db.Uuid
+  @@id([follower_id, following_id])
+  @@map("user_follows")
+}
+
+model UserWatchHistory {
+  user        User @relation(fields: [user_id], references: [id])
+  episode     Episode @relation(fields: [episode_id], references: [id])
+  updated_at  DateTime @updatedAt @db.Timestamptz()
+
+  user_id     String @db.Uuid
+  episode_id  String @db.Uuid
+  @@id([user_id, episode_id])
+  @@map("user_watch_histories")
+}
+
+model Collection {
+  id          String        @id @db.Uuid @default(uuid(7))
+  name        String        @db.VarChar(64)
+  code        String?       @db.VarChar(12)
+  cover_url   String?       @db.VarChar(255)
+  privacy     privacy_level @default(private)
+  created_at  DateTime      @default(now()) @db.Timestamptz()
+  updated_at  DateTime      @updatedAt @db.Timestamptz()
+
+  saved_media  MediaCollection[]
+  members      CollectionMember[]
+  @@map("collections")
+}
+
+model CollectionMember {
+  collection    Collection @relation(fields: [collection_id], references: [id])
+  user          User       @relation(fields: [user_id], references: [id], name: "CollectionMemberUser")
+  access_level  collection_access_level
+  invited_by    User?      @relation(fields: [invited_by_id], references: [id], name: "CollectionMemberInviter")
+  invited_at    DateTime?  @db.Timestamptz()
+
+  collection_id String @db.Uuid
+  user_id       String @db.Uuid
+  invited_by_id String? @db.Uuid
+  @@id([collection_id, user_id])
+  @@map("collection_members")
+}
+
+
+
+/**
+ * ----------------------------------
+ * Model for Media and related entities
+ * ----------------------------------
+ */
+model Media {
+  id                String        @id @db.Uuid @default(uuid(7))
+  mal_id            Int           @unique
+  title             String        @db.VarChar(255)
+  title_secondary   String?       @db.VarChar(255)
+  title_original    String?       @db.VarChar(255)
+  title_synonyms    String[]      @db.VarChar(255)
+  trailer           MediaTrailer?
+  synopsis          String?       @db.Text
+  small_image_url   String?       @db.VarChar(255)
+  medium_image_url  String        @db.VarChar(255)
+  large_image_url   String?       @db.VarChar(255)
+  type              MediaType     @relation(fields: [type_id], references: [id])
+  source            MediaSource?  @relation(fields: [source_id], references: [id])
+  status            MediaStatus?  @relation(fields: [status_id], references: [id])
+  airing            Boolean
+  start_airing      DateTime?     @db.Date
+  end_airing        DateTime?     @db.Date
+  age_rating        MediaAgeRating? @relation(fields: [age_rating_id], references: [id])
+  score             Decimal?      @db.Decimal(2, 2)
+  score_total       Int           @default(0)
+  score_count       Int           @default(0)
+  background        String?       @db.Text
+  season            media_season
+  year              Int?          @db.SmallInt
+  country           Country?      @relation(fields: [country_id], references: [id])
+  broadcast_day     String?       @db.VarChar(20)
+  producers         MediaProducer[]
+  licensors         MediaLicensor[]
+  studios           MediaStudio[]
+  genres            MediaGenre[]
+  explicit_genres   MediaExplicitGenre[]
+  themes            MediaTheme[]
+  demographics      MediaDemographic[]
+  relations         MediaRelation[] @relation("MediaRelationMedia")
+  external_links    MediaExternalLink[]
+  characters        MediaCharacter[]
+  submissions       MediaSubmission?
+  created_at        DateTime      @default(now()) @db.Timestamptz()
+  updated_by        User?         @relation(fields: [updated_by_id], references: [id], name: "MediaUpdater")
+  updated_at        DateTime      @updatedAt @db.Timestamptz()
+  deleted_by        User?         @relation(fields: [deleted_by_id], references: [id], name: "MediaDeleter")
+  deleted_at        DateTime?     @db.Timestamptz()
+
+  type_id           String  @db.Uuid
+  source_id         String  @db.Uuid
+  status_id         String  @db.Uuid
+  age_rating_id     String? @db.Uuid
+  country_id        String? @db.Uuid
+  related_media     MediaRelation[] @relation("MediaRelationRelatedMedia")
+  approver_id       String? @db.Uuid
+  created_by_id     String? @db.Uuid
+  updated_by_id     String? @db.Uuid
+  deleted_by_id     String? @db.Uuid
+  home_media_banners    HomeMediaBanner[]
+  saved_to_collections  MediaCollection[]
+  @@map("medias")
+}
+
+model MediaSubmission {
+  id          String            @id @db.Uuid @default(uuid(7))
+  media       Media             @relation(fields: [media_id], references: [id])
+  submitter   User              @relation(fields: [submitter_id], references: [id], name: "MediaSubmissionSubmitter")
+  status      status_submission @default(pending)
+  reviewer    User?             @relation(fields: [reviewer_id], references: [id], name: "MediaSubmissionReviewer")
+  reviewed_at DateTime?         @db.Timestamptz()
+  reason      String?           @db.Text
+  created_at  DateTime          @default(now()) @db.Timestamptz()
+
+  media_id     String @db.Uuid  @unique
+  submitter_id String @db.Uuid
+  reviewer_id  String? @db.Uuid
+  @@map("media_submissions")
+}
+
+model MediaCollection {
+  media       Media    @relation(fields: [media_id], references: [id])
+  collection  Collection @relation(fields: [collection_id], references: [id])
+  added_by    User     @relation(fields: [added_by_id], references: [id], name: "MediaCollectionAdder")
+  added_at    DateTime @default(now()) @db.Timestamptz()
+
+  media_id      String @db.Uuid
+  collection_id String @db.Uuid
+  added_by_id   String @db.Uuid
+  @@id([media_id, collection_id])
+  @@map("media_collections")
+}
+
+model MediaTrailer {
+  media_id        String    @id @db.Uuid
+  url             String?   @db.VarChar(255)
+  embed_url       String?   @db.VarChar(255)
+  small_image_url String?   @db.VarChar(255)
+  large_image_url String?   @db.VarChar(255)
+  maximum_image_url String? @db.VarChar(255)
+
+  media Media @relation(fields: [media_id], references: [id])
+  @@map("media_trailers")
+}
+
+model MediaType {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(100) @unique
+
+  Media Media[]
+  @@map("media_types")
+}
+
+model MediaSource {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(100) @unique
+
+  media Media[]
+  @@map("media_sources")
+}
+
+model MediaStatus {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(100) @unique
+
+  media Media[]
+  @@map("media_statuses")
+}
+
+model MediaAgeRating {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(100) @unique
+  min_age Int     @db.SmallInt
+
+  media Media[]
+  user_rating_preferences UserRatingPreference[]
+  @@map("media_age_ratings")
+}
+
+model MediaProducer {
+  media     Media    @relation(fields: [media_id], references: [id])
+  producer  Producer @relation(fields: [producer_id], references: [id])
+
+  media_id    String @db.Uuid
+  producer_id String @db.Uuid
+  @@id([media_id, producer_id])
+  @@map("media_producers")
+}
+
+model MediaLicensor {
+  media     Media    @relation(fields: [media_id], references: [id])
+  licensor  Producer @relation(fields: [licensor_id], references: [id])
+
+  media_id    String @db.Uuid
+  licensor_id String @db.Uuid
+  @@id([media_id, licensor_id])
+  @@map("media_licensors")
+}
+
+model MediaStudio {
+  media     Media    @relation(fields: [media_id], references: [id])
+  studio    Producer @relation(fields: [studio_id], references: [id])
+
+  media_id    String @db.Uuid
+  studio_id   String @db.Uuid
+  @@id([media_id, studio_id])
+  @@map("media_studios")
+}
+
+model Producer {
+  id                String    @id @db.Uuid @default(uuid(7))
+  mal_id            Int       @unique
+  type              String    @db.VarChar(24)
+  name              String    @db.VarChar(255)
+  url               String?   @db.VarChar(255)
+  created_by        User      @relation(fields: [created_by_id], references: [id])
+  created_at        DateTime  @default(now()) @db.Timestamptz()
+  updated_at        DateTime  @updatedAt @db.Timestamptz()
+  deleted_at        DateTime? @db.Timestamptz()
+  created_by_id     String    @db.Uuid
+
+  media_producers MediaProducer[]
+  media_licensors MediaLicensor[]
+  media_studios   MediaStudio[]
+  @@map("producers")
+}
+
+model MediaGenre {
+  media     Media    @relation(fields: [media_id], references: [id])
+  genre     Genre    @relation(fields: [genre_id], references: [id])
+
+  media_id String @db.Uuid
+  genre_id String @db.Uuid
+  @@id([media_id, genre_id])
+  @@map("media_genres")
+}
+
+model MediaExplicitGenre {
+  media     Media    @relation(fields: [media_id], references: [id])
+  genre     Genre    @relation(fields: [genre_id], references: [id])
+
+  media_id String @db.Uuid
+  genre_id String @db.Uuid
+  @@id([media_id, genre_id])
+  @@map("media_explicit_genres")
+}
+
+model MediaTheme {
+  media     Media    @relation(fields: [media_id], references: [id])
+  theme     Genre    @relation(fields: [genre_id], references: [id])
+
+  media_id String @db.Uuid
+  genre_id String @db.Uuid
+  @@id([media_id, genre_id])
+  @@map("media_themes")
+}
+
+model MediaDemographic {
+  media         Media        @relation(fields: [media_id], references: [id])
+  demographic   Genre        @relation(fields: [demographic_id], references: [id])
+
+  media_id       String       @db.Uuid
+  demographic_id String       @db.Uuid
+  @@id([media_id, demographic_id])
+  @@map("media_demographics")
+}
+
+model Genre {
+  id            String  @id @db.Uuid @default(uuid(7))
+  mal_id        Int     @unique @db.SmallInt
+  name          String  @db.VarChar(100)
+  slug          String  @db.VarChar(115)
+  thumbnail_url String? @db.VarChar(255)
+
+  media_genres            MediaGenre[]
+  media_explicit_genres   MediaExplicitGenre[]
+  media_themes            MediaTheme[]
+  media_demographics      MediaDemographic[]
+  user_genre_preferences  UserGenrePreference[]
+  @@map("genres")
+}
+
+model MediaRelation {
+  media         Media        @relation(fields: [media_id], references: [id], name: "MediaRelationMedia")
+  related_media Media        @relation(fields: [related_media_id], references: [id], name: "MediaRelationRelatedMedia")
+  relation_type String       @db.VarChar(50)
+
+  media_id          String @db.Uuid
+  related_media_id  String @db.Uuid
+  @@id([media_id, related_media_id])
+  @@map("media_relations")
+}
+
+model MediaExternalLink {
+  id        String   @id @db.Uuid @default(uuid(7))
+  media     Media    @relation(fields: [media_id], references: [id])
+  url       String   @db.VarChar(255)
+  site_name String?  @db.VarChar(100)
+
+  media_id String @db.Uuid
+  @@map("media_external_links")
+}
+
+model MediaCharacter {
+  id        String   @id @db.Uuid @default(uuid(7))
+  media     Media     @relation(fields: [media_id], references: [id])
+  character Character @relation(fields: [character_id], references: [id])
+  voice_actors VoiceActor[]
+  role      character_role
+
+  media_id     String @db.Uuid
+  character_id String @db.Uuid
+  @@map("media_characters")
+}
+
+model Character {
+  id          String   @id @db.Uuid @default(uuid(7))
+  name        String   @db.VarChar(255)
+  image       String?  @db.VarChar(255)
+  small_image String?  @db.VarChar(255)
+  mal_id      Int?     @unique
+  fanpage_url String?  @db.VarChar(255)
+  liked       Int      @default(0)
+  deleted_at  DateTime? @db.Timestamptz()
+  updated_at  DateTime  @updatedAt @db.Timestamptz()
+  created_at  DateTime  @default(now()) @db.Timestamptz()
+
+  partnered_user   UserPreference[]
+  media_characters MediaCharacter[]
+  @@map("characters")
+}
+
+model VoiceActor {
+  id                  String  @id @db.Uuid @default(uuid(7))
+  media_character_id  String  @db.Uuid
+  language            String  @db.VarChar(115)
+  actor_staff         Staff   @relation(fields: [staff_id], references: [id])
+
+  staff_id String @db.Uuid
+  media_character MediaCharacter @relation(fields: [media_character_id], references: [id])
+  @@map("voice_actors")
+}
+
+model Staff {
+  id          String   @id @db.Uuid @default(uuid(7))
+  name        String   @db.VarChar(255)
+  image       String?  @db.VarChar(255)
+  mal_id      Int?     @unique
+  deleted_at  DateTime? @db.Timestamptz()
+  updated_at  DateTime  @updatedAt @db.Timestamptz()
+  created_at  DateTime  @default(now()) @db.Timestamptz()
+
+  voice_actors VoiceActor[]
+  @@map("staff")
+}
+
+model Episode {
+  id String @id @db.Uuid @default(uuid(7))
+  media_id String @db.Uuid
+  episode Int @db.SmallInt
+  mal_url       String? @db.VarChar(255)
+  forum_url     String? @db.VarChar(255)
+  title         String @db.VarChar(155)
+  title_origin  String? @db.VarChar(155)
+  title_romanji String? @db.VarChar(155)
+  aired_at      DateTime? @db.Date
+  filler        Boolean
+  recap         Boolean
+  total_score   Int @default(0)
+  score_count   Int @default(0)
+  deleted_at    DateTime? @db.Timestamptz()
+  updated_at    DateTime @updatedAt @db.Timestamptz()
+  created_at    DateTime @default(now()) @db.Timestamptz()
+  created_by    User @relation(fields: [created_by_id], references: [id])
+
+  videos        Video[]
+  created_by_id String @db.Uuid
+  comments      Comment[]
+  watch_histories   UserWatchHistory[]
+  @@index([media_id, episode])
+  @@map("episodes")
+}
+
+model Video {
+  id              String @id @db.Uuid @default(uuid(7))
+  service         VideoService[]
+  Episode         Episode @relation(fields: [episode_id], references: [id])
+  video_code      String @db.VarChar(255)
+  short_code      String? @db.VarChar(255)
+  thumbnail_code  String? @db.VarChar(255)
+  download_code   String? @db.VarChar(255)
+  created_at      DateTime @default(now()) @db.Timestamptz()
+  deleted_at      DateTime? @db.Timestamptz()
+  updated_at      DateTime @updatedAt @db.Timestamptz()
+
+  episode_id    String @db.Uuid
+  created_by_id String @db.Uuid
+  video_submission VideoSubmission?
+  @@map("videos")
+}
+
+model VideoSubmission {
+  video_id      String    @id @db.Uuid
+  created_by    User      @relation(fields: [created_by_id], references: [id], name: "VideoSubmissionSubmitter")
+  reviewer      User?     @relation(fields: [reviewer_id], references: [id], name: "VideoSubmissionReviewer")
+  status        status_submission @default(pending)
+  reviewed_at   DateTime? @db.Timestamptz()
+  reason        String?   @db.Text
+  created_at    DateTime  @default(now()) @db.Timestamptz()
+
+  created_by_id String @db.Uuid
+  reviewer_id   String? @db.Uuid
+  video         Video @relation(fields: [video_id], references: [id])
+  @@map("video_submissions")
+}
+
+model VideoService {
+  id                String  @id @db.Uuid @default(uuid(7))
+  name              String  @db.VarChar(155) 
+  resolution        Int     @db.SmallInt
+  domain            String  @db.VarChar(255)
+  image_url         String? @db.VarChar(255)
+  hex_color         String? @db.VarChar(10)
+  endpoint_video    String  @db.VarChar(255)
+  endpoint_short    String? @db.VarChar(255)
+  endpoint_image    String? @db.VarChar(255)
+  endpoint_download String? @db.VarChar(255)
+  deleted_at        DateTime? @db.Timestamptz()
+  updated_at        DateTime @updatedAt @db.Timestamptz()
+  created_at        DateTime @default(now()) @db.Timestamptz() 
+
+  videos Video[]
+  video_service_submissions VideoServiceSubmission?
+  @@unique([name, resolution])
+  @@map("video_services")
+}
+
+model VideoServiceSubmission {
+  video_service_id String     @id @db.Uuid
+  created_by       User       @relation(fields: [created_by_id], references: [id], name: "VideoServiceSubmissionSubmitter")
+  status           status_submission @default(pending)
+  reviewer         User?      @relation(fields: [reviewer_id], references: [id], name: "VideoServiceSubmissionReviewer")
+  reviewed_at      DateTime?  @db.Timestamptz()
+  reason           String?    @db.Text
+  created_at       DateTime   @default(now()) @db.Timestamptz()
+
+  video_service VideoService @relation(fields: [video_service_id], references: [id])
+  created_by_id String  @db.Uuid
+  reviewer_id   String? @db.Uuid
+  @@map("video_service_submissions")
+}
+
+model Comment {
+  id          String   @id @db.Uuid @default(uuid(7))
+  user        User     @relation(fields: [user_id], references: [id])
+  episode     Episode  @relation(fields: [episode_id], references: [id])
+  content     String   @db.Text
+  created_at  DateTime @default(now()) @db.Timestamptz()
+  updated_at  DateTime @updatedAt @db.Timestamptz()
+  deleted_at  DateTime? @db.Timestamptz()
+
+  user_id    String @db.Uuid
+  episode_id String @db.Uuid
+  likes       CommentLike[]
+  audit_logs  CommentAuditLog[]
+  reports     CommentReport[]
+  @@map("comments")
+}
+
+model CommentLike {
+  user_id    String @db.Uuid
+  comment_id String @db.Uuid
+  type       like_type
+  created_at DateTime @default(now()) @db.Timestamptz()
+
+  user    User    @relation(fields: [user_id], references: [id])
+  comment Comment @relation(fields: [comment_id], references: [id])
+  @@id([user_id, comment_id])
+  @@map("comment_likes")
+}
+
+model CommentAuditLog {
+  id            String        @id @db.Uuid @default(uuid(7))
+  comment       Comment       @relation(fields: [comment_id], references: [id])
+  performed_by  User          @relation(fields: [performed_by_id], references: [id])
+  action        audit_action
+  created_at    DateTime      @default(now()) @db.Timestamptz()
+
+  comment_id      String @db.Uuid
+  performed_by_id String @db.Uuid
+  @@map("comment_audit_logs")
+}
+
+model CommentReport {
+  id          String    @id @db.Uuid @default(uuid(7))
+  reporter    User      @relation(fields: [reporter_id], references: [id])
+  comment     Comment   @relation(fields: [comment_id], references: [id])
+  title       String    @db.VarChar(115)
+  status      status_submission
+  description String?   @db.Text
+  reported_at DateTime  @default(now()) @db.Timestamptz()
+  closed_at   DateTime? @db.Timestamptz()
+
+  reporter_id String @db.Uuid
+  comment_id  String @db.Uuid
+  @@map("comment_reports")
+}
+
+
+
+/**
+ * ----------------------------------
+ * Model for System Apps and related entities
+ * ----------------------------------
+ */
+model ProvisionedUser {
+  provisioned_by  User   @relation(fields: [admin_id], references: [id], name: "ProvisionedUserAdmin")
+  provisioned_to  User   @relation(fields: [user_id], references: [id], name: "ProvisionedUserUser")
+  provisioned_at  DateTime @default(now()) @db.Timestamptz()
+  reason          String? @db.VarChar(255)
+
+  admin_id  String @db.Uuid
+  user_id   String @db.Uuid
+  @@id([admin_id, user_id])
+  @@map("provisioned_users")
+}
+
+model Country {
+  id      String  @id @db.Uuid @default(uuid(7))
+  name    String  @db.VarChar(155)
+  slug    String  @db.VarChar(165)
+  code    String  @db.VarChar(3)
+  flag    String? @db.VarChar(255)
+  banner  String? @db.VarChar(255)
+
+  UserCountry User[] @relation("UserCountry")
+  UserCountryPreference UserCountryPreference[]
+  Media Media[]
+  @@map("countries")
+}
+
+model HomeMediaBanner {
+  id          String   @id @db.Uuid @default(uuid(7))
+  media       Media    @relation(fields: [media_id], references: [id])
+  created_by  User     @relation(fields: [created_by_id], references: [id])
+  priority    Int      @db.SmallInt @unique
+  start_show  DateTime @db.Date
+  end_show    DateTime @db.Date
+  created_at  DateTime @default(now()) @db.Timestamptz()
+
+  media_id      String @db.Uuid
+  created_by_id String @db.Uuid
+  @@map("home_media_banners")
 }
