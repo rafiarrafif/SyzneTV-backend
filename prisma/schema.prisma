@@ -91,6 +91,13 @@ enum privacy_level {
   private
 }
 
+enum collection_access_level {
+  owner
+  moderator
+  contributor
+  viewer
+}
+
 
 
 /**
@@ -142,6 +149,9 @@ model User {
   comment_reports       CommentReport[]
   home_media_banners    HomeMediaBanner[]
   watch_histories       UserWatchHistory[]
+  saved_collections     CollectionMember[] @relation("CollectionMemberUser")
+  invited_collections   CollectionMember[] @relation("CollectionMemberInviter")
+  contributed_collections MediaCollection[] @relation("MediaCollectionAdder")
   @@index([email])
   @@index([username])
   @@map("users")
@@ -281,7 +291,24 @@ model Collection {
   privacy     privacy_level @default(private)
   created_at  DateTime      @default(now()) @db.Timestamptz()
   updated_at  DateTime      @updatedAt @db.Timestamptz()
+
+  saved_media  MediaCollection[]
+  members      CollectionMember[]
   @@map("collections")
+}
+
+model CollectionMember {
+  collection    Collection @relation(fields: [collection_id], references: [id])
+  user          User       @relation(fields: [user_id], references: [id], name: "CollectionMemberUser")
+  access_level  collection_access_level
+  invited_by    User?      @relation(fields: [invited_by_id], references: [id], name: "CollectionMemberInviter")
+  invited_at    DateTime?  @db.Timestamptz()
+
+  collection_id String @db.Uuid
+  user_id       String @db.Uuid
+  invited_by_id String? @db.Uuid
+  @@id([collection_id, user_id])
+  @@map("collection_members")
 }
 
 
@@ -345,7 +372,8 @@ model Media {
   created_by_id     String? @db.Uuid
   updated_by_id     String? @db.Uuid
   deleted_by_id     String? @db.Uuid
-  home_media_banners HomeMediaBanner[]
+  home_media_banners    HomeMediaBanner[]
+  saved_to_collections  MediaCollection[]
   @@map("medias")
 }
 
@@ -363,6 +391,19 @@ model MediaSubmission {
   submitter_id String @db.Uuid
   reviewer_id  String? @db.Uuid
   @@map("media_submissions")
+}
+
+model MediaCollection {
+  media       Media    @relation(fields: [media_id], references: [id])
+  collection  Collection @relation(fields: [collection_id], references: [id])
+  added_by    User     @relation(fields: [added_by_id], references: [id], name: "MediaCollectionAdder")
+  added_at    DateTime @default(now()) @db.Timestamptz()
+
+  media_id      String @db.Uuid
+  collection_id String @db.Uuid
+  added_by_id   String @db.Uuid
+  @@id([media_id, collection_id])
+  @@map("media_collections")
 }
 
 model MediaTrailer {
