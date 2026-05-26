@@ -133,6 +133,7 @@ model User {
   comments              Comment[]
   comment_likes         CommentLike[]
   comment_audit_logs    CommentAuditLog[]
+  comment_reports       CommentReport[]
   @@index([email])
   @@index([username])
   @@map("users")
@@ -664,6 +665,7 @@ model Comment {
   episode_id String @db.Uuid
   likes       CommentLike[]
   audit_logs  CommentAuditLog[]
+  reports     CommentReport[]
   @@map("comments")
 }
 
@@ -686,9 +688,24 @@ model CommentAuditLog {
   action        audit_action
   created_at    DateTime      @default(now()) @db.Timestamptz()
 
-  comment_id String @db.Uuid
+  comment_id      String @db.Uuid
   performed_by_id String @db.Uuid
   @@map("comment_audit_logs")
+}
+
+model CommentReport {
+  id          String    @id @db.Uuid @default(uuid(7))
+  reporter    User      @relation(fields: [reporter_id], references: [id])
+  comment     Comment   @relation(fields: [comment_id], references: [id])
+  title       String    @db.VarChar(115)
+  status      status_submission
+  description String?   @db.Text
+  reported_at DateTime  @default(now()) @db.Timestamptz()
+  closed_at   DateTime? @db.Timestamptz()
+
+  reporter_id String @db.Uuid
+  comment_id  String @db.Uuid
+  @@map("comment_reports")
 }
 
 
