@@ -1,0 +1,6413 @@
+{
+  "id": "0",
+  "name": "Main Diagram",
+  "createdAt": "2026-05-19T16:28:02.086Z",
+  "updatedAt": "2026-05-22T00:43:03.985Z",
+  "databaseType": "postgresql",
+  "tables": [
+    {
+      "id": "1",
+      "name": "media_demographics",
+      "x": -681.6737980968087,
+      "y": 892.2019045876625,
+      "fields": [
+        {
+          "id": "2",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": true,
+          "nullable": false,
+          "primaryKey": true,
+          "createdAt": 1779210978216
+        },
+        {
+          "id": "3",
+          "name": "genre_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": true,
+          "nullable": false,
+          "primaryKey": true,
+          "createdAt": 1779211013182
+        }
+      ],
+      "indexes": [
+        {
+          "id": "4",
+          "name": "",
+          "fieldIds": [
+            "2",
+            "3"
+          ],
+          "unique": true,
+          "isPrimaryKey": true,
+          "createdAt": 1779211084967
+        }
+      ],
+      "color": "#ffe374",
+      "createdAt": 1779210978216,
+      "isView": false,
+      "order": 46,
+      "schema": "public",
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "5",
+      "name": "characters",
+      "schema": "public",
+      "x": -1033.0409991807485,
+      "y": 748.9601716847773,
+      "fields": [
+        {
+          "id": "6",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "7",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "8",
+          "name": "image",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "9",
+          "name": "small_image",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "10",
+          "name": "mal_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "11",
+          "name": "liked",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "default": "0"
+        },
+        {
+          "id": "12",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "13",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "14",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        }
+      ],
+      "indexes": [
+        {
+          "id": "15",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "6"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 10,
+      "expanded": true,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "16",
+      "name": "media_genres",
+      "schema": "public",
+      "x": -680.2926238134676,
+      "y": 498.7845736528544,
+      "fields": [
+        {
+          "id": "17",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777283473368
+        },
+        {
+          "id": "18",
+          "name": "genre_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777283550230
+        }
+      ],
+      "indexes": [
+        {
+          "id": "19",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "18"
+          ],
+          "createdAt": 1777283473368,
+          "isPrimaryKey": true
+        },
+        {
+          "id": "20",
+          "name": "index_1",
+          "unique": true,
+          "fieldIds": [
+            "17",
+            "18"
+          ],
+          "createdAt": 1778570545534
+        }
+      ],
+      "checkConstraints": [],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777283473368,
+      "comments": "composite primary key = media_id + genre_id ",
+      "order": 18,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "21",
+      "name": "countries",
+      "schema": "public",
+      "x": -675.4825871206289,
+      "y": -936.5527418709639,
+      "fields": [
+        {
+          "id": "22",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778401101216
+        },
+        {
+          "id": "23",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778401175441,
+          "characterMaximumLength": "155"
+        },
+        {
+          "id": "24",
+          "name": "slug",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778401182473,
+          "characterMaximumLength": "165"
+        },
+        {
+          "id": "25",
+          "name": "code",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778401186425,
+          "characterMaximumLength": "3"
+        },
+        {
+          "id": "26",
+          "name": "flag",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778401191401,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "27",
+          "name": "banner",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778401286123,
+          "characterMaximumLength": "255"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "28",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "22"
+          ],
+          "createdAt": 1778401101216,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#b067e9",
+      "isView": false,
+      "createdAt": 1778401101216,
+      "order": 27,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "29",
+      "name": "user_country_preferences",
+      "schema": "public",
+      "x": -1035.3700148414782,
+      "y": -1151.086340953631,
+      "fields": [
+        {
+          "id": "30",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778548950226
+        },
+        {
+          "id": "31",
+          "name": "country_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778548914423
+        },
+        {
+          "id": "32",
+          "name": "state",
+          "type": {
+            "id": "user_preference_state",
+            "name": "user_preference_state"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778548957483
+        }
+      ],
+      "indexes": [],
+      "color": "#4dee8a",
+      "isView": false,
+      "createdAt": 1778548914423,
+      "order": 33,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "33",
+      "name": "media_characters",
+      "schema": "public",
+      "x": -678.5745105809615,
+      "y": 1034.4123102253634,
+      "fields": [
+        {
+          "id": "34",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": true,
+          "nullable": false,
+          "primaryKey": true,
+          "createdAt": 1779379905921
+        },
+        {
+          "id": "35",
+          "name": "media",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "36",
+          "name": "character",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "37",
+          "name": "role",
+          "type": {
+            "id": "enum",
+            "name": "enum"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "comments": "main, supporting"
+        },
+        {
+          "id": "38",
+          "name": "voice_actor",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        }
+      ],
+      "indexes": [
+        {
+          "id": "39",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "34",
+            "36"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 8,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "40",
+      "name": "media_submissions",
+      "schema": "public",
+      "x": -677.2819917810897,
+      "y": -656.6674640748546,
+      "fields": [
+        {
+          "id": "41",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777362610195
+        },
+        {
+          "id": "42",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777362624424
+        },
+        {
+          "id": "43",
+          "name": "created_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777362635996,
+          "comments": ""
+        },
+        {
+          "id": "44",
+          "name": "status",
+          "type": {
+            "id": "status_submission",
+            "name": "status_submission"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777362700148,
+          "comments": ""
+        },
+        {
+          "id": "45",
+          "name": "reviewed_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777362758238
+        },
+        {
+          "id": "46",
+          "name": "reviewed_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777363627973
+        },
+        {
+          "id": "47",
+          "name": "reason",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777363674757
+        },
+        {
+          "id": "48",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777363686543,
+          "default": "now()"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "49",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "41"
+          ],
+          "createdAt": 1777362610195,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777362610195,
+      "order": 24,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "50",
+      "name": "home_media_banner",
+      "schema": "public",
+      "x": -1034.714934672103,
+      "y": -969.0938770634809,
+      "fields": [
+        {
+          "id": "51",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778771594518
+        },
+        {
+          "id": "52",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778771625245
+        },
+        {
+          "id": "53",
+          "name": "created_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778771632111
+        },
+        {
+          "id": "54",
+          "name": "priority",
+          "type": {
+            "id": "smallint",
+            "name": "smallint"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": true,
+          "createdAt": 1778771638786
+        },
+        {
+          "id": "55",
+          "name": "start_show",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778771679920
+        },
+        {
+          "id": "56",
+          "name": "end_show",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778771687135
+        },
+        {
+          "id": "57",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778771693471
+        }
+      ],
+      "indexes": [
+        {
+          "id": "58",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "51"
+          ],
+          "createdAt": 1778771594518,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#b067e9",
+      "isView": false,
+      "createdAt": 1778771594518,
+      "order": 39,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "59",
+      "name": "media_external_links",
+      "schema": "public",
+      "x": 194.5066892978357,
+      "y": -264.72537027522213,
+      "fields": [
+        {
+          "id": "60",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "61",
+          "name": "media",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "62",
+          "name": "site_name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "64"
+        },
+        {
+          "id": "63",
+          "name": "url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "64",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "60"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 3,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "65",
+      "name": "user_addresses",
+      "schema": "public",
+      "x": 655.2842034425264,
+      "y": -1010.0698801871714,
+      "fields": [
+        {
+          "id": "66",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778816506150
+        },
+        {
+          "id": "67",
+          "name": "street_address",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778816542685,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "68",
+          "name": "district",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778816551994,
+          "characterMaximumLength": "100"
+        },
+        {
+          "id": "69",
+          "name": "city",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778816560720,
+          "characterMaximumLength": "100"
+        },
+        {
+          "id": "70",
+          "name": "province",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778816564935,
+          "characterMaximumLength": "100"
+        },
+        {
+          "id": "71",
+          "name": "postal_code",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778816568904,
+          "characterMaximumLength": "20"
+        },
+        {
+          "id": "72",
+          "name": "coordinate",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778816577336,
+          "characterMaximumLength": "50"
+        },
+        {
+          "id": "73",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778816585545
+        }
+      ],
+      "indexes": [
+        {
+          "id": "74",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "66"
+          ],
+          "createdAt": 1778816506150,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#4dee8a",
+      "isView": false,
+      "createdAt": 1778816506150,
+      "order": 45,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "75",
+      "name": "media_themes",
+      "schema": "public",
+      "x": -681.5109900103016,
+      "y": 752.8680228454149,
+      "fields": [
+        {
+          "id": "76",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777295294621
+        },
+        {
+          "id": "77",
+          "name": "genre_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777295323224
+        }
+      ],
+      "indexes": [
+        {
+          "id": "78",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "76",
+            "77"
+          ],
+          "createdAt": 1777295294621,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777295294621,
+      "width": 224,
+      "order": 20,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "79",
+      "name": "medias",
+      "schema": "public",
+      "x": -338.2943640690703,
+      "y": -279.84862879126985,
+      "fields": [
+        {
+          "id": "80",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "81",
+          "name": "mal_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "82",
+          "name": "title",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "83",
+          "name": "title_secondary",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "84",
+          "name": "title_original",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "85",
+          "name": "title_synonyms",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "isArray": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255",
+          "comments": ""
+        },
+        {
+          "id": "86",
+          "name": "trailers",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "87",
+          "name": "synopsis",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "88",
+          "name": "small_image_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "89",
+          "name": "medium_image_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "90",
+          "name": "large_image_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "91",
+          "name": "type",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "92",
+          "name": "source",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "93",
+          "name": "status",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "94",
+          "name": "airing",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092,
+          "default": "false"
+        },
+        {
+          "id": "95",
+          "name": "start_airing",
+          "type": {
+            "id": "date",
+            "name": "date"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "96",
+          "name": "end_airing",
+          "type": {
+            "id": "date",
+            "name": "date"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "97",
+          "name": "age_rating",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "98",
+          "name": "score_total",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092,
+          "default": "0"
+        },
+        {
+          "id": "99",
+          "name": "score_count",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092,
+          "default": "0"
+        },
+        {
+          "id": "100",
+          "name": "background",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "101",
+          "name": "season",
+          "type": {
+            "id": "media_season",
+            "name": "media_season"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092,
+          "comments": "enum(winter, spring, summer, fall)"
+        },
+        {
+          "id": "102",
+          "name": "year",
+          "type": {
+            "id": "smallint",
+            "name": "smallint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "103",
+          "name": "country",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777635858846
+        },
+        {
+          "id": "104",
+          "name": "broadcast_date",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "64"
+        },
+        {
+          "id": "105",
+          "name": "producers",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "106",
+          "name": "licensors",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "107",
+          "name": "studios",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "108",
+          "name": "genres",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "109",
+          "name": "explicit_genres",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "110",
+          "name": "themes",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "111",
+          "name": "demographics",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "112",
+          "name": "relations",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "113",
+          "name": "external_links",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "114",
+          "name": "characters",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "115",
+          "name": "created_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "116",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "117",
+          "name": "updated_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": true,
+          "primaryKey": false,
+          "createdAt": 1779410426323
+        },
+        {
+          "id": "118",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "119",
+          "name": "deleted_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": true,
+          "primaryKey": false,
+          "createdAt": 1779410375341
+        },
+        {
+          "id": "120",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092
+        }
+      ],
+      "indexes": [
+        {
+          "id": "121",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "80"
+          ],
+          "createdAt": 1777282589092,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777282589092,
+      "width": 337,
+      "order": 0,
+      "expanded": true,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "122",
+      "name": "media_studios",
+      "schema": "public",
+      "x": 194.57420294478976,
+      "y": 402.07246285824783,
+      "fields": [
+        {
+          "id": "123",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777360514222
+        },
+        {
+          "id": "124",
+          "name": "producer_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777360544975
+        }
+      ],
+      "indexes": [
+        {
+          "id": "125",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "123",
+            "124"
+          ],
+          "createdAt": 1777360514222,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777360514222,
+      "order": 23,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "126",
+      "name": "comments",
+      "schema": "public",
+      "x": -1035.4972528190797,
+      "y": -21.831519473281823,
+      "fields": [
+        {
+          "id": "127",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778772484798
+        },
+        {
+          "id": "128",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778772536237
+        },
+        {
+          "id": "129",
+          "name": "episode_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778772542751
+        },
+        {
+          "id": "130",
+          "name": "content",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778772548786,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "131",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778777149915
+        },
+        {
+          "id": "132",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778777198204
+        },
+        {
+          "id": "133",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778777213469
+        }
+      ],
+      "indexes": [
+        {
+          "id": "134",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "127"
+          ],
+          "createdAt": 1778772484798,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1778772484798,
+      "order": 41,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "135",
+      "name": "staff",
+      "schema": "public",
+      "x": -1434.8828256841582,
+      "y": 424.7769062913411,
+      "fields": [
+        {
+          "id": "136",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "137",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "138",
+          "name": "image",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "139",
+          "name": "mal_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "140",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "141",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "142",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        }
+      ],
+      "indexes": [
+        {
+          "id": "143",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "136"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 12,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "144",
+      "name": "user_rating_preferences",
+      "schema": "public",
+      "x": -1036.138591583759,
+      "y": -1328.817114710954,
+      "fields": [
+        {
+          "id": "145",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778548671790
+        },
+        {
+          "id": "146",
+          "name": "rating_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778548699069
+        },
+        {
+          "id": "147",
+          "name": "state",
+          "type": {
+            "id": "user_preference_state",
+            "name": "user_preference_state"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778548704423
+        }
+      ],
+      "indexes": [],
+      "color": "#4dee8a",
+      "isView": false,
+      "createdAt": 1778548671790,
+      "order": 32,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "148",
+      "name": "media_types",
+      "schema": "public",
+      "x": -678.8247906473255,
+      "y": -28.0163584990978,
+      "fields": [
+        {
+          "id": "149",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "150",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "18"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "151",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "149"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 4,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "152",
+      "name": "user_watch_histories",
+      "schema": "public",
+      "x": -335.9290422316319,
+      "y": -1189.7301850410581,
+      "fields": [
+        {
+          "id": "153",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778569467263
+        },
+        {
+          "id": "154",
+          "name": "episode_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778569477336
+        },
+        {
+          "id": "155",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778569489813
+        }
+      ],
+      "indexes": [
+        {
+          "id": "156",
+          "name": "index_1",
+          "unique": true,
+          "fieldIds": [
+            "154",
+            "153"
+          ],
+          "createdAt": 1778732177200
+        }
+      ],
+      "color": "#9ef07a",
+      "isView": false,
+      "createdAt": 1778569427313,
+      "width": 337,
+      "order": 34,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "157",
+      "name": "users",
+      "schema": "public",
+      "x": -333.07222985751173,
+      "y": -1009.2656254027879,
+      "fields": [
+        {
+          "id": "158",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778390635628
+        },
+        {
+          "id": "159",
+          "name": "email",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778391266880
+        },
+        {
+          "id": "160",
+          "name": "password",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778391484055,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "161",
+          "name": "username",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778390646288,
+          "characterMaximumLength": "28"
+        },
+        {
+          "id": "162",
+          "name": "fullname",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778390830584,
+          "characterMaximumLength": "32"
+        },
+        {
+          "id": "163",
+          "name": "avatar",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778390861984,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "164",
+          "name": "bio",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778390888222
+        },
+        {
+          "id": "165",
+          "name": "datebirth",
+          "type": {
+            "id": "date",
+            "name": "date"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778391007890
+        },
+        {
+          "id": "166",
+          "name": "role",
+          "type": {
+            "id": "user_role",
+            "name": "user_role"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778771211530
+        },
+        {
+          "id": "167",
+          "name": "sex",
+          "type": {
+            "id": "user_sex",
+            "name": "user_sex"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778391031530
+        },
+        {
+          "id": "168",
+          "name": "phone_number",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778391449319,
+          "characterMaximumLength": "15"
+        },
+        {
+          "id": "169",
+          "name": "country",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778401621258
+        },
+        {
+          "id": "170",
+          "name": "auth_provider",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778515919288,
+          "characterMaximumLength": "64"
+        },
+        {
+          "id": "171",
+          "name": "provider_token",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778515934284,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "172",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778517117468,
+          "default": "now()"
+        },
+        {
+          "id": "173",
+          "name": "verified_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778815129265
+        },
+        {
+          "id": "174",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778517127447
+        },
+        {
+          "id": "175",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778517147463
+        }
+      ],
+      "indexes": [
+        {
+          "id": "176",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "158"
+          ],
+          "createdAt": 1778390635628,
+          "isPrimaryKey": true
+        },
+        {
+          "id": "177",
+          "name": "index_2",
+          "unique": true,
+          "fieldIds": [
+            "161"
+          ],
+          "createdAt": 1778401234711
+        },
+        {
+          "id": "178",
+          "name": "index_3",
+          "unique": true,
+          "fieldIds": [
+            "159"
+          ],
+          "createdAt": 1778401248519
+        }
+      ],
+      "checkConstraints": [],
+      "color": "#4dee8a",
+      "isView": false,
+      "createdAt": 1778390635628,
+      "width": 337,
+      "order": 26,
+      "expanded": true,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "179",
+      "name": "video_submissions",
+      "schema": "public",
+      "x": 1034.3413138628948,
+      "y": 376.2391754093071,
+      "fields": [
+        {
+          "id": "180",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777362610195
+        },
+        {
+          "id": "181",
+          "name": "video_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777362624424
+        },
+        {
+          "id": "182",
+          "name": "created_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777362635996,
+          "comments": ""
+        },
+        {
+          "id": "183",
+          "name": "reviewed_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777362758238
+        },
+        {
+          "id": "184",
+          "name": "status",
+          "type": {
+            "id": "status_submission",
+            "name": "status_submission"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777362700148,
+          "default": "pending",
+          "comments": ""
+        },
+        {
+          "id": "185",
+          "name": "reviewed_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777363627973
+        },
+        {
+          "id": "186",
+          "name": "reason",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777363674757
+        },
+        {
+          "id": "187",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777363686543,
+          "default": "now()"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "188",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "180"
+          ],
+          "createdAt": 1777362610195,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777362610195,
+      "width": 337,
+      "order": 24,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "189",
+      "name": "media_age_ratings",
+      "schema": "public",
+      "x": -679.7484316247582,
+      "y": 342.88283833657397,
+      "fields": [
+        {
+          "id": "190",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "191",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "64"
+        },
+        {
+          "id": "192",
+          "name": "min_age",
+          "type": {
+            "id": "smallint",
+            "name": "smallint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        }
+      ],
+      "indexes": [
+        {
+          "id": "193",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "190"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 7,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "194",
+      "name": "media_trailers",
+      "schema": "public",
+      "x": -679.0151464808563,
+      "y": -319.10973511128714,
+      "fields": [
+        {
+          "id": "195",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "196",
+          "name": "url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "197",
+          "name": "embed_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "198",
+          "name": "small_image_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "199",
+          "name": "medium_image_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "200",
+          "name": "large_image_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "201",
+          "name": "maximum_image_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "202",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "195"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 2,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "203",
+      "name": "collection_members",
+      "schema": "public",
+      "x": -338.05774312036385,
+      "y": -1466.6668409654785,
+      "fields": [
+        {
+          "id": "204",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778766471107
+        },
+        {
+          "id": "205",
+          "name": "collection_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778766493931
+        },
+        {
+          "id": "206",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778766580515
+        },
+        {
+          "id": "207",
+          "name": "access_level",
+          "type": {
+            "id": "collection_access_level",
+            "name": "collection_access_level"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778766832324
+        },
+        {
+          "id": "208",
+          "name": "invited_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778766846050
+        },
+        {
+          "id": "209",
+          "name": "joined_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778766841216
+        }
+      ],
+      "indexes": [
+        {
+          "id": "210",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "204"
+          ],
+          "createdAt": 1778766471107,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#9ef07a",
+      "isView": false,
+      "createdAt": 1778766471107,
+      "width": 337,
+      "order": 38,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "211",
+      "name": "media_collections",
+      "schema": "public",
+      "x": 197.36608531341386,
+      "y": -468.796634019804,
+      "fields": [
+        {
+          "id": "212",
+          "name": "collection_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778733152986
+        },
+        {
+          "id": "213",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778733195744
+        },
+        {
+          "id": "214",
+          "name": "added_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778733169676
+        },
+        {
+          "id": "215",
+          "name": "added_at",
+          "type": {
+            "id": "bigint",
+            "name": "bigint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778733189272
+        }
+      ],
+      "indexes": [
+        {
+          "id": "216",
+          "name": "index_1",
+          "unique": true,
+          "fieldIds": [
+            "212",
+            "213"
+          ],
+          "createdAt": 1778733335908
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1778733152986,
+      "order": 36,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "217",
+      "name": "user_follows",
+      "schema": "public",
+      "x": 200.64283100307347,
+      "y": -1141.2347344393859,
+      "fields": [
+        {
+          "id": "218",
+          "name": "follower_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778401701334
+        },
+        {
+          "id": "219",
+          "name": "following_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778401722682
+        },
+        {
+          "id": "220",
+          "name": "followed_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778401734762
+        }
+      ],
+      "indexes": [
+        {
+          "id": "221",
+          "name": "index_1",
+          "unique": true,
+          "fieldIds": [
+            "219",
+            "218"
+          ],
+          "createdAt": 1778401874053
+        }
+      ],
+      "checkConstraints": [
+        {
+          "id": "jx7knny2zwx9u3pt9y2eowuoc",
+          "expression": "follower_id <> following_id",
+          "createdAt": 1778402111741
+        }
+      ],
+      "color": "#9ef07a",
+      "isView": false,
+      "createdAt": 1778401701334,
+      "width": 224,
+      "order": 28,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "222",
+      "name": "media_relations",
+      "schema": "public",
+      "x": 194.39903094287618,
+      "y": -61.06914750749248,
+      "fields": [
+        {
+          "id": "223",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "224",
+          "name": "target_media",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092
+        },
+        {
+          "id": "225",
+          "name": "relation",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589092,
+          "characterMaximumLength": "50"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "226",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "223",
+            "224"
+          ],
+          "createdAt": 1777282589092,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777282589092,
+      "order": 1,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "227",
+      "name": "media_explicit_genres",
+      "schema": "public",
+      "x": -681.3338818918861,
+      "y": 628.1224828360978,
+      "fields": [
+        {
+          "id": "228",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777283776082
+        },
+        {
+          "id": "229",
+          "name": "genre_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777283808941
+        }
+      ],
+      "indexes": [
+        {
+          "id": "230",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "228",
+            "229"
+          ],
+          "createdAt": 1777283776082,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777283776082,
+      "comments": "composite primary key = media_id + genre_id ",
+      "order": 19,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "231",
+      "name": "media_statuses",
+      "schema": "public",
+      "x": -679.4669719043579,
+      "y": 219.3548090436041,
+      "fields": [
+        {
+          "id": "232",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "233",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "64"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "234",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "232"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 6,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "235",
+      "name": "collections",
+      "schema": "public",
+      "x": 206.14708211340167,
+      "y": -1637.469796851602,
+      "fields": [
+        {
+          "id": "236",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778733394970
+        },
+        {
+          "id": "237",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778733410192,
+          "characterMaximumLength": "64",
+          "default": null
+        },
+        {
+          "id": "238",
+          "name": "cover_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778733428870,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "239",
+          "name": "privacy_level",
+          "type": {
+            "id": "privacy_level",
+            "name": "privacy_level"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778766528943
+        },
+        {
+          "id": "240",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778733453130
+        },
+        {
+          "id": "241",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778733477620
+        }
+      ],
+      "indexes": [
+        {
+          "id": "242",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "236"
+          ],
+          "createdAt": 1778733394970,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#9ef07a",
+      "isView": false,
+      "createdAt": 1778733394970,
+      "order": 37,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "243",
+      "name": "video_services",
+      "schema": "public",
+      "x": 78.02893671625938,
+      "y": 1219.199725842667,
+      "fields": [
+        {
+          "id": "244",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "245",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "155"
+        },
+        {
+          "id": "246",
+          "name": "resolution",
+          "type": {
+            "id": "smallint",
+            "name": "smallint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "247",
+          "name": "domain",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "248",
+          "name": "image_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "249",
+          "name": "hex_color",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "10"
+        },
+        {
+          "id": "250",
+          "name": "endpoint_video",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "251",
+          "name": "endpoint_short",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "252",
+          "name": "endpoint_image",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "253",
+          "name": "endpoint_download",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "254",
+          "name": "created_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "255",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "256",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "257",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        }
+      ],
+      "indexes": [
+        {
+          "id": "258",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "244"
+          ],
+          "createdAt": 1777282589094,
+          "isPrimaryKey": true
+        },
+        {
+          "id": "259",
+          "name": "idx_video_services_name_resolution",
+          "unique": true,
+          "fieldIds": [
+            "245",
+            "246"
+          ],
+          "createdAt": 1777282589094
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777282589094,
+      "width": 337,
+      "order": 16,
+      "expanded": true,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "260",
+      "name": "media_licencors",
+      "schema": "public",
+      "x": 194.15644602007046,
+      "y": 251.9575649519487,
+      "fields": [
+        {
+          "id": "261",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777360331507
+        },
+        {
+          "id": "262",
+          "name": "producer_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777360363236
+        }
+      ],
+      "indexes": [
+        {
+          "id": "263",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "261",
+            "262"
+          ],
+          "createdAt": 1777360331507,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777360331507,
+      "order": 22,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "264",
+      "name": "user_sessions",
+      "schema": "public",
+      "x": -1381.9054198604924,
+      "y": -1329.3058623634636,
+      "fields": [
+        {
+          "id": "265",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778814742487
+        },
+        {
+          "id": "266",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778814761364
+        },
+        {
+          "id": "267",
+          "name": "device_type",
+          "type": {
+            "id": "device_type",
+            "name": "device_type"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778814807191
+        },
+        {
+          "id": "268",
+          "name": "os_type",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778814771991,
+          "characterMaximumLength": "50",
+          "default": null
+        },
+        {
+          "id": "269",
+          "name": "os_version",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778814781826,
+          "characterMaximumLength": "50"
+        },
+        {
+          "id": "270",
+          "name": "browser_name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778814787821,
+          "characterMaximumLength": "50"
+        },
+        {
+          "id": "271",
+          "name": "browser_version",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778814794245,
+          "characterMaximumLength": "50"
+        },
+        {
+          "id": "272",
+          "name": "ip_login",
+          "type": {
+            "id": "inet",
+            "name": "inet"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778814801981
+        },
+        {
+          "id": "273",
+          "name": "login_at",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778814816604
+        },
+        {
+          "id": "274",
+          "name": "logout_at",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778814877334
+        }
+      ],
+      "indexes": [
+        {
+          "id": "275",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "265"
+          ],
+          "createdAt": 1778814742487,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#4dee8a",
+      "isView": false,
+      "createdAt": 1778814742487,
+      "order": 44,
+      "expanded": true,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "276",
+      "name": "comment_audit_logs",
+      "schema": "public",
+      "x": -1031.768269593756,
+      "y": -322.47738647771854,
+      "fields": [
+        {
+          "id": "277",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778772275091
+        },
+        {
+          "id": "278",
+          "name": "comment_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778772293834
+        },
+        {
+          "id": "279",
+          "name": "performed_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778772315274
+        },
+        {
+          "id": "280",
+          "name": "action",
+          "type": {
+            "id": "audit_action",
+            "name": "audit_action"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778772326253
+        },
+        {
+          "id": "281",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778772335038
+        }
+      ],
+      "indexes": [
+        {
+          "id": "282",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "277"
+          ],
+          "createdAt": 1778772275091,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#b067e9",
+      "isView": false,
+      "createdAt": 1778772275091,
+      "order": 40,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "283",
+      "name": "comment_likes",
+      "schema": "public",
+      "x": -1435.9285690968027,
+      "y": 209.11179406446968,
+      "fields": [
+        {
+          "id": "284",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778808096764
+        },
+        {
+          "id": "285",
+          "name": "comment_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778808185625
+        },
+        {
+          "id": "286",
+          "name": "type",
+          "type": {
+            "id": "like_type",
+            "name": "like_type"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778808192863
+        },
+        {
+          "id": "287",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778808284226
+        }
+      ],
+      "indexes": [
+        {
+          "id": "288",
+          "name": "index_1",
+          "unique": true,
+          "fieldIds": [
+            "285",
+            "284"
+          ],
+          "createdAt": 1778808299354
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1778808096764,
+      "order": 43,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "289",
+      "name": "video_service_submissions",
+      "schema": "public",
+      "x": -371.1847878375677,
+      "y": 1294.289208047582,
+      "fields": [
+        {
+          "id": "290",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777362610195
+        },
+        {
+          "id": "291",
+          "name": "video_service_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777362624424
+        },
+        {
+          "id": "292",
+          "name": "created_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777362635996,
+          "comments": ""
+        },
+        {
+          "id": "293",
+          "name": "status",
+          "type": {
+            "id": "status_submission",
+            "name": "status_submission"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777362700148,
+          "default": "pending",
+          "comments": ""
+        },
+        {
+          "id": "294",
+          "name": "reviewed_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777362758238
+        },
+        {
+          "id": "295",
+          "name": "reviewed_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777363627973
+        },
+        {
+          "id": "296",
+          "name": "reason",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777363674757
+        },
+        {
+          "id": "297",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777363686543,
+          "default": "now()"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "298",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "290"
+          ],
+          "createdAt": 1777362610195,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777362610195,
+      "width": 337,
+      "order": 24,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "299",
+      "name": "provisioned_users",
+      "schema": "public",
+      "x": 204.8991215430349,
+      "y": -1369.625291260797,
+      "fields": [
+        {
+          "id": "300",
+          "name": "provisioned_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778517368377
+        },
+        {
+          "id": "301",
+          "name": "provisioned_to",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778517463769
+        },
+        {
+          "id": "302",
+          "name": "provisioned_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778517476998
+        },
+        {
+          "id": "303",
+          "name": "reason",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778517492646,
+          "characterMaximumLength": "255"
+        }
+      ],
+      "indexes": [],
+      "color": "#9ef07a",
+      "isView": false,
+      "createdAt": 1778517368377,
+      "order": 30,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "304",
+      "name": "comment_reports",
+      "schema": "public",
+      "x": -1032.5934799775514,
+      "y": -655.2659179217417,
+      "fields": [
+        {
+          "id": "305",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778777460892
+        },
+        {
+          "id": "306",
+          "name": "reporter_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778777475869
+        },
+        {
+          "id": "307",
+          "name": "comment_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778777483534
+        },
+        {
+          "id": "308",
+          "name": "title",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778777515056,
+          "characterMaximumLength": "115"
+        },
+        {
+          "id": "309",
+          "name": "status",
+          "type": {
+            "id": "status_submission",
+            "name": "status_submission"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778777836090
+        },
+        {
+          "id": "310",
+          "name": "description",
+          "type": {
+            "id": "text",
+            "name": "text"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778777519944
+        },
+        {
+          "id": "311",
+          "name": "reported_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778777537682
+        },
+        {
+          "id": "312",
+          "name": "closed_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778777545373
+        }
+      ],
+      "indexes": [],
+      "color": "#b067e9",
+      "isView": false,
+      "createdAt": 1778777460892,
+      "order": 42,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "313",
+      "name": "user_preferences",
+      "schema": "public",
+      "x": -675.7144111335546,
+      "y": -1493.2312805453928,
+      "fields": [
+        {
+          "id": "314",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778517633815
+        },
+        {
+          "id": "315",
+          "name": "character_as_partner",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778518390023
+        },
+        {
+          "id": "316",
+          "name": "comment_picture",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778551730755,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "317",
+          "name": "enable_watch_history",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778548806729,
+          "default": "true"
+        },
+        {
+          "id": "318",
+          "name": "enable_search_history",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778548790804,
+          "default": "false"
+        },
+        {
+          "id": "319",
+          "name": "is_private_account",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778518216561,
+          "default": "false"
+        },
+        {
+          "id": "320",
+          "name": "can_message_me",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778518177601,
+          "default": "true"
+        },
+        {
+          "id": "321",
+          "name": "publish_birthday",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778518242632,
+          "default": "false"
+        },
+        {
+          "id": "322",
+          "name": "publish_email",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778518265111,
+          "default": "false"
+        },
+        {
+          "id": "323",
+          "name": "publish_phone_number",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778518273456,
+          "default": "false"
+        },
+        {
+          "id": "324",
+          "name": "publish_country",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778817885185,
+          "default": "false"
+        },
+        {
+          "id": "325",
+          "name": "publish_partner",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778518357114,
+          "default": "true"
+        },
+        {
+          "id": "326",
+          "name": "subscribe_to_newsletter",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778808434279,
+          "default": "true"
+        },
+        {
+          "id": "327",
+          "name": "enable_security_alerts",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778808466008,
+          "default": "true"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "328",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "314"
+          ],
+          "createdAt": 1778517633815,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#4dee8a",
+      "isView": false,
+      "createdAt": 1778517633815,
+      "order": 31,
+      "expanded": true,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "329",
+      "name": "genres",
+      "schema": "public",
+      "x": -1033.3879847948956,
+      "y": 283.68770102274635,
+      "fields": [
+        {
+          "id": "330",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "331",
+          "name": "mal_id",
+          "type": {
+            "id": "smallint",
+            "name": "smallint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "332",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1779208587903,
+          "characterMaximumLength": "100",
+          "default": null
+        },
+        {
+          "id": "333",
+          "name": "slug",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "115"
+        },
+        {
+          "id": "334",
+          "name": "thumbnail_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "335",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "330"
+          ],
+          "createdAt": 1777282589094,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777282589094,
+      "order": 14,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "336",
+      "name": "user_oauth_accounts",
+      "schema": "public",
+      "x": 200.04156829298174,
+      "y": -928.8832495975014,
+      "fields": [
+        {
+          "id": "337",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778516299633
+        },
+        {
+          "id": "338",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778516366928
+        },
+        {
+          "id": "339",
+          "name": "provider_name",
+          "type": {
+            "id": "oauth_provider",
+            "name": "oauth_provider"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778822365657
+        },
+        {
+          "id": "340",
+          "name": "provider_sub",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778516403942,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "341",
+          "name": "provider_email",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778822096844,
+          "characterMaximumLength": "255",
+          "default": null
+        },
+        {
+          "id": "342",
+          "name": "access_token",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778516373206,
+          "characterMaximumLength": "255",
+          "default": null
+        },
+        {
+          "id": "343",
+          "name": "refresh_token",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778822164872,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "344",
+          "name": "last_login",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778516872367
+        },
+        {
+          "id": "345",
+          "name": "expires_at",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1778822177415
+        },
+        {
+          "id": "346",
+          "name": "created_at",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778822183677
+        },
+        {
+          "id": "347",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamptz",
+            "name": "timestamptz"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778822185523
+        }
+      ],
+      "indexes": [
+        {
+          "id": "348",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "337"
+          ],
+          "createdAt": 1778516299633,
+          "isPrimaryKey": true
+        },
+        {
+          "id": "349",
+          "name": "index_2",
+          "unique": true,
+          "fieldIds": [
+            "338",
+            "339"
+          ],
+          "createdAt": 1778516903425
+        }
+      ],
+      "color": "#4dee8a",
+      "isView": false,
+      "createdAt": 1778516299633,
+      "order": 29,
+      "expanded": true,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "350",
+      "name": "episodes",
+      "schema": "public",
+      "x": 196.42495741544377,
+      "y": 550.6255135491608,
+      "fields": [
+        {
+          "id": "351",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "352",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "353",
+          "name": "episode",
+          "type": {
+            "id": "smallint",
+            "name": "smallint"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "354",
+          "name": "mal_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "355",
+          "name": "mal_forum_url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "356",
+          "name": "title",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "155"
+        },
+        {
+          "id": "357",
+          "name": "title_origin",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "155"
+        },
+        {
+          "id": "358",
+          "name": "title_romanji",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "155"
+        },
+        {
+          "id": "359",
+          "name": "aired",
+          "type": {
+            "id": "date",
+            "name": "date"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "360",
+          "name": "filler",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "default": "false"
+        },
+        {
+          "id": "361",
+          "name": "recap",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "default": "false"
+        },
+        {
+          "id": "362",
+          "name": "total_score",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777361135322
+        },
+        {
+          "id": "363",
+          "name": "scored_by",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777361233825
+        },
+        {
+          "id": "364",
+          "name": "videos",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "365",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "366",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "367",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        }
+      ],
+      "indexes": [
+        {
+          "id": "368",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "351"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 9,
+      "expanded": true,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "369",
+      "name": "media_sources",
+      "schema": "public",
+      "x": -680.0105470895069,
+      "y": 97.06852307742538,
+      "fields": [
+        {
+          "id": "370",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "371",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "18"
+        }
+      ],
+      "indexes": [
+        {
+          "id": "372",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "370"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 5,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "373",
+      "name": "media_producers",
+      "schema": "public",
+      "x": 194.9363737010458,
+      "y": 104.92238147821836,
+      "fields": [
+        {
+          "id": "374",
+          "name": "media_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777360177611
+        },
+        {
+          "id": "375",
+          "name": "producer_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777360209223
+        }
+      ],
+      "indexes": [
+        {
+          "id": "376",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "374",
+            "375"
+          ],
+          "createdAt": 1777360177611,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ffe374",
+      "isView": false,
+      "createdAt": 1777360177611,
+      "order": 21,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "377",
+      "name": "videos",
+      "schema": "public",
+      "x": 613.6042418109826,
+      "y": 563.9662290869784,
+      "fields": [
+        {
+          "id": "378",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "379",
+          "name": "service_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "380",
+          "name": "video_code",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "381",
+          "name": "short_code",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "382",
+          "name": "thumbnail_code",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "383",
+          "name": "download_code",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "384",
+          "name": "pending_upload",
+          "type": {
+            "id": "boolean",
+            "name": "boolean"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "default": "true"
+        },
+        {
+          "id": "385",
+          "name": "created_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "386",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "387",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "388",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        }
+      ],
+      "indexes": [
+        {
+          "id": "389",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "378"
+          ],
+          "createdAt": 1777282589094,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777282589094,
+      "order": 15,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "390",
+      "name": "producers",
+      "schema": "public",
+      "x": 614.2665328827337,
+      "y": 137.7660218436568,
+      "fields": [
+        {
+          "id": "391",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "392",
+          "name": "mal_id",
+          "type": {
+            "id": "int",
+            "name": "int"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "393",
+          "name": "type",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "24"
+        },
+        {
+          "id": "394",
+          "name": "name",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "155"
+        },
+        {
+          "id": "395",
+          "name": "url",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094,
+          "characterMaximumLength": "255"
+        },
+        {
+          "id": "396",
+          "name": "created_by",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "397",
+          "name": "deleted_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": true,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "398",
+          "name": "updated_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        },
+        {
+          "id": "399",
+          "name": "created_at",
+          "type": {
+            "id": "timestamp",
+            "name": "timestamp"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589094
+        }
+      ],
+      "indexes": [
+        {
+          "id": "400",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "391"
+          ],
+          "createdAt": 1777282589094,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777282589094,
+      "order": 13,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "401",
+      "name": "voice_actors",
+      "schema": "public",
+      "x": -1034.5971892955995,
+      "y": 536.4407371208936,
+      "fields": [
+        {
+          "id": "402",
+          "name": "id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": true,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1777282589093
+        },
+        {
+          "id": "403",
+          "name": "media_character_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "unique": false,
+          "nullable": false,
+          "primaryKey": false,
+          "createdAt": 1779379833155
+        },
+        {
+          "id": "404",
+          "name": "language",
+          "type": {
+            "id": "varchar",
+            "name": "varchar"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093,
+          "characterMaximumLength": "115"
+        },
+        {
+          "id": "405",
+          "name": "actor_staff",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1777282589093
+        }
+      ],
+      "indexes": [
+        {
+          "id": "406",
+          "name": "",
+          "unique": true,
+          "fieldIds": [
+            "402"
+          ],
+          "createdAt": 1777282589093,
+          "isPrimaryKey": true
+        }
+      ],
+      "color": "#ff9f74",
+      "isView": false,
+      "createdAt": 1777282589093,
+      "order": 11,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "407",
+      "name": "user_genre_preferences",
+      "schema": "public",
+      "x": -1033.5708487432953,
+      "y": -1502.401339834144,
+      "fields": [
+        {
+          "id": "408",
+          "name": "user_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": true,
+          "nullable": false,
+          "createdAt": 1778548513047
+        },
+        {
+          "id": "409",
+          "name": "genre_id",
+          "type": {
+            "id": "uuid",
+            "name": "uuid"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778548529915
+        },
+        {
+          "id": "410",
+          "name": "state",
+          "type": {
+            "id": "user_preference_state",
+            "name": "user_preference_state"
+          },
+          "primaryKey": false,
+          "unique": false,
+          "nullable": false,
+          "createdAt": 1778548535529
+        }
+      ],
+      "indexes": [
+        {
+          "id": "411",
+          "name": "index_1",
+          "unique": true,
+          "fieldIds": [
+            "408",
+            "409"
+          ],
+          "createdAt": 1778548614328
+        }
+      ],
+      "color": "#4dee8a",
+      "isView": false,
+      "createdAt": 1778548513047,
+      "order": 31,
+      "diagramId": "3taaalng0ut0"
+    }
+  ],
+  "relationships": [
+    {
+      "id": "412",
+      "name": "collection_members_collection_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "235",
+      "targetSchema": "public",
+      "targetTableId": "203",
+      "sourceFieldId": "236",
+      "targetFieldId": "205",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778766565819,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "413",
+      "name": "collection_members_invited_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "203",
+      "sourceFieldId": "158",
+      "targetFieldId": "208",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778766863110,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "414",
+      "name": "collection_members_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "203",
+      "sourceFieldId": "158",
+      "targetFieldId": "206",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778766807732,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "415",
+      "name": "comment_audit_logs_comment_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "126",
+      "targetSchema": "public",
+      "targetTableId": "276",
+      "sourceFieldId": "127",
+      "targetFieldId": "278",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777327740,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "416",
+      "name": "comment_audit_logs_performed_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "276",
+      "sourceFieldId": "158",
+      "targetFieldId": "279",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777342519,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "417",
+      "name": "comment_likes_comment_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "126",
+      "targetSchema": "public",
+      "targetTableId": "283",
+      "sourceFieldId": "127",
+      "targetFieldId": "285",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778808350916,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "418",
+      "name": "comment_likes_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "283",
+      "sourceFieldId": "80",
+      "targetFieldId": "284",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778808338630,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "419",
+      "name": "comment_reports_comment_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "126",
+      "targetSchema": "public",
+      "targetTableId": "304",
+      "sourceFieldId": "127",
+      "targetFieldId": "307",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777586444,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "420",
+      "name": "comment_reports_reporter_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "304",
+      "sourceFieldId": "158",
+      "targetFieldId": "306",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777570446,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "421",
+      "name": "comments_episode_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "350",
+      "targetSchema": "public",
+      "targetTableId": "126",
+      "sourceFieldId": "351",
+      "targetFieldId": "129",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777292243,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "422",
+      "name": "comments_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "126",
+      "sourceFieldId": "158",
+      "targetFieldId": "128",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778777252269,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "423",
+      "name": "episodes_media_id_medias_id",
+      "sourceSchema": "public",
+      "sourceTableId": "350",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "352",
+      "targetFieldId": "80",
+      "sourceCardinality": "many",
+      "targetCardinality": "one",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "424",
+      "name": "episodes_videos_videos_id",
+      "sourceSchema": "public",
+      "sourceTableId": "350",
+      "targetSchema": "public",
+      "targetTableId": "377",
+      "sourceFieldId": "364",
+      "targetFieldId": "378",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777282589095,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "425",
+      "name": "genre_selected_genre_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "329",
+      "targetSchema": "public",
+      "targetTableId": "407",
+      "sourceFieldId": "330",
+      "targetFieldId": "409",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778548598785,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "426",
+      "name": "genre_selected_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "313",
+      "targetSchema": "public",
+      "targetTableId": "407",
+      "sourceFieldId": "314",
+      "targetFieldId": "408",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778548583401,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "427",
+      "name": "genres_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "329",
+      "targetSchema": "public",
+      "targetTableId": "75",
+      "sourceFieldId": "330",
+      "targetFieldId": "77",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777295361546,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "428",
+      "name": "home_media_banner_created_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "50",
+      "sourceFieldId": "158",
+      "targetFieldId": "53",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778771806907,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "429",
+      "name": "home_media_banner_media_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "50",
+      "sourceFieldId": "80",
+      "targetFieldId": "52",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778771781222,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "430",
+      "name": "media_characters_characters_characters_id",
+      "sourceSchema": "public",
+      "sourceTableId": "33",
+      "targetSchema": "public",
+      "targetTableId": "5",
+      "sourceFieldId": "36",
+      "targetFieldId": "6",
+      "sourceCardinality": "many",
+      "targetCardinality": "one",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "431",
+      "name": "media_characters_voice_actor_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "33",
+      "targetSchema": "public",
+      "targetTableId": "401",
+      "sourceFieldId": "38",
+      "targetFieldId": "403",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1779379852942,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "432",
+      "name": "media_collections_added_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "211",
+      "sourceFieldId": "158",
+      "targetFieldId": "214",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778733368958,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "433",
+      "name": "media_collections_collection_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "235",
+      "targetSchema": "public",
+      "targetTableId": "211",
+      "sourceFieldId": "236",
+      "targetFieldId": "212",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778733702652,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "434",
+      "name": "media_demographics_genre_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "329",
+      "targetSchema": "public",
+      "targetTableId": "1",
+      "sourceFieldId": "330",
+      "targetFieldId": "3",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1779211061425,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "435",
+      "name": "media_explicit_genres_genre_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "329",
+      "targetSchema": "public",
+      "targetTableId": "227",
+      "sourceFieldId": "330",
+      "targetFieldId": "229",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777283900006,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "436",
+      "name": "media_explicit_genres_media_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "227",
+      "sourceFieldId": "109",
+      "targetFieldId": "228",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777283887322,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "437",
+      "name": "media_external_links_media_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "59",
+      "sourceFieldId": "80",
+      "targetFieldId": "61",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777299855251,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "438",
+      "name": "media_external_links_media_id_medias_id",
+      "sourceSchema": "public",
+      "sourceTableId": "59",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "61",
+      "targetFieldId": "80",
+      "sourceCardinality": "many",
+      "targetCardinality": "one",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "439",
+      "name": "media_genres_genre_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "329",
+      "targetSchema": "public",
+      "targetTableId": "16",
+      "sourceFieldId": "330",
+      "targetFieldId": "18",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777283616203,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "440",
+      "name": "media_genres_media_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "16",
+      "sourceFieldId": "108",
+      "targetFieldId": "17",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777283611719,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "441",
+      "name": "media_producers_producer_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "390",
+      "targetSchema": "public",
+      "targetTableId": "373",
+      "sourceFieldId": "391",
+      "targetFieldId": "375",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777360252829,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "442",
+      "name": "media_relations_target_media_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "222",
+      "sourceFieldId": "80",
+      "targetFieldId": "224",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777299808576,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "443",
+      "name": "media_relations_target_media_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "222",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "224",
+      "targetFieldId": "80",
+      "sourceCardinality": "one",
+      "targetCardinality": "one",
+      "createdAt": 1777299804996,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "444",
+      "name": "media_relations_target_media_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "222",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "224",
+      "targetFieldId": "80",
+      "sourceCardinality": "one",
+      "targetCardinality": "one",
+      "createdAt": 1777299795695,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "445",
+      "name": "media_relations_target_media_medias_id",
+      "sourceSchema": "public",
+      "sourceTableId": "222",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "224",
+      "targetFieldId": "80",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "446",
+      "name": "media_submissions_media_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "40",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "42",
+      "targetFieldId": "80",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777636061160,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "447",
+      "name": "media_submissions_media_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "40",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "42",
+      "targetFieldId": "80",
+      "sourceCardinality": "one",
+      "targetCardinality": "one",
+      "createdAt": 1777364362256,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "448",
+      "name": "media_types_id_medias_type",
+      "sourceSchema": "public",
+      "sourceTableId": "148",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "149",
+      "targetFieldId": "91",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "449",
+      "name": "medias_age_rating_media_age_ratings_id",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "189",
+      "sourceFieldId": "97",
+      "targetFieldId": "190",
+      "sourceCardinality": "many",
+      "targetCardinality": "one",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "450",
+      "name": "medias_characters_media_characters_id",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "33",
+      "sourceFieldId": "114",
+      "targetFieldId": "35",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "451",
+      "name": "medias_country_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "21",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "22",
+      "targetFieldId": "103",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778402285202,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "452",
+      "name": "medias_demographics_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "1",
+      "sourceFieldId": "111",
+      "targetFieldId": "2",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1779211057969,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "453",
+      "name": "medias_external_links_media_external_links_id",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "59",
+      "sourceFieldId": "113",
+      "targetFieldId": "60",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "454",
+      "name": "medias_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "211",
+      "sourceFieldId": "80",
+      "targetFieldId": "213",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778733359073,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "455",
+      "name": "medias_licensors_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "260",
+      "sourceFieldId": "106",
+      "targetFieldId": "261",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777360403880,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "456",
+      "name": "medias_producers_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "373",
+      "sourceFieldId": "105",
+      "targetFieldId": "374",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777360239834,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "457",
+      "name": "medias_relations_media_relations_id",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "222",
+      "sourceFieldId": "112",
+      "targetFieldId": "223",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "458",
+      "name": "medias_source_media_sources_id",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "369",
+      "sourceFieldId": "92",
+      "targetFieldId": "370",
+      "sourceCardinality": "many",
+      "targetCardinality": "one",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "459",
+      "name": "medias_status_media_statuses_id",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "231",
+      "sourceFieldId": "93",
+      "targetFieldId": "232",
+      "sourceCardinality": "many",
+      "targetCardinality": "one",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "460",
+      "name": "medias_studios_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "122",
+      "sourceFieldId": "107",
+      "targetFieldId": "123",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777360574406,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "461",
+      "name": "medias_themes_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "75",
+      "sourceFieldId": "110",
+      "targetFieldId": "76",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777295350412,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "462",
+      "name": "medias_trailers_media_trailers_id",
+      "sourceSchema": "public",
+      "sourceTableId": "79",
+      "targetSchema": "public",
+      "targetTableId": "194",
+      "sourceFieldId": "86",
+      "targetFieldId": "195",
+      "sourceCardinality": "one",
+      "targetCardinality": "one",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "463",
+      "name": "producers_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "390",
+      "targetSchema": "public",
+      "targetTableId": "122",
+      "sourceFieldId": "391",
+      "targetFieldId": "124",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777360597827,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "464",
+      "name": "producers_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "390",
+      "targetSchema": "public",
+      "targetTableId": "260",
+      "sourceFieldId": "391",
+      "targetFieldId": "262",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1777360416280,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "465",
+      "name": "provisioned_users_provisioned_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "299",
+      "sourceFieldId": "158",
+      "targetFieldId": "300",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778517515380,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "466",
+      "name": "provisioned_users_provisioned_to_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "299",
+      "sourceFieldId": "158",
+      "targetFieldId": "301",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778517541887,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "467",
+      "name": "rating_selected_rating_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "189",
+      "targetSchema": "public",
+      "targetTableId": "144",
+      "sourceFieldId": "190",
+      "targetFieldId": "146",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778548767353,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "468",
+      "name": "rating_selected_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "313",
+      "targetSchema": "public",
+      "targetTableId": "144",
+      "sourceFieldId": "314",
+      "targetFieldId": "145",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778548748682,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "469",
+      "name": "user_addresses_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "65",
+      "targetSchema": "public",
+      "targetTableId": "157",
+      "sourceFieldId": "66",
+      "targetFieldId": "158",
+      "sourceCardinality": "one",
+      "targetCardinality": "one",
+      "createdAt": 1778816615538,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "470",
+      "name": "user_country_preferences_country_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "21",
+      "targetSchema": "public",
+      "targetTableId": "29",
+      "sourceFieldId": "22",
+      "targetFieldId": "31",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778549061296,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "471",
+      "name": "user_country_preferences_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "313",
+      "targetSchema": "public",
+      "targetTableId": "29",
+      "sourceFieldId": "314",
+      "targetFieldId": "30",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778549044482,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "472",
+      "name": "user_follows_follower_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "217",
+      "sourceFieldId": "158",
+      "targetFieldId": "218",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778402073659,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "473",
+      "name": "user_follows_following_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "217",
+      "sourceFieldId": "158",
+      "targetFieldId": "219",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778402077836,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "474",
+      "name": "user_oauth_credentials_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "336",
+      "sourceFieldId": "158",
+      "targetFieldId": "338",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778822260934,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "475",
+      "name": "user_preferences_character_as_partner_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "5",
+      "targetSchema": "public",
+      "targetTableId": "313",
+      "sourceFieldId": "6",
+      "targetFieldId": "315",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778518451836,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "476",
+      "name": "user_preferences_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "313",
+      "targetSchema": "public",
+      "targetTableId": "157",
+      "sourceFieldId": "314",
+      "targetFieldId": "158",
+      "sourceCardinality": "one",
+      "targetCardinality": "one",
+      "createdAt": 1778517654898,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "477",
+      "name": "user_sessions_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "264",
+      "sourceFieldId": "158",
+      "targetFieldId": "266",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778815073839,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "478",
+      "name": "user_watch_histories_episode_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "350",
+      "targetSchema": "public",
+      "targetTableId": "152",
+      "sourceFieldId": "351",
+      "targetFieldId": "154",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778732139998,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "479",
+      "name": "user_watch_histories_user_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "152",
+      "sourceFieldId": "158",
+      "targetFieldId": "153",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778731708617,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "480",
+      "name": "users_country_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "21",
+      "sourceFieldId": "169",
+      "targetFieldId": "22",
+      "sourceCardinality": "one",
+      "targetCardinality": "one",
+      "createdAt": 1778401651979,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "481",
+      "name": "video_service_submissions_video_service_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "289",
+      "targetSchema": "public",
+      "targetTableId": "243",
+      "sourceFieldId": "291",
+      "targetFieldId": "244",
+      "sourceCardinality": "one",
+      "targetCardinality": "one",
+      "createdAt": 1777364068966,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "482",
+      "name": "video_submissions_created_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "179",
+      "sourceFieldId": "158",
+      "targetFieldId": "182",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778732667055,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "483",
+      "name": "video_submissions_reviewed_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "179",
+      "sourceFieldId": "158",
+      "targetFieldId": "183",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1778732708490,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "484",
+      "name": "video_submissions_video_id_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "179",
+      "targetSchema": "public",
+      "targetTableId": "377",
+      "sourceFieldId": "181",
+      "targetFieldId": "378",
+      "sourceCardinality": "one",
+      "targetCardinality": "one",
+      "createdAt": 1778732648012,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "485",
+      "name": "videos_service_id_video_services_id",
+      "sourceSchema": "public",
+      "sourceTableId": "377",
+      "targetSchema": "public",
+      "targetTableId": "243",
+      "sourceFieldId": "379",
+      "targetFieldId": "244",
+      "sourceCardinality": "many",
+      "targetCardinality": "one",
+      "createdAt": 1777282589095,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "486",
+      "name": "voice_actors_actor_staff_staff_id",
+      "sourceSchema": "public",
+      "sourceTableId": "401",
+      "targetSchema": "public",
+      "targetTableId": "135",
+      "sourceFieldId": "405",
+      "targetFieldId": "136",
+      "sourceCardinality": "many",
+      "targetCardinality": "one",
+      "createdAt": 1777282589094,
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "487",
+      "name": "medias_deleted_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "158",
+      "targetFieldId": "119",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1779410452620
+    },
+    {
+      "id": "488",
+      "name": "medias_updated_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "158",
+      "targetFieldId": "117",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1779410488128
+    },
+    {
+      "id": "489",
+      "name": "medias_created_by_fk",
+      "sourceSchema": "public",
+      "sourceTableId": "157",
+      "targetSchema": "public",
+      "targetTableId": "79",
+      "sourceFieldId": "158",
+      "targetFieldId": "115",
+      "sourceCardinality": "one",
+      "targetCardinality": "many",
+      "createdAt": 1779410515297
+    }
+  ],
+  "dependencies": [],
+  "areas": [],
+  "customTypes": [
+    {
+      "id": "490",
+      "name": "audit_action",
+      "kind": "enum",
+      "values": [
+        "delete",
+        "restore",
+        "edit",
+        "flag"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "491",
+      "name": "collection_access_level",
+      "kind": "enum",
+      "values": [
+        "viewer",
+        "contributor",
+        "moderator",
+        "owner"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "492",
+      "name": "device_type",
+      "kind": "enum",
+      "values": [
+        "mobile",
+        "tablet",
+        "desktop",
+        "unknown"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "493",
+      "name": "like_type",
+      "kind": "enum",
+      "values": [
+        "like",
+        "dislike"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "494",
+      "name": "media_season",
+      "kind": "enum",
+      "values": [
+        "winter",
+        "spring",
+        "summer",
+        "fall"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "495",
+      "name": "oauth_provider",
+      "kind": "enum",
+      "values": [
+        "google",
+        "github"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "496",
+      "name": "privacy_level",
+      "kind": "enum",
+      "values": [
+        "private",
+        "unlisted",
+        "public"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "497",
+      "name": "status_submission",
+      "kind": "enum",
+      "values": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "498",
+      "name": "user_preference_state",
+      "kind": "enum",
+      "values": [
+        "exclude",
+        "include"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "499",
+      "name": "user_role",
+      "kind": "enum",
+      "values": [
+        "user",
+        "contributor",
+        "curator",
+        "administrator"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    },
+    {
+      "id": "500",
+      "name": "user_sex",
+      "kind": "enum",
+      "values": [
+        "female",
+        "male"
+      ],
+      "fields": [],
+      "diagramId": "3taaalng0ut0"
+    }
+  ],
+  "notes": []
+}
