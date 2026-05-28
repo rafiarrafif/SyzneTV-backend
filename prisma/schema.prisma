@@ -178,7 +178,6 @@ model UserOauthAccounts {
   provider_token  String? @db.VarChar(255)
   refresh_token   String? @db.VarChar(255)
   expires_at      DateTime? @db.Timestamptz()
-  last_login      DateTime @default(now()) @db.Timestamptz()
   created_at      DateTime @default(now()) @db.Timestamptz()
   updated_at      DateTime @updatedAt @db.Timestamptz()
 
@@ -204,7 +203,7 @@ model UserSession {
 
 model UserPreference {
   user                    User @relation(fields: [user_id], references: [id])
-  char_as_partner         Character @relation(fields: [char_as_partner_id], references: [id])
+  char_as_partner         Character? @relation(fields: [char_as_partner_id], references: [id])
   comment_picture         String? @db.VarChar(255)
   enable_watch_history    Boolean @default(true)
   enable_search_history   Boolean @default(false)
@@ -221,8 +220,8 @@ model UserPreference {
   rating_preferences      UserRatingPreference[]
   country_preferences     UserCountryPreference[]
 
-  user_id             String @id @db.Uuid
-  char_as_partner_id  String @db.Uuid
+  user_id             String  @id @db.Uuid
+  char_as_partner_id  String? @db.Uuid
   @@map("user_preferences")
 }
 

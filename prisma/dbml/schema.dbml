@@ -15,8 +15,6 @@ Table users {
   sex user_sex
   phone_number String
   country countries
-  auth_provider String
-  provider_token String
   address user_addresses
   preferences user_preferences
   created_at DateTime [default: `now()`, not null]
@@ -76,7 +74,6 @@ Table user_oauth_accounts {
   provider_token String
   refresh_token String
   expires_at DateTime
-  last_login DateTime [default: `now()`, not null]
   created_at DateTime [default: `now()`, not null]
   updated_at DateTime [not null]
   user_id String [not null]
@@ -98,7 +95,7 @@ Table user_sessions {
 
 Table user_preferences {
   user users [not null]
-  char_as_partner characters [not null]
+  char_as_partner characters
   comment_picture String
   enable_watch_history Boolean [not null, default: true]
   enable_search_history Boolean [not null, default: false]
@@ -115,7 +112,7 @@ Table user_preferences {
   rating_preferences user_rating_preferences [not null]
   country_preferences user_country_preferences [not null]
   user_id String [pk]
-  char_as_partner_id String [not null]
+  char_as_partner_id String
 }
 
 Table user_genre_preferences {
