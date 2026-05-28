@@ -88,6 +88,7 @@ Table user_sessions {
   browser_name String
   browser_version String
   ip_login String
+  valid_until DateTime [not null]
   login_at DateTime [default: `now()`, not null]
   logout_at DateTime
   user_id String [not null]

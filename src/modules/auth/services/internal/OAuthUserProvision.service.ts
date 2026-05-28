@@ -5,6 +5,7 @@ import { createUserViaOauth } from "../../../user/user.types";
 import { createUserService } from "../../../user/services/internal/createUser.service";
 import { AppError } from "../../../../helpers/error/instances/app";
 import { findAuthIdentityByEmailAndProviderRepository } from "../../repositories/READ/findAuthIdentityByEmailAndProvider.repository";
+import { createUserWithOAuthCredentialsRepository } from "../../repositories/WRITE/createUserWithOAuthCredentials.repository";
 
 export const OAuthUserProvisionService = async (payload: createUserViaOauth, userHeaderInfo: UserHeaderInformation) => {
   try {
@@ -18,7 +19,7 @@ export const OAuthUserProvisionService = async (payload: createUserViaOauth, use
       return await createUserSessionService(checkExistingUser.id, userHeaderInfo);
     } else if (!checkExistingUser) {
       // No user with this email, create new user
-      const createdUser = await createUserService(payload);
+      const createdUser = await createUserWithOAuthCredentialsRepository(payload);
       return await createUserSessionService(createdUser.id, userHeaderInfo);
     }
 

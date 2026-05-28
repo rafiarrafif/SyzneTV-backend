@@ -20,7 +20,7 @@ export interface createUserViaRegisterInput {
 }
 export interface createUserViaOauth extends createUserViaRegisterInput {
   oauthProvider: {
-    providerName: string;
+    providerName: "google" | "github";
     sub: string;
     token: string;
     refreshToken?: string;

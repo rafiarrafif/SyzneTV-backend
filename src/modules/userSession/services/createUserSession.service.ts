@@ -29,7 +29,7 @@ export const createUserSessionService = async (userId: string, userHeaderInfo: U
     await createUserSessionInRedisService({
       userId,
       sessionId: createUserSession.id,
-      validUntil: createUserSession.validUntil,
+      validUntil: createUserSession.valid_until,
     });
 
     // create a jwt token with a payload containing the created user session, then return jwt
