@@ -118,8 +118,6 @@ model User {
   sex             user_sex?
   phone_number    String?   @db.VarChar(20)
   country         Country?  @relation(fields: [countryId], references: [id], name: "UserCountry")
-  auth_provider   String?   @db.VarChar(64)
-  provider_token  String?   @db.VarChar(255)
   address         UserAddress?
   preferences     UserPreference?
   created_at      DateTime  @default(now()) @db.Timestamptz()
