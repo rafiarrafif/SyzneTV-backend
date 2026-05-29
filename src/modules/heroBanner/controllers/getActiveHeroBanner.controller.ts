@@ -9,7 +9,7 @@ export const getActiveHeroBannerController = async (ctx: {
   header: Static<typeof getActiveHeroBannerSchema.headers>;
 }) => {
   try {
-    const response = await getActiveHeroBannerService({ cookie: ctx.header?.cookie });
+    const response = await getActiveHeroBannerService();
     return returnReadResponse(ctx.set, 200, "Active hero banners fetched successfully", response);
   } catch (error) {
     return mainErrorHandler(ctx.set, error);

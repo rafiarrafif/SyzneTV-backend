@@ -118,8 +118,6 @@ model User {
   sex             user_sex?
   phone_number    String?   @db.VarChar(20)
   country         Country?  @relation(fields: [countryId], references: [id], name: "UserCountry")
-  auth_provider   String?   @db.VarChar(64)
-  provider_token  String?   @db.VarChar(255)
   address         UserAddress?
   preferences     UserPreference?
   created_at      DateTime  @default(now()) @db.Timestamptz()
@@ -177,10 +175,9 @@ model UserOauthAccounts {
   provider_name   auth_provider
   provider_sub    String? @db.VarChar(255)
   provider_email  String? @db.VarChar(255)
-  provider_token  String? @db.VarChar(255)
-  refresh_token   String? @db.VarChar(255)
+  provider_token  String? @db.Text
+  refresh_token   String? @db.Text
   expires_at      DateTime? @db.Timestamptz()
-  last_login      DateTime @default(now()) @db.Timestamptz()
   created_at      DateTime @default(now()) @db.Timestamptz()
   updated_at      DateTime @updatedAt @db.Timestamptz()
 
@@ -197,7 +194,8 @@ model UserSession {
   browser_name    String?  @db.VarChar(50)
   browser_version String?  @db.VarChar(50)
   ip_login        String?  @db.Inet()
-  login_at        DateTime  @default(now()) @db.Timestamptz()
+  valid_until     DateTime @db.Timestamptz()
+  login_at        DateTime @default(now()) @db.Timestamptz()
   logout_at       DateTime? @db.Timestamptz()
 
   user_id     String   @db.Uuid
@@ -206,7 +204,7 @@ model UserSession {
 
 model UserPreference {
   user                    User @relation(fields: [user_id], references: [id])
-  char_as_partner         Character @relation(fields: [char_as_partner_id], references: [id])
+  char_as_partner         Character? @relation(fields: [char_as_partner_id], references: [id])
   comment_picture         String? @db.VarChar(255)
   enable_watch_history    Boolean @default(true)
   enable_search_history   Boolean @default(false)
@@ -223,8 +221,8 @@ model UserPreference {
   rating_preferences      UserRatingPreference[]
   country_preferences     UserCountryPreference[]
 
-  user_id             String @id @db.Uuid
-  char_as_partner_id  String @db.Uuid
+  user_id             String  @id @db.Uuid
+  char_as_partner_id  String? @db.Uuid
   @@map("user_preferences")
 }
 

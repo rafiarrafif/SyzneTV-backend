@@ -10,20 +10,20 @@ export interface getUserDataOptions {
 export type getUserDataIncludeOptions = "preference" | "roles";
 
 export interface createUserViaRegisterInput {
-  name: string;
+  fullname: string;
   username: string;
   email: string;
-  password: string;
-}
-export interface createUserViaOauth {
-  provider: string;
-  providerId: string;
-  providerToken?: string;
-  providerPayload?: unknown;
-  email: string;
-  username: string;
-  name: string;
+  password?: string;
   avatar?: string;
   bio?: string;
-  password: string;
+  datebirth?: Date;
+}
+export interface createUserViaOauth extends createUserViaRegisterInput {
+  oauthProvider: {
+    providerName: "google" | "github";
+    sub: string;
+    token: string;
+    refreshToken?: string;
+    expiresAt?: Date;
+  };
 }

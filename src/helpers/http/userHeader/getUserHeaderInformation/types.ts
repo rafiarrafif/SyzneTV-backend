@@ -1,6 +1,8 @@
 export interface UserHeaderInformation {
-  ip: string;
+  ip?: string;
   deviceType: string;
-  deviceOS: string;
-  browser: string;
+  osType: string;
+  osVersion: string;
+  browserName: string;
+  browserVersion: string;
 }
