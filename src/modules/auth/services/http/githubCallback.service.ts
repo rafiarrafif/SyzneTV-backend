@@ -1,3 +1,4 @@
+import { email } from "zod";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { UserHeaderInformation } from "../../../../helpers/http/userHeader/getUserHeaderInformation/types";
 import { GithubCallbackUserData } from "../../auth.types";
@@ -6,7 +7,7 @@ import { OAuthUserProvisionService } from "../internal/OAuthUserProvision.servic
 
 export const githubCallbackService = async (
   query: { code: string; callbackURI: string },
-  userHeaderInfo: UserHeaderInformation
+  userHeaderInfo: UserHeaderInformation,
 ) => {
   try {
     // Initialize GitHub provider
@@ -37,21 +38,18 @@ export const githubCallbackService = async (
     // Provision or authenticate the user in the system
     return await OAuthUserProvisionService(
       {
-        provider: "github",
-        providerId: userPayload.user_data.id.toString(),
-        providerToken: accessToken,
-        providerPayload: userPayload,
-        email:
-          userPayload.user_email.find((email) => email.primary === true)
-            ?.email || userPayload.user_email[0].email,
-        username: `git_${userPayload.user_data.id}`,
-        name: userPayload.user_data.name ?? userPayload.user_data.login,
+        fullname: userPayload.user_data.name || userPayload.user_data.login,
+        username: `gh_${userPayload.user_data.id}`,
+        email: userPayload.user_email.find((email) => email.primary)?.email || userPayload.user_email[0]?.email,
         avatar: userPayload.user_data.avatar_url,
-        password: Math.random()
-          .toString(36)
-          .slice(2, 16),
+        bio: userPayload.user_data.bio || undefined,
+        oauthProvider: {
+          providerName: "github",
+          sub: userPayload.user_data.id.toString(),
+          token: accessToken,
+        },
       },
-      userHeaderInfo
+      userHeaderInfo,
     );
   } catch (error) {
     ErrorForwarder(error, 500, "Authentication service error");

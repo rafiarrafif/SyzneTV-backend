@@ -2,7 +2,6 @@ import { UserHeaderInformation } from "../../../../helpers/http/userHeader/getUs
 import { createUserSessionService } from "../../../userSession/services/createUserSession.service";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { createUserViaOauth } from "../../../user/user.types";
-import { createUserService } from "../../../user/services/internal/createUser.service";
 import { AppError } from "../../../../helpers/error/instances/app";
 import { findAuthIdentityByEmailAndProviderRepository } from "../../repositories/READ/findAuthIdentityByEmailAndProvider.repository";
 import { createUserWithOAuthCredentialsRepository } from "../../repositories/WRITE/createUserWithOAuthCredentials.repository";
