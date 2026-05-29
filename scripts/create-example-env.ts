@@ -2,15 +2,7 @@ import fs from "fs";
 import path from "path";
 
 // These keys will not be cleared in the .env.example file
-const PRESERVED_KEYS = [
-  "APP_NAME",
-  "APP_ENV",
-  "PORT",
-  "API_KEY",
-  "ALLOWED_ORIGINS",
-  "REDIS_HOST",
-  "REDIS_PORT",
-];
+const PRESERVED_KEYS = ["APP_NAME", "APP_ENV", "PORT", "ALLOWED_ORIGINS", "REDIS_HOST", "REDIS_PORT"];
 
 /**
  * Script to create or update the .env.example file based on the .env file.

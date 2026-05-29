@@ -8,8 +8,7 @@ export const deleteUserSessionRepository = async (sessionId: string) => {
         id: sessionId,
       },
       data: {
-        isAuthenticated: false,
-        deletedAt: new Date(),
+        logout_at: new Date(),
       },
     });
   } catch (error) {

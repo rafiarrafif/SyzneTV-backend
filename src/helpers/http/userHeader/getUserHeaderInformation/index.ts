@@ -13,10 +13,12 @@ export const getUserHeaderInformation = (clientInfo: string): UserHeaderInformat
   const clientInfoHeader = (JSON.parse(clientInfo) as ClientInfoHeader) ?? ("unknown" as string);
 
   const userHeaderInformation = {
-    ip: clientInfoHeader.ip ?? "unknown",
-    deviceType: clientInfoHeader.deviceType ?? "unknown",
-    deviceOS: (clientInfoHeader.os ?? "unknown") + " " + (clientInfoHeader.osVersion ?? "unknown"),
-    browser: (clientInfoHeader.browser ?? "unknown") + " " + (clientInfoHeader.browserVersion ?? "unknown"),
+    ip: clientInfoHeader.ip,
+    deviceType: clientInfoHeader.deviceType ?? "desktop",
+    osType: clientInfoHeader.os ?? "unknown",
+    osVersion: clientInfoHeader.osVersion ?? "unknown",
+    browserName: clientInfoHeader.browser ?? "unknown",
+    browserVersion: clientInfoHeader.browserVersion ?? "unknown",
   };
 
   return userHeaderInformation;

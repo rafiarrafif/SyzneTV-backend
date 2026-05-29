@@ -12,14 +12,12 @@ export const googleCallbackService = async (
     code: string;
     callbackURI?: string;
   },
-  userHeaderInfo: UserHeaderInformation
+  userHeaderInfo: UserHeaderInformation,
 ) => {
   try {
     // get code and state for validation from params and search for state in redis cache
     const state = query.state;
-    const codeVerifier = await redis.get(
-      `${process.env.APP_NAME}:pkce:${state}`
-    );
+    const codeVerifier = await redis.get(`${process.env.APP_NAME}:pkce:${state}`);
 
     // return error if the state for validation is not found in redis, and delete if found
     if (!codeVerifier) throw new AppError(408, "Request timeout");
@@ -27,21 +25,15 @@ export const googleCallbackService = async (
 
     // create access token with the result of validating the authorization code that compares access code with validator state
     const google = googleProvider(query.callbackURI);
-    const tokens = await google.validateAuthorizationCode(
-      query.code,
-      codeVerifier
-    );
+    const tokens = await google.validateAuthorizationCode(query.code, codeVerifier);
 
     // get user data from Google using the access token that has been created.
     const accessToken = tokens.accessToken();
-    const response = await fetch(
-      "https://openidconnect.googleapis.com/v1/userinfo",
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    );
+    const response = await fetch("https://openidconnect.googleapis.com/v1/userinfo", {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
     // parse the user data response
     const userData = (await response.json()) as GoogleCallbackUserData;
@@ -49,19 +41,17 @@ export const googleCallbackService = async (
     // Provision or authenticate the user in the system
     return await OAuthUserProvisionService(
       {
-        provider: "google",
-        providerId: userData.sub,
-        providerToken: accessToken,
-        providerPayload: userData,
+        fullname: userData.name,
+        username: `gle_${userData.sub}`,
         email: userData.email,
-        username: `goo_${userData.sub}`,
-        name: userData.name,
         avatar: userData.picture,
-        password: Math.random()
-          .toString(36)
-          .slice(2, 16),
+        oauthProvider: {
+          providerName: "google",
+          sub: userData.sub,
+          token: accessToken,
+        },
       },
-      userHeaderInfo
+      userHeaderInfo,
     );
   } catch (error) {
     ErrorForwarder(error, 500, "Authentication service error");

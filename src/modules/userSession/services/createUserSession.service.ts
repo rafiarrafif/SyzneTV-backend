@@ -5,24 +5,21 @@ import { createUserSessionRepository } from "../repositories/createUserSession.r
 import { jwtEncode } from "../../../helpers/http/jwt/encode";
 import { createUserSessionInRedisService } from "./internal/createUserSessionInRedis.service";
 
-export const createUserSessionService = async (
-  userId: string,
-  userHeaderInfo: UserHeaderInformation,
-) => {
+export const createUserSessionService = async (userId: string, userHeaderInfo: UserHeaderInformation) => {
   try {
     // set the date when the token will expire
-    const generateTokenExpirationDate =
-      Date.now() + Number(process.env.SESSION_EXPIRE) * 1000;
+    const generateTokenExpirationDate = Date.now() + Number(process.env.SESSION_EXPIRE) * 1000;
 
     // construct all data to fit the user session input query
     const constructData = {
-      userId,
-      isAuthenticated: true,
-      deviceType: userHeaderInfo.deviceType,
-      deviceOs: userHeaderInfo.deviceOS,
-      deviceIp: userHeaderInfo.ip,
-      browser: userHeaderInfo.browser,
-      validUntil: new Date(generateTokenExpirationDate),
+      user_id: userId,
+      device_type: userHeaderInfo.deviceType,
+      os_type: userHeaderInfo.osType,
+      os_version: userHeaderInfo.osVersion,
+      browser_name: userHeaderInfo.browserName,
+      browser_version: userHeaderInfo.browserVersion,
+      ip_login: userHeaderInfo.ip,
+      valid_until: new Date(generateTokenExpirationDate),
     } as Prisma.UserSessionUncheckedCreateInput;
 
     // insert user session into database
@@ -32,7 +29,7 @@ export const createUserSessionService = async (
     await createUserSessionInRedisService({
       userId,
       sessionId: createUserSession.id,
-      validUntil: createUserSession.validUntil,
+      validUntil: createUserSession.valid_until,
     });
 
     // create a jwt token with a payload containing the created user session, then return jwt
