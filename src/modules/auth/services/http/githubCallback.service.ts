@@ -1,4 +1,3 @@
-import { email } from "zod";
 import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
 import { UserHeaderInformation } from "../../../../helpers/http/userHeader/getUserHeaderInformation/types";
 import { GithubCallbackUserData } from "../../auth.types";
