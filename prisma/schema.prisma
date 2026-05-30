@@ -366,8 +366,6 @@ model Media {
   age_rating_id     String? @db.Uuid
   country_id        String? @db.Uuid
   related_media     MediaRelation[] @relation("MediaRelationRelatedMedia")
-  approver_id       String? @db.Uuid
-  created_by_id     String? @db.Uuid
   updated_by_id     String? @db.Uuid
   deleted_by_id     String? @db.Uuid
   home_media_banners    HomeMediaBanner[]
@@ -407,7 +405,7 @@ model MediaCollection {
 model MediaTrailer {
   media_id        String    @id @db.Uuid
   url             String?   @db.VarChar(255)
-  embed_url       String?   @db.VarChar(255)
+  embed_url       String?   @db.VarChar(255) @unique
   small_image_url String?   @db.VarChar(255)
   large_image_url String?   @db.VarChar(255)
   maximum_image_url String? @db.VarChar(255)
@@ -802,7 +800,7 @@ model Country {
   id      String  @id @db.Uuid @default(uuid(7))
   name    String  @db.VarChar(155)
   slug    String  @db.VarChar(165)
-  code    String  @db.VarChar(3)
+  code    String  @db.VarChar(3) @unique
   flag    String? @db.VarChar(255)
   banner  String? @db.VarChar(255)
 

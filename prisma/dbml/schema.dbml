@@ -252,8 +252,6 @@ Table medias {
   age_rating_id String
   country_id String
   related_media media_relations [not null]
-  approver_id String
-  created_by_id String
   updated_by_id String
   deleted_by_id String
   home_media_banners home_media_banners [not null]
@@ -296,7 +294,7 @@ Table media_collections {
 Table media_trailers {
   media_id String [pk]
   url String
-  embed_url String
+  embed_url String [unique]
   small_image_url String
   large_image_url String
   maximum_image_url String
@@ -661,7 +659,7 @@ Table countries {
   id String [pk]
   name String [not null]
   slug String [not null]
-  code String [not null]
+  code String [unique, not null]
   flag String
   banner String
   UserCountry users [not null]

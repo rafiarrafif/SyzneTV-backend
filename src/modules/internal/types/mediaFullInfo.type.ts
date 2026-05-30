@@ -1,4 +1,4 @@
-import { MediaType } from "@prisma/client";
+import { media_season } from "@prisma/client";
 export interface MediaFullInfoResponse {
   data: Data;
 }
@@ -14,7 +14,7 @@ interface Data {
   title_english: string;
   title_japanese: string;
   title_synonyms: string[];
-  type: MediaType;
+  type: string;
   source: string;
   episodes: number;
   status: string;
@@ -30,7 +30,7 @@ interface Data {
   favorites: number;
   synopsis: string;
   background: string;
-  season: string;
+  season: media_season;
   year: number;
   broadcast: Broadcast;
   producers: Genre[];
