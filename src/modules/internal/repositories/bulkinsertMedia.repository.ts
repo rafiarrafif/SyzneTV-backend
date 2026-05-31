@@ -4,6 +4,7 @@ import { prisma } from "../../../utils/databases/prisma/connection";
 import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
 import { SystemAccountId } from "../../../config/account/system";
+import { bulkInsertMediaProducerStudioLicensorRepository } from "./bulkInsertMediaProducerStudioLicensor.repository";
 
 /**
  * Media Payload Construction and Upsert
@@ -109,10 +110,41 @@ export const InsertMediaRepository = async ({ payload }: { payload: MediaFullInf
       broadcast_day: payload.broadcast.day,
     };
 
-    return await prisma.media.upsert({
-      where: { mal_id: payload.mal_id },
-      create: constructMediaPayload,
-      update: constructMediaPayload,
+    const producerPayload = [
+      ...payload.producers.map((producer) => ({
+        mal_id: producer.mal_id,
+        type: producer.type,
+        name: producer.name,
+        url: producer.url,
+        status: "producer" as const,
+      })),
+      ...payload.licensors.map((licensor) => ({
+        mal_id: licensor.mal_id,
+        type: licensor.type,
+        name: licensor.name,
+        url: licensor.url,
+        status: "licensor" as const,
+      })),
+      ...payload.studios.map((studio) => ({
+        mal_id: studio.mal_id,
+        type: studio.type,
+        name: studio.name,
+        url: studio.url,
+        status: "studio" as const,
+      })),
+    ];
+
+    prisma.$transaction(async (tx) => {
+      const media = await tx.media.upsert({
+        where: { mal_id: payload.mal_id },
+        create: constructMediaPayload,
+        update: constructMediaPayload,
+        select: {
+          id: true,
+        },
+      });
+
+      await bulkInsertMediaProducerStudioLicensorRepository(tx, media.id, producerPayload);
     });
   } catch (error) {
     throw new AppError(500, "Failed to insert media", error);

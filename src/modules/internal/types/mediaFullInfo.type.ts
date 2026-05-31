@@ -33,13 +33,13 @@ interface Data {
   season: media_season;
   year: number;
   broadcast: Broadcast;
-  producers: Genre[];
-  licensors: unknown[];
-  studios: Genre[];
-  genres: Genre[];
-  explicit_genres: unknown[];
-  themes: Genre[];
-  demographics: unknown[];
+  producers: GenreOrProducer[];
+  licensors: GenreOrProducer[];
+  studios: GenreOrProducer[];
+  genres: GenreOrProducer[];
+  explicit_genres: GenreOrProducer[];
+  themes: GenreOrProducer[];
+  demographics: GenreOrProducer[];
   relations: Relation[];
   theme: Theme;
   external: External[];
@@ -76,16 +76,11 @@ interface External {
   url: string;
 }
 
-interface Genre {
+export interface GenreOrProducer {
   mal_id: number;
-  type: Type;
+  type: string;
   name: string;
   url: string;
-}
-
-enum Type {
-  Anime = "anime",
-  Manga = "manga",
 }
 
 interface Image {
@@ -96,7 +91,7 @@ interface Image {
 
 interface Relation {
   relation: string;
-  entry: Genre[];
+  entry: GenreOrProducer[];
 }
 
 interface Theme {
