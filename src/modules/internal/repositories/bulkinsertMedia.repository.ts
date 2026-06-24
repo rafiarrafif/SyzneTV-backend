@@ -1,9 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { AppError } from "../../../helpers/error/instances/app";
 import { prisma } from "../../../utils/databases/prisma/connection";
-import { generateUUIDv7 } from "../../../helpers/databases/uuidv7";
 import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
-import { SystemAccountId } from "../../../config/account/system";
 import { bulkInsertMediaProducerStudioLicensorRepository } from "./bulkInsertMediaProducerStudioLicensor.repository";
 
 /**
@@ -134,7 +132,7 @@ export const InsertMediaRepository = async ({ payload }: { payload: MediaFullInf
       })),
     ];
 
-    prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx) => {
       const media = await tx.media.upsert({
         where: { mal_id: payload.mal_id },
         create: constructMediaPayload,
