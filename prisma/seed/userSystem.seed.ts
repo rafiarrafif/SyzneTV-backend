@@ -9,6 +9,7 @@ export const userSystemSeed = async () => {
     fullname: "SYSTEM",
     email: process.env.DEFAULT_ADMIN_EMAIL!,
     password: await hashPassword(process.env.DEFAULT_ADMIN_PASSWORD!),
+    role: "admin"
   } as Prisma.UserCreateInput;
 
   const insertedUserSystem = await prisma.user.upsert({
