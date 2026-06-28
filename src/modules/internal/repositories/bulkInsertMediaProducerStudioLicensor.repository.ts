@@ -1,8 +1,14 @@
 import { Prisma } from "@prisma/client";
-import { GenreOrProducer, MediaFullInfoResponse } from "../types/mediaFullInfo.type";
+import { GenreOrProducer } from "../types/mediaFullInfo.type";
 import { SystemAccountId } from "../../../config/account/system";
-import { status } from "elysia";
 
+
+/**
+ * Bulk Insert Producer, Studio, Licensor
+ *
+ * This function handles the bulk insertion of producers, studios, and licensors.
+ * It takes a transaction client, the ID of the media, and an array of producer, studio, and licensor objects.
+ * */
 export const bulkInsertMediaProducerStudioLicensorRepository = async (
   tx: Prisma.TransactionClient,
   media_id: string,

@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import { AppError } from "../../../helpers/error/instances/app";
-import { prisma } from "../../../utils/databases/prisma/connection";
 import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
+import { prisma } from "../../../utils/databases/prisma/connection";
 import { bulkInsertMediaProducerStudioLicensorRepository } from "./bulkInsertMediaProducerStudioLicensor.repository";
 
 /**
@@ -132,7 +132,7 @@ export const InsertMediaRepository = async ({ payload }: { payload: MediaFullInf
       })),
     ];
 
-    await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx) => {
       const media = await tx.media.upsert({
         where: { mal_id: payload.mal_id },
         create: constructMediaPayload,
@@ -143,7 +143,9 @@ export const InsertMediaRepository = async ({ payload }: { payload: MediaFullInf
       });
 
       await bulkInsertMediaProducerStudioLicensorRepository(tx, media.id, producerPayload);
+      return media.id;
     });
+
   } catch (error) {
     throw new AppError(500, "Failed to insert media", error);
   }
