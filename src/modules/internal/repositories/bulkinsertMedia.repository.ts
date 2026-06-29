@@ -143,7 +143,11 @@ export const InsertMediaRepository = async ({ payload }: { payload: MediaFullInf
       });
 
       await bulkInsertMediaProducerStudioLicensorRepository(tx, media.id, producerPayload);
-      return media.id;
+      return {
+        id: media.id,
+        mal_id: payload.mal_id,
+        name: payload.title,
+      };
     });
 
   } catch (error) {

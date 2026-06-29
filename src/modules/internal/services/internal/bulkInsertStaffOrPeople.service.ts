@@ -1,17 +1,17 @@
-import { SystemAccountId } from "../../../../config/account/system";
-import { ErrorForwarder } from "../../../../helpers/error/instances/forwarder";
-import { bulkInsertVoiceActorRepository } from "../../repositories/bulkInsertVoiceActor.repository";
-import { Person } from "../../types/mediaCharWithVAInfo";
+import {SystemAccountId} from "../../../../config/account/system";
+import {ErrorForwarder} from "../../../../helpers/error/instances/forwarder";
+import {bulkInsertVoiceActorRepository} from "../../repositories/bulkInsertVoiceActor.repository";
+import {Person} from "../../types/mediaCharacters";
 
 export const bulkInsertStaffOrPeopleService = async (peopleData: Person) => {
-  try {
-    return await bulkInsertVoiceActorRepository({
-      malId: peopleData.mal_id,
-      name: peopleData.name,
-      imageUrl: peopleData.images.jpg.image_url,
-      creatorId: SystemAccountId,
-    });
-  } catch (error) {
-    ErrorForwarder(error);
-  }
+    try {
+        return await bulkInsertVoiceActorRepository({
+            malId: peopleData.mal_id,
+            name: peopleData.name,
+            imageUrl: peopleData.images.jpg.image_url,
+            creatorId: SystemAccountId,
+        });
+    } catch (error) {
+        ErrorForwarder(error);
+    }
 };
