@@ -38,11 +38,13 @@ enum Role {
     Background = "Background",
 }
 
-interface MediaChar {
+export interface MediaChar {
     character: Character;
     role: Role;
     favorites: number;
     voice_actors: voiceActor[];
 }
 
-export type MediaCharacters = Array<MediaChar>;
+export type MediaCharacters = {
+    data: MediaChar[];
+};

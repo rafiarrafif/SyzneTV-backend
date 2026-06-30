@@ -17,7 +17,9 @@ export const bulkInsertAnimeService = async (malId: number) => {
 
         // await bulkInsertMediaCharacterRepository(insertedMedia.mal_id)
         const mediaChar = await fetch(baseURL + getMediaCharacters).then((res) => res.json()) as MediaCharacters;
-        return mediaChar;
+        await bulkInsertMediaCharacterRepository(insertedMedia.mal_id, mediaChar.data);
+
+        return insertedMedia.id;
     } catch (error) {
         ErrorForwarder(error);
     }
