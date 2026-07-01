@@ -4,20 +4,24 @@ import {getContentReferenceAPI} from "../../../../config/apis/jikan/media.refere
 import {bulkInsertMediaCharacterRepository} from "../../repositories/bulkInsertMediaCharacter.repository";
 import {MediaFullInfoResponse} from "../../types/mediaFullInfo.type";
 import {MediaCharacters} from "../../types/mediaCharacters";
+import {bulkInsertMediaGenreRepository} from "../../repositories/bulkInsertMediaGenre.repository";
 
 export const bulkInsertAnimeService = async (malId: number) => {
     try {
         const {baseURL, getMediaFullInfo, getMediaCharacters} = getContentReferenceAPI(malId);
         const mediaFullInfo = (await fetch(baseURL + getMediaFullInfo).then((res) => res.json())) as MediaFullInfoResponse;
 
+        // Inserting Media and Producers (Producer, Studio, Licensor)
         const insertedMedia = await InsertMediaRepository({
             payload: mediaFullInfo.data,
         });
 
-
-        // await bulkInsertMediaCharacterRepository(insertedMedia.mal_id)
+        // Inserting Characters, Staff, and Voice Actors
         const mediaChar = await fetch(baseURL + getMediaCharacters).then((res) => res.json()) as MediaCharacters;
-        return await bulkInsertMediaCharacterRepository(insertedMedia.id, mediaChar.data);
+        await bulkInsertMediaCharacterRepository(insertedMedia.id, mediaChar.data);
+
+        // Inserting Genres and Demographics
+        await bulkInsertMediaGenreRepository(mediaFullInfo, insertedMedia.id)
 
         return insertedMedia.id;
     } catch (error) {
