@@ -454,13 +454,16 @@ Table media_external_links {
 }
 
 Table media_characters {
-  id String [pk]
   media medias [not null]
   character characters [not null]
   voice_actors voice_actors [not null]
   role character_role [not null]
   media_id String [not null]
   character_id String [not null]
+
+  indexes {
+    (character_id, media_id) [pk]
+  }
 }
 
 Table characters {
@@ -480,11 +483,16 @@ Table characters {
 
 Table voice_actors {
   id String [pk]
-  media_character_id String [not null]
   language String [not null]
   actor_staff staff [not null]
   staff_id String [not null]
+  media_id String [not null]
+  character_id String [not null]
   media_character media_characters [not null]
+
+  indexes {
+    (media_id, character_id, staff_id, language) [unique]
+  }
 }
 
 Table staff {
@@ -865,7 +873,7 @@ Ref: media_characters.character_id > characters.id
 
 Ref: voice_actors.staff_id > staff.id
 
-Ref: voice_actors.media_character_id > media_characters.id
+Ref: voice_actors.(media_id, character_id) > media_characters.(media_id, character_id)
 
 Ref: episodes.created_by_id > users.id
 

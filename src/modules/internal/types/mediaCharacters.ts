@@ -1,13 +1,12 @@
+import {character_role} from "@prisma/client";
+
 interface StaffVA {
     mal_id: number;
     url: string;
+    name: string;
     images: {
         jpg: {
             image_url: string;
-        },
-        webp: {
-            image_url: string;
-            small_image_url: string;
         }
     }
 }
@@ -32,15 +31,9 @@ interface Character {
     }
 }
 
-enum Role {
-    Main = "Main",
-    Supporting = "Supporting",
-    Background = "Background",
-}
-
 export interface MediaChar {
     character: Character;
-    role: Role;
+    role: character_role;
     favorites: number;
     voice_actors: voiceActor[];
 }
