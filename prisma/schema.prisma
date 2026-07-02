@@ -279,13 +279,14 @@ model UserFollow {
 
 model UserWatchHistory {
   user       User     @relation(fields: [user_id], references: [id])
-  episode    Episode  @relation(fields: [episode_id], references: [id])
+  episode    Episode  @relation(fields: [episode_number, media_id], references: [episode_number, media_id])
   updated_at DateTime @updatedAt @db.Timestamptz()
 
-  user_id    String @db.Uuid
-  episode_id String @db.Uuid
+  user_id        String @db.Uuid
+  episode_number Int    @db.SmallInt
+  media_id       String @db.Uuid
 
-  @@id([user_id, episode_id])
+  @@id([user_id, episode_number, media_id])
   @@map("user_watch_histories")
 }
 
@@ -376,6 +377,7 @@ model Media {
   related_media        MediaRelation[]   @relation("MediaRelationRelatedMedia")
   updated_by_id        String?           @db.Uuid
   deleted_by_id        String?           @db.Uuid
+  episodes             Episode[]
   home_media_banners   HomeMediaBanner[]
   saved_to_collections MediaCollection[]
 
@@ -640,8 +642,8 @@ model VoiceActor {
   character_id    String         @db.Uuid
   media_character MediaCharacter @relation(fields: [media_id, character_id], references: [media_id, character_id])
 
-  @@map("voice_actors")
   @@unique([media_id, character_id, staff_id, language])
+  @@map("voice_actors")
 }
 
 model Staff {
@@ -659,37 +661,37 @@ model Staff {
 }
 
 model Episode {
-  id            String    @id @default(uuid(7)) @db.Uuid
-  media_id      String    @db.Uuid
-  episode       Int       @db.SmallInt
-  mal_url       String?   @db.VarChar(255)
-  forum_url     String?   @db.VarChar(255)
-  title         String    @db.VarChar(155)
-  title_origin  String?   @db.VarChar(155)
-  title_romanji String?   @db.VarChar(155)
-  aired_at      DateTime? @db.Date
-  filler        Boolean
-  recap         Boolean
-  total_score   Int       @default(0)
-  score_count   Int       @default(0)
-  deleted_at    DateTime? @db.Timestamptz()
-  updated_at    DateTime  @updatedAt @db.Timestamptz()
-  created_at    DateTime  @default(now()) @db.Timestamptz()
-  created_by    User      @relation(fields: [created_by_id], references: [id])
+  episode_number Int       @db.SmallInt
+  mal_url        String?   @db.VarChar(255)
+  forum_url      String?   @db.VarChar(255)
+  title          String    @db.VarChar(155)
+  title_origin   String?   @db.VarChar(155)
+  title_romanji  String?   @db.VarChar(155)
+  aired_at       DateTime? @db.Date
+  filler         Boolean
+  recap          Boolean
+  total_score    Int       @default(0)
+  score_count    Int       @default(0)
+  deleted_at     DateTime? @db.Timestamptz()
+  updated_at     DateTime  @updatedAt @db.Timestamptz()
+  created_at     DateTime  @default(now()) @db.Timestamptz()
+  created_by     User      @relation(fields: [created_by_id], references: [id])
 
   videos          Video[]
   created_by_id   String             @db.Uuid
   comments        Comment[]
   watch_histories UserWatchHistory[]
+  media           Media              @relation(fields: [media_id], references: [id])
+  media_id        String             @db.Uuid
 
-  @@index([media_id, episode])
+  @@id([media_id, episode_number])
   @@map("episodes")
 }
 
 model Video {
   id             String         @id @default(uuid(7)) @db.Uuid
   service        VideoService[]
-  Episode        Episode        @relation(fields: [episode_id], references: [id])
+  episode        Episode        @relation(fields: [episode_number, media_id], references: [episode_number, media_id])
   video_code     String         @db.VarChar(255)
   short_code     String?        @db.VarChar(255)
   thumbnail_code String?        @db.VarChar(255)
@@ -698,7 +700,8 @@ model Video {
   deleted_at     DateTime?      @db.Timestamptz()
   updated_at     DateTime       @updatedAt @db.Timestamptz()
 
-  episode_id       String           @db.Uuid
+  episode_number   Int              @db.SmallInt
+  media_id         String           @db.Uuid
   created_by_id    String           @db.Uuid
   video_submission VideoSubmission?
 
@@ -762,17 +765,18 @@ model VideoServiceSubmission {
 model Comment {
   id         String    @id @default(uuid(7)) @db.Uuid
   user       User      @relation(fields: [user_id], references: [id])
-  episode    Episode   @relation(fields: [episode_id], references: [id])
+  episode    Episode   @relation(fields: [episode_number, media_id], references: [episode_number, media_id])
   content    String    @db.Text
   created_at DateTime  @default(now()) @db.Timestamptz()
   updated_at DateTime  @updatedAt @db.Timestamptz()
   deleted_at DateTime? @db.Timestamptz()
 
-  user_id    String            @db.Uuid
-  episode_id String            @db.Uuid
-  likes      CommentLike[]
-  audit_logs CommentAuditLog[]
-  reports    CommentReport[]
+  user_id        String            @db.Uuid
+  episode_number Int               @db.SmallInt
+  media_id       String            @db.Uuid
+  likes          CommentLike[]
+  audit_logs     CommentAuditLog[]
+  reports        CommentReport[]
 
   @@map("comments")
 }
