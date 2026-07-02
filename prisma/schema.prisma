@@ -690,7 +690,7 @@ model Episode {
 
 model Video {
   id             String       @id @default(uuid(7)) @db.Uuid
-  video_service  VideoService @relation(fields: [videoServiceId], references: [id])
+  video_service  VideoService @relation(fields: [video_service_id], references: [id])
   episode        Episode      @relation(fields: [episode_number, media_id], references: [episode_number, media_id])
   priority       Int?         @db.SmallInt
   video_code     String       @db.VarChar(255)
@@ -705,7 +705,7 @@ model Video {
   media_id         String           @db.Uuid
   created_by_id    String           @db.Uuid
   video_submission VideoSubmission?
-  videoServiceId   String           @db.Uuid
+  video_service_id String           @db.Uuid
 
   @@unique([media_id, episode_number, priority])
   @@map("videos")

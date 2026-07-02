@@ -538,8 +538,9 @@ Table episodes {
 
 Table videos {
   id String [pk]
-  service video_services [not null]
+  video_service video_services [not null]
   episode episodes [not null]
+  priority Int
   video_code String [not null]
   short_code String
   thumbnail_code String
@@ -551,6 +552,11 @@ Table videos {
   media_id String [not null]
   created_by_id String [not null]
   video_submission video_submissions
+  video_service_id String [not null]
+
+  indexes {
+    (media_id, episode_number, priority) [unique]
+  }
 }
 
 Table video_submissions {
@@ -693,11 +699,6 @@ Table home_media_banners {
   created_at DateTime [default: `now()`, not null]
   media_id String [not null]
   created_by_id String [not null]
-}
-
-Table VideoToVideoService {
-  serviceId String [ref: > video_services.id]
-  videosId String [ref: > videos.id]
 }
 
 Enum user_role {
@@ -886,6 +887,8 @@ Ref: voice_actors.(media_id, character_id) > media_characters.(media_id, charact
 Ref: episodes.created_by_id > users.id
 
 Ref: episodes.media_id > medias.id
+
+Ref: videos.video_service_id > video_services.id
 
 Ref: videos.(episode_number, media_id) > episodes.(episode_number, media_id)
 
