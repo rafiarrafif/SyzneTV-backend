@@ -1,9 +1,9 @@
 import {SystemAccountId} from "../../../../config/account/system";
-import {ErrorForwarder} from "../../../../helpers/error/instances/forwarder";
-import {bulkInsertVideoRepository} from "../../repositories/bulkInsertVideo.repository";
-import {Static} from "elysia";
 import {bulkInsertVideoSchema} from "../../schemas/bulkInsertVideo.schema";
+import {ErrorForwarder} from "../../../../helpers/error/instances/forwarder";
+import {Static} from "elysia";
 import {Prisma} from "@prisma/client";
+import {bulkInsertVideoRepository} from "../../repositories/bulkInsertVideo.repository";
 
 export const bulkInsertVideoService = async (body: Static<typeof bulkInsertVideoSchema.body>) => {
     try {
@@ -21,7 +21,7 @@ export const bulkInsertVideoService = async (body: Static<typeof bulkInsertVideo
                 }
             ))
         ));
-        return constructedInput
+        return await bulkInsertVideoRepository(constructedInput)
     } catch (error) {
         ErrorForwarder(error);
     }
