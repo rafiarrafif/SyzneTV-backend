@@ -730,6 +730,7 @@ model VideoSubmission {
 model VideoService {
   id                String    @id @default(uuid(7)) @db.Uuid
   name              String    @db.VarChar(155)
+  slug              String    @db.VarChar(165)
   resolution        Int       @db.SmallInt
   domain            String    @db.VarChar(255)
   image_url         String?   @db.VarChar(255)
@@ -745,7 +746,7 @@ model VideoService {
   videos                    Video[]
   video_service_submissions VideoServiceSubmission?
 
-  @@unique([name, resolution])
+  @@unique([slug, resolution])
   @@map("video_services")
 }
 

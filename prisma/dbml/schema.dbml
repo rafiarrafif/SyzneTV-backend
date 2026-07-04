@@ -575,6 +575,7 @@ Table video_submissions {
 Table video_services {
   id String [pk]
   name String [not null]
+  slug String [not null]
   resolution Int [not null]
   domain String [not null]
   image_url String
@@ -590,7 +591,7 @@ Table video_services {
   video_service_submissions video_service_submissions
 
   indexes {
-    (name, resolution) [unique]
+    (slug, resolution) [unique]
   }
 }
 
