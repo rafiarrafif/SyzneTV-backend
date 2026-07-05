@@ -26,3 +26,4 @@ export const bulkInsertVideoService = async (body: Static<typeof bulkInsertVideo
         ErrorForwarder(error);
     }
 };
+
