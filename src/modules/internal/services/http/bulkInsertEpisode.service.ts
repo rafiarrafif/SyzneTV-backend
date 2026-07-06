@@ -23,7 +23,6 @@ export const bulkInsertEpisodeService = async (mal_id: number, page: number = 1)
             title_romanji: c.title_romanji,
             title_origin: c.title_japanese,
             aired_at: c.aired,
-            score: c.score,
             filler: c.filler,
             recap: c.recap,
             forum_url: c.forum_url,

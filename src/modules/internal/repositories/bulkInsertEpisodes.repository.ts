@@ -10,7 +10,6 @@ export interface BulkInsertEpisodesPayload {
     title_romanji: string
     title_origin: string
     aired_at: Date
-    score: number
     filler: boolean
     recap: boolean
     forum_url: string

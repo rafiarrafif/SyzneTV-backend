@@ -662,7 +662,6 @@ model Staff {
 
 model Episode {
   episode_number Int       @db.SmallInt
-  mal_url        String?   @db.VarChar(255)
   forum_url      String?   @db.VarChar(255)
   title          String    @db.VarChar(155)
   title_origin   String?   @db.VarChar(155)
