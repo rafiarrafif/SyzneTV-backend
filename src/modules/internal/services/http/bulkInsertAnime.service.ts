@@ -5,11 +5,13 @@ import {bulkInsertMediaCharacterRepository} from "../../repositories/bulkInsertM
 import {MediaFullInfoResponse} from "../../types/mediaFullInfo.type";
 import {MediaCharacters} from "../../types/mediaCharacters";
 import {bulkInsertMediaGenreRepository} from "../../repositories/bulkInsertMediaGenre.repository";
+import {AppError} from "../../../../helpers/error/instances/app";
 
 export const bulkInsertAnimeService = async (malId: number) => {
     try {
         const {baseURL, getMediaFullInfo, getMediaCharacters} = getContentReferenceAPI(malId);
         const mediaFullInfo = (await fetch(baseURL + getMediaFullInfo).then((res) => res.json())) as MediaFullInfoResponse;
+        if (!mediaFullInfo.data) throw new AppError(500, "JikanAPI currently not available");
 
         // Inserting Media and Producers (Producer, Studio, Licensor)
         const insertedMedia = await InsertMediaRepository({
