@@ -2,9 +2,9 @@ import {ErrorForwarder} from "../../../../helpers/error/instances/forwarder";
 import {InsertMediaRepository} from "../../repositories/bulkinsertMedia.repository";
 import {getContentReferenceAPI} from "../../../../config/apis/jikan/media.reference";
 import {bulkInsertMediaCharacterRepository} from "../../repositories/bulkInsertMediaCharacter.repository";
+import {bulkInsertMediaGenreRepository} from "../../repositories/bulkInsertMediaGenre.repository";
 import {MediaFullInfoResponse} from "../../types/mediaFullInfo.type";
 import {MediaCharacters} from "../../types/mediaCharacters";
-import {bulkInsertMediaGenreRepository} from "../../repositories/bulkInsertMediaGenre.repository";
 import {AppError} from "../../../../helpers/error/instances/app";
 
 export const bulkInsertAnimeService = async (malId: number) => {
