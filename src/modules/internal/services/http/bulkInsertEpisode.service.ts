@@ -28,8 +28,7 @@ export const bulkInsertEpisodeService = async (mal_id: number, page: number = 1)
             forum_url: c.forum_url,
             created_by_id: SystemAccountId
         }))
-        const insertedEpisodes = await bulkInsertEpisodesRepository(constructedInput)
-        return episodeData;
+        return await bulkInsertEpisodesRepository(constructedInput)
     } catch (err) {
         ErrorForwarder(err);
     }
