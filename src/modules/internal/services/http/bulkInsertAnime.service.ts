@@ -3,14 +3,14 @@ import { InsertMediaRepository } from "../../repositories/bulkinsertMedia.reposi
 import { getContentReferenceAPI } from "../../../../config/apis/myanimelist/media.reference";
 import { bulkInsertMediaCharacterRepository } from "../../repositories/bulkInsertMediaCharacter.repository";
 import { bulkInsertMediaGenreRepository } from "../../repositories/bulkInsertMediaGenre.repository";
-import { MediaFullInfoResponse } from "../../types/mediaFullInfo.type";
 import { MediaCharacters } from "../../types/mediaCharacters";
 import { AppError } from "../../../../helpers/error/instances/app";
+import { AnimeFullDetail } from "../../../../config/apis/myanimelist/animeFullDetail.type";
 
 export const bulkInsertAnimeService = async (malId: number) => {
   try {
     const { baseURL, getMediaFullInfo, getMediaCharacters } = getContentReferenceAPI(malId);
-    const mediaFullInfo = (await fetch(baseURL + getMediaFullInfo).then((res) => res.json())) as MediaFullInfoResponse;
+    const mediaFullInfo = (await fetch(baseURL + getMediaFullInfo).then((res) => res.json())) as AnimeFullDetail;
     if (!mediaFullInfo.data) throw new AppError(500, "JikanAPI currently not available");
 
     // Inserting Media and Producers (Producer, Studio, Licensor)
