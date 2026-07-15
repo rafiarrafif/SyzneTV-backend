@@ -169,10 +169,11 @@ Table user_watch_histories {
   episode episodes [not null]
   updated_at DateTime [not null]
   user_id String [not null]
-  episode_id String [not null]
+  episode_number Int [not null]
+  media_id String [not null]
 
   indexes {
-    (user_id, episode_id) [pk]
+    (user_id, episode_number, media_id) [pk]
   }
 }
 
@@ -252,10 +253,9 @@ Table medias {
   age_rating_id String
   country_id String
   related_media media_relations [not null]
-  approver_id String
-  created_by_id String
   updated_by_id String
   deleted_by_id String
+  episodes episodes [not null]
   home_media_banners home_media_banners [not null]
   saved_to_collections media_collections [not null]
 
@@ -296,7 +296,7 @@ Table media_collections {
 Table media_trailers {
   media_id String [pk]
   url String
-  embed_url String
+  embed_url String [unique]
   small_image_url String
   large_image_url String
   maximum_image_url String
@@ -456,13 +456,16 @@ Table media_external_links {
 }
 
 Table media_characters {
-  id String [pk]
   media medias [not null]
   character characters [not null]
   voice_actors voice_actors [not null]
   role character_role [not null]
   media_id String [not null]
   character_id String [not null]
+
+  indexes {
+    (character_id, media_id) [pk]
+  }
 }
 
 Table characters {
@@ -482,11 +485,16 @@ Table characters {
 
 Table voice_actors {
   id String [pk]
-  media_character_id String [not null]
   language String [not null]
   actor_staff staff [not null]
   staff_id String [not null]
+  media_id String [not null]
+  character_id String [not null]
   media_character media_characters [not null]
+
+  indexes {
+    (media_id, character_id, staff_id, language) [unique]
+  }
 }
 
 Table staff {
@@ -501,9 +509,7 @@ Table staff {
 }
 
 Table episodes {
-  id String [pk]
-  media_id String [not null]
-  episode Int [not null]
+  episode_number Int [not null]
   mal_url String
   forum_url String
   title String [not null]
@@ -522,12 +528,19 @@ Table episodes {
   created_by_id String [not null]
   comments comments [not null]
   watch_histories user_watch_histories [not null]
+  media medias [not null]
+  media_id String [not null]
+
+  indexes {
+    (media_id, episode_number) [pk]
+  }
 }
 
 Table videos {
   id String [pk]
-  service video_services [not null]
-  Episode episodes [not null]
+  video_service video_services [not null]
+  episode episodes [not null]
+  priority Int
   video_code String [not null]
   short_code String
   thumbnail_code String
@@ -535,9 +548,15 @@ Table videos {
   created_at DateTime [default: `now()`, not null]
   deleted_at DateTime
   updated_at DateTime [not null]
-  episode_id String [not null]
+  episode_number Int [not null]
+  media_id String [not null]
   created_by_id String [not null]
   video_submission video_submissions
+  video_service_id String [not null]
+
+  indexes {
+    (media_id, episode_number, priority) [unique]
+  }
 }
 
 Table video_submissions {
@@ -556,6 +575,7 @@ Table video_submissions {
 Table video_services {
   id String [pk]
   name String [not null]
+  slug String [not null]
   resolution Int [not null]
   domain String [not null]
   image_url String
@@ -571,7 +591,7 @@ Table video_services {
   video_service_submissions video_service_submissions
 
   indexes {
-    (name, resolution) [unique]
+    (slug, resolution) [unique]
   }
 }
 
@@ -597,7 +617,8 @@ Table comments {
   updated_at DateTime [not null]
   deleted_at DateTime
   user_id String [not null]
-  episode_id String [not null]
+  episode_number Int [not null]
+  media_id String [not null]
   likes comment_likes [not null]
   audit_logs comment_audit_logs [not null]
   reports comment_reports [not null]
@@ -661,7 +682,7 @@ Table countries {
   id String [pk]
   name String [not null]
   slug String [not null]
-  code String [not null]
+  code String [unique, not null]
   flag String
   banner String
   UserCountry users [not null]
@@ -679,11 +700,6 @@ Table home_media_banners {
   created_at DateTime [default: `now()`, not null]
   media_id String [not null]
   created_by_id String [not null]
-}
-
-Table VideoToVideoService {
-  serviceId String [ref: > video_services.id]
-  videosId String [ref: > videos.id]
 }
 
 Enum user_role {
@@ -789,7 +805,7 @@ Ref: user_follows.following_id > users.id
 
 Ref: user_watch_histories.user_id > users.id
 
-Ref: user_watch_histories.episode_id > episodes.id
+Ref: user_watch_histories.(episode_number, media_id) > episodes.(episode_number, media_id)
 
 Ref: collection_members.collection_id > collections.id
 
@@ -867,11 +883,15 @@ Ref: media_characters.character_id > characters.id
 
 Ref: voice_actors.staff_id > staff.id
 
-Ref: voice_actors.media_character_id > media_characters.id
+Ref: voice_actors.(media_id, character_id) > media_characters.(media_id, character_id)
 
 Ref: episodes.created_by_id > users.id
 
-Ref: videos.episode_id > episodes.id
+Ref: episodes.media_id > medias.id
+
+Ref: videos.video_service_id > video_services.id
+
+Ref: videos.(episode_number, media_id) > episodes.(episode_number, media_id)
 
 Ref: video_submissions.created_by_id > users.id
 
@@ -887,7 +907,7 @@ Ref: video_service_submissions.video_service_id - video_services.id
 
 Ref: comments.user_id > users.id
 
-Ref: comments.episode_id > episodes.id
+Ref: comments.(episode_number, media_id) > episodes.(episode_number, media_id)
 
 Ref: comment_likes.user_id > users.id
 
