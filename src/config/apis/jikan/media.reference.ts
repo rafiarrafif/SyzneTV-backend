@@ -1,9 +1,9 @@
-import { baseURL } from "./baseUrl";
+import {baseURL} from "./baseUrl";
 
 export const getContentReferenceAPI = (malId: number) => {
-  return {
-    baseURL,
-    getMediaFullInfo: `/anime/${malId}/full`,
-    getMediaCharactersWithVA: `/anime/${malId}/characters`,
-  };
+    return {
+        baseURL,
+        getMediaFullInfo: `/anime/${malId}/full`,
+        getMediaCharacters: `/anime/${malId}/characters`,
+    };
 };

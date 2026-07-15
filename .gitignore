@@ -63,3 +63,6 @@ server.exe
 /uploads
 
 /scripts/git-multipush.ts
+
+# IDE configuration
+/.idea
