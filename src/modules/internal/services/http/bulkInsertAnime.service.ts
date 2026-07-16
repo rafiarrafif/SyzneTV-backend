@@ -3,9 +3,9 @@ import { InsertMediaRepository } from "../../repositories/bulkinsertMedia.reposi
 import { getContentReferenceAPI } from "../../../../config/apis/myanimelist/media.reference";
 import { bulkInsertMediaCharacterRepository } from "../../repositories/bulkInsertMediaCharacter.repository";
 import { bulkInsertMediaGenreRepository } from "../../repositories/bulkInsertMediaGenre.repository";
-import { MediaCharacters } from "../../types/mediaCharacters";
 import { AppError } from "../../../../helpers/error/instances/app";
-import { AnimeFullDetail } from "../../../../config/apis/myanimelist/animeFullDetail.type";
+import { AnimeFullDetail } from "../../../../config/apis/myanimelist/types/animeFullDetail.type";
+import { AnimeCharacters } from "../../../../config/apis/myanimelist/types/animeCharacters.type";
 
 export const bulkInsertAnimeService = async (malId: number) => {
   try {
@@ -19,7 +19,7 @@ export const bulkInsertAnimeService = async (malId: number) => {
     });
 
     // Inserting Characters, Staff, and Voice Actors
-    const mediaChar = (await fetch(baseURL + getMediaCharacters).then((res) => res.json())) as MediaCharacters;
+    const mediaChar = (await fetch(baseURL + getMediaCharacters).then((res) => res.json())) as AnimeCharacters;
     await bulkInsertMediaCharacterRepository(insertedMedia.id, mediaChar.data);
 
     // Inserting Genres and Demographics

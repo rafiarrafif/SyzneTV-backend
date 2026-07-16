@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { AppError } from "../../../helpers/error/instances/app";
-import { AnimeFullDetail } from "../../../config/apis/myanimelist/animeFullDetail.type";
+import { AnimeFullDetail } from "../../../config/apis/myanimelist/types/animeFullDetail.type";
 import { prisma } from "../../../utils/databases/prisma/connection";
 import { bulkInsertMediaProducerStudioLicensorRepository } from "./bulkInsertMediaProducerStudioLicensor.repository";
 
