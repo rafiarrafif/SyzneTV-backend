@@ -863,7 +863,7 @@ model HomeMediaBanner {
   id         String   @id @default(uuid(7)) @db.Uuid
   media      Media    @relation(fields: [media_id], references: [id])
   created_by User     @relation(fields: [created_by_id], references: [id])
-  priority   Int      @unique @db.SmallInt
+  priority   Int?     @unique @db.SmallInt
   start_show DateTime @db.Date
   end_show   DateTime @db.Date
   created_at DateTime @default(now()) @db.Timestamptz()
