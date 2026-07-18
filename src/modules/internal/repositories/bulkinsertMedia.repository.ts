@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { AppError } from "../../../helpers/error/instances/app";
-import { MediaFullInfoResponse } from "../types/mediaFullInfo.type";
+import { AnimeFullDetail } from "../../../config/apis/myanimelist/types/animeFullDetail.type";
 import { prisma } from "../../../utils/databases/prisma/connection";
 import { bulkInsertMediaProducerStudioLicensorRepository } from "./bulkInsertMediaProducerStudioLicensor.repository";
 
@@ -18,7 +18,7 @@ import { bulkInsertMediaProducerStudioLicensorRepository } from "./bulkInsertMed
  * @param data - The full media data for constructing the media payload.
  * @returns The inserted or updated media record.
  */
-export const InsertMediaRepository = async ({ payload }: { payload: MediaFullInfoResponse["data"] }) => {
+export const InsertMediaRepository = async ({ payload }: { payload: AnimeFullDetail["data"] }) => {
   try {
     const constructMediaPayload: Prisma.MediaUpsertArgs["create"] = {
       mal_id: payload.mal_id,
@@ -26,20 +26,22 @@ export const InsertMediaRepository = async ({ payload }: { payload: MediaFullInf
       title_secondary: payload.title_english,
       title_original: payload.title_japanese,
       title_synonyms: payload.title_synonyms,
-      trailer: {
-        connectOrCreate: {
-          where: {
-            embed_url: payload.trailer.embed_url,
-          },
-          create: {
-            embed_url: payload.trailer.embed_url,
-            url: payload.trailer.url,
-            small_image_url: payload.trailer.images.small_image_url,
-            large_image_url: payload.trailer.images.large_image_url,
-            maximum_image_url: payload.trailer.images.maximum_image_url,
+      ...(payload.trailer.embed_url && {
+        trailer: {
+          connectOrCreate: {
+            where: {
+              embed_url: payload.trailer.embed_url,
+            },
+            create: {
+              embed_url: payload.trailer.embed_url,
+              url: payload.trailer.url,
+              small_image_url: payload.trailer.images?.small_image_url,
+              large_image_url: payload.trailer.images?.large_image_url,
+              maximum_image_url: payload.trailer.images?.maximum_image_url,
+            },
           },
         },
-      },
+      }),
       synopsis: payload.synopsis,
       small_image_url: payload.images.jpg.small_image_url,
       medium_image_url: payload.images.jpg.image_url,
@@ -149,7 +151,6 @@ export const InsertMediaRepository = async ({ payload }: { payload: MediaFullInf
         name: payload.title,
       };
     });
-
   } catch (error) {
     throw new AppError(500, "Failed to insert media", error);
   }
