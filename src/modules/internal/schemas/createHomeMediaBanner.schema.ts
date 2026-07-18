@@ -34,7 +34,19 @@ export const createHomeMediaBannerSchema = {
               properties: {
                 success: { type: "boolean", default: true },
                 status: { type: "integer", default: 201 },
-                message: { type: "string", default: "Video service created" },
+                message: { type: "string", default: "Media banner added successfully" },
+                data: {
+                  type: "object",
+                  properties: {
+                    id: { type: "string", default: "019f763c-xxxx-xxxx-xxxx-xxxxxxxx" },
+                    priority: { type: "number", default: 1 },
+                    start_show: { type: "string", default: "2026-07-18T00:00:00.000Z" },
+                    end_show: { type: "string", default: "2026-07-18T00:00:00.000Z" },
+                    created_at: { type: "string", default: "2026-07-18T00:00:00.000Z" },
+                    media_id: { type: "string", default: "019f763c-xxxx-xxxx-xxxx-xxxxxxxx" },
+                    created_by_id: { type: "string", default: "019f763c-xxxx-xxxx-xxxx-xxxxxxxx" },
+                  },
+                },
               },
             },
           },
