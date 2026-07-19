@@ -510,7 +510,6 @@ Table staff {
 
 Table episodes {
   episode_number Int [not null]
-  mal_url String
   forum_url String
   title String [not null]
   title_origin String
@@ -694,7 +693,7 @@ Table home_media_banners {
   id String [pk]
   media medias [not null]
   created_by users [not null]
-  priority Int [unique, not null]
+  priority Int [unique]
   start_show DateTime [not null]
   end_show DateTime [not null]
   created_at DateTime [default: `now()`, not null]
